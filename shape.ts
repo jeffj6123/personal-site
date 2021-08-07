@@ -4,6 +4,65 @@ const shapeCount = 10;
 const radius = 20;
 const FULL_RADIUS = Math.PI * 2;
 
+
+function distance(circle1Ref, circle2Ref, point) {
+    let circle2 = circle2Ref;
+    let circle1 = circle1Ref;
+
+    if (circle2.x < circle1.x) {
+        circle2 = circle1Ref;
+        circle1 = circle2Ref;
+    }
+
+    const x2minsx1 = (circle2.x - circle1.x);
+    const y2minusy1 = (circle2.y - circle1.y);
+
+    const numerator = Math.abs(x2minsx1 * (circle1.y - point.y) -
+        (circle1.x - point.x) * y2minusy1)
+    const denominator = Math.sqrt( (x2minsx1 * x2minsx1) + (y2minusy1 * y2minusy1));
+
+    return numerator / denominator;
+}
+
+const boundCheck = (shape1, shape2, conflict) => {
+
+    let copy1 = {...shape1};
+    let copy2 = {...shape2};
+    
+    if(copy1.x > copy2.x ) {
+        copy1.x -= radius;
+        copy2.x += radius;
+    }else {
+        copy2.x -= radius;
+        copy1.x += radius;
+    }
+
+    if(copy1.y > copy2.y ) {
+        copy1.y -= radius;
+        copy2.y += radius;
+    }else {
+        copy2.y -= radius;
+        copy1.y += radius;
+    }
+
+    const arr = [copy1, copy2, conflict];
+
+    arr.sort( (a,b) => a.x - b.x);
+    const xCheck = arr[1] === conflict;
+
+    arr.sort( (a,b) => a.y - b.y)
+    const yCheck = arr[1] === conflict;
+
+
+    return xCheck && yCheck;
+}
+
+const checkOverlap = (shape1, shape2) => {
+    const midPointDistance = getDistanceBetweenShapes(shape1, shape2);
+
+    return midPointDistance < (radius * 2)
+}
+
 const getDistanceBetweenShapes = (shape1, shape2) => {
     return Math.sqrt(Math.pow((shape1.x) - (shape2.x), 2) + Math.pow((shape1.y) - (shape2.y), 2));
 }
