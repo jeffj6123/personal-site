@@ -1,7 +1,7 @@
 const size = 500;
 const shapeCount = 10;
 
-const radius = 20;
+let radius = 20;
 const FULL_RADIUS = Math.PI * 2;
 
 
@@ -105,8 +105,9 @@ class Circle extends BaseShape {
         ctx.stroke();
 
 
-        ctx.fillStyle = 'rgb(0, ' + Math.floor(255 / size * this.position.x) + ', ' +
-            Math.floor(255 / size * this.position.y) + ')';
+        ctx.fillStyle = 'rgb(249, 172, 83)' 
+        // 'rgb(0, ' + Math.floor(255 / size * this.position.x) + ', ' +
+        //     Math.floor(255 / size * this.position.y) + ')';
         ctx.beginPath();
         ctx.arc(this.position.x, this.position.y, radius / 2, 0, FULL_RADIUS, true);
         ctx.fill();
@@ -131,8 +132,9 @@ class Vertice extends BaseShape {
 
     }
 
-    draw(ctx) {
+    draw(ctx: CanvasRenderingContext2D) {
         ctx.strokeStyle = this.green ? 'green' : "red";
+        ctx.lineWidth = 5;
         ctx.beginPath();
         ctx.moveTo(this.circle1.position.x, this.circle1.position.y);
         ctx.lineTo(this.circle2.position.x, this.circle2.position.y);
@@ -151,12 +153,19 @@ export function draw() {
     let canvas = document.getElementById('canvas') as HTMLCanvasElement;
     if (canvas.getContext) {
         let ctx = canvas.getContext('2d');
-
+        let width = 2*window.innerWidth;
+        let height = 2*window.innerHeight;
+        ctx.canvas.width  = width;
+        ctx.canvas.height = height;
+        radius = width / 60;
+        console.log(window)
         let shapes: Circle[] = [];
         let verts = [];
-        for (let i = 0; i < 20; i++) {
-            let x = Math.random() * size;
-            let y = Math.random() * size;
+        for (let i = 0; i < 80; i++) {
+            // let x = Math.random() * size;
+            let y = (Math.random() * height * 2) - height/2;
+            let x = (Math.random() * width * 2) - width/2;
+            // let y = x;
 
             const s = new Circle({y, x}, i.toString());
             if (shapes.every(shape => !checkOverlap(shape, s))) {
@@ -173,37 +182,31 @@ export function draw() {
                     shape2: s,
                     id: index
                 }
-            }).filter((a) => a.shape1 !== a.shape2).sort((a, b) => a.distance - b.distance).slice(0, 4);
+            }).filter((a) => a.shape1 !== a.shape2).sort((a, b) => a.distance - b.distance).slice(0, 3);
 
 
             pairs.forEach(indice => {
 
                 let conflictShape = null;
                 shapes.forEach(s => {
-                    // console.log(distance(indice.shape1, indice.shape2, s), distance(indice.shape1, indice.shape2, s) > radius)
-                    // if (indice.shape1 === s || indice.shape2 === s) {
-                    //     return true;
-                    // }
+
                     const d = distance(indice.shape1.position, indice.shape2.position, s.position);
                     if( !(indice.shape1 === s || indice.shape2 === s) && 
-                        d < radius && boundCheck(indice.shape1.position, indice.shape2.position, s.position)) {
+                        d < radius 
+                        && boundCheck(indice.shape1.position, indice.shape2.position, s.position)
+                        ) {
                         conflictShape = s;
                     }
                 })
-                // console.log(conflictShape)
-                // || !boundCheck(indice.shape1, indice.shape2, conflictShape.point)
+
                 if (!conflictShape) {
-                    // if(conflictShape && !boundCheck(indice.shape1, indice.shape2, conflictShape.point)) {
-                    //     console.log(distance(indice.shape1.position, indice.shape2.position, conflictShape.position),
-                    //     getDistanceBetweenShapes(conflictShape.position, indice.shape1.position),
-                    //     getDistanceBetweenShapes(conflictShape.position, indice.shape2.position), conflictShape, indice.shape1, indice.shape2) 
-                    // }
                     verts.push(new Vertice(indice.shape2, indice.shape1));
                 } else {
+                    if(boundCheck(indice.shape1.position, indice.shape2.position, conflictShape.position)) {
+                        console.log(indice.shape1, indice.shape2, conflictShape)
+                    }
+
                     verts.push(new Vertice(indice.shape2, indice.shape1, false));
-                    // console.log(distance(indice.shape1, indice.shape2, conflictShape),
-                    // getDistanceBetweenShapes(conflictShape, indice.shape1),
-                    // getDistanceBetweenShapes(conflictShape, indice.shape2), conflictShape, indice.shape1, indice.shape2)
                 }
             })
 
@@ -211,7 +214,19 @@ export function draw() {
 
         let interval = setInterval(() => {
             try {
-                ctx.clearRect(0, 0, size, size);
+                let width = 2*window.innerWidth;
+                let height = 2*window.innerHeight;
+                ctx.canvas.width  = width;
+                ctx.canvas.height = height;
+                ctx.clearRect(0, 0, width, height);
+
+                var grd = ctx.createLinearGradient(0, 0, width, 0);
+                grd.addColorStop(0, '#00ffff');
+                grd.addColorStop(1, "#703fff");
+
+                // Fill with gradient
+                ctx.fillStyle = grd;
+                ctx.fillRect(0, 0, width, height);
 
                 shapes.concat(verts).forEach(shape => {
                     shape.update()
@@ -226,3 +241,5 @@ export function draw() {
 }
 
 draw();
+
+// console.log(boundCheck( {x: 0, y:0}, {x: 30, y: 30}, {x:50, y:50}))
