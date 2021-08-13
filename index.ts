@@ -4,6 +4,11 @@ const shapeCount = 10;
 let radius = 20;
 const FULL_RADIUS = Math.PI * 2;
 
+export interface IDrawInfo {
+    ctx: CanvasRenderingContext2D;
+    width: number;
+    height: number;
+}
 
 function distance(circle1Ref: IPoint, circle2Ref: IPoint, point: IPoint) {
     let circle2 = circle2Ref;
@@ -19,38 +24,38 @@ function distance(circle1Ref: IPoint, circle2Ref: IPoint, point: IPoint) {
 
     const numerator = Math.abs(x2minsx1 * (circle1.y - point.y) -
         (circle1.x - point.x) * y2minusy1)
-    const denominator = Math.sqrt( (x2minsx1 * x2minsx1) + (y2minusy1 * y2minusy1));
+    const denominator = Math.sqrt((x2minsx1 * x2minsx1) + (y2minusy1 * y2minusy1));
 
     return numerator / denominator;
 }
 
 const boundCheck = (shape1: IPoint, shape2: IPoint, conflict: IPoint) => {
 
-    let copy1 = {...shape1};
-    let copy2 = {...shape2};
-    
-    if(copy1.x > copy2.x ) {
+    let copy1 = { ...shape1 };
+    let copy2 = { ...shape2 };
+
+    if (copy1.x > copy2.x) {
         copy1.x -= radius;
         copy2.x += radius;
-    }else {
+    } else {
         copy2.x -= radius;
         copy1.x += radius;
     }
 
-    if(copy1.y > copy2.y ) {
+    if (copy1.y > copy2.y) {
         copy1.y -= radius;
         copy2.y += radius;
-    }else {
+    } else {
         copy2.y -= radius;
         copy1.y += radius;
     }
 
     const arr = [copy1, copy2, conflict];
 
-    arr.sort( (a,b) => a.x - b.x);
+    arr.sort((a, b) => a.x - b.x);
     const xCheck = arr[1] === conflict;
 
-    arr.sort( (a,b) => a.y - b.y)
+    arr.sort((a, b) => a.y - b.y)
     const yCheck = arr[1] === conflict;
 
 
@@ -77,42 +82,58 @@ export class BaseShape {
 
     constructor(public id: string) {
 
-                }
+    }
 
-    draw(ctx: CanvasRenderingContext2D) {}
+    draw(state: IDrawInfo) { }
 
-    update() {}
+    update() { }
 }
 
+export class Background extends BaseShape {
+    constructor() {
+        super('background')
+    }
 
+    draw(state: IDrawInfo) {
+
+        var grd = state.ctx.createLinearGradient(0, 0, state.width, 0);
+        grd.addColorStop(0, '#00ffff');
+        grd.addColorStop(1, "#703fff");
+
+        // Fill with gradient
+        state.ctx.fillStyle = grd;
+        state.ctx.fillRect(0, 0, state.width, state.height);
+
+    }
+}
 
 class Circle extends BaseShape {
     constructor(public position: IPoint,
-                public id: string) {
+        public id: string) {
         super(id);
     }
 
-    draw(ctx) {
+    draw(state: IDrawInfo) {
         // ctx.fillStyle = 'rgb(200, 0, 0)';
-        ctx.strokeStyle = 'rgb(0, ' + Math.floor(255 / size * this.position.x) + ', ' +
+        state.ctx.strokeStyle = 'rgb(0, ' + Math.floor(255 / size * this.position.x) + ', ' +
             Math.floor(255 / size * this.position.y) + ')';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
+        state.ctx.lineWidth = 3;
+        state.ctx.beginPath();
 
-        ctx.arc(this.position.x, this.position.y, radius, 0, FULL_RADIUS, true); // Outer circle
+        state.ctx.arc(this.position.x, this.position.y, radius, 0, FULL_RADIUS, true); // Outer circle
 
-        ctx.closePath();
-        ctx.stroke();
+        state.ctx.closePath();
+        state.ctx.stroke();
 
 
-        ctx.fillStyle = 'rgb(249, 172, 83)' 
+        state.ctx.fillStyle = 'rgb(249, 172, 83)'
         // 'rgb(0, ' + Math.floor(255 / size * this.position.x) + ', ' +
         //     Math.floor(255 / size * this.position.y) + ')';
-        ctx.beginPath();
-        ctx.arc(this.position.x, this.position.y, radius / 2, 0, FULL_RADIUS, true);
-        ctx.fill();
+        state.ctx.beginPath();
+        state.ctx.arc(this.position.x, this.position.y, radius / 2, 0, FULL_RADIUS, true);
+        state.ctx.fill();
 
-        ctx.fillText(this.id, this.position.x + radius , this.position.y);
+        state.ctx.fillText(this.id, this.position.x + radius, this.position.y);
     }
 
     update() {
@@ -123,23 +144,23 @@ class Circle extends BaseShape {
 
 class Vertice extends BaseShape {
     constructor(public circle1: Circle,
-                public circle2: Circle,
-                public green = true) {
-       super(Vertice.getVerticeId(circle1, circle2));
+        public circle2: Circle,
+        public green = true) {
+        super(Vertice.getVerticeId(circle1, circle2));
     }
 
     update() {
 
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
-        ctx.strokeStyle = this.green ? 'green' : "red";
-        ctx.lineWidth = 5;
-        ctx.beginPath();
-        ctx.moveTo(this.circle1.position.x, this.circle1.position.y);
-        ctx.lineTo(this.circle2.position.x, this.circle2.position.y);
-        ctx.closePath();
-        ctx.stroke();
+    draw(state: IDrawInfo) {
+        state.ctx.strokeStyle = this.green ? 'green' : "red";
+        state.ctx.lineWidth = 5;
+        state.ctx.beginPath();
+        state.ctx.moveTo(this.circle1.position.x, this.circle1.position.y);
+        state.ctx.lineTo(this.circle2.position.x, this.circle2.position.y);
+        state.ctx.closePath();
+        state.ctx.stroke();
     }
 
     public static getVerticeId(circle1: Circle, circle2: Circle): string {
@@ -153,9 +174,9 @@ export function draw() {
     let canvas = document.getElementById('canvas') as HTMLCanvasElement;
     if (canvas.getContext) {
         let ctx = canvas.getContext('2d');
-        let width = 2*window.innerWidth;
-        let height = 2*window.innerHeight;
-        ctx.canvas.width  = width;
+        let width = 2 * window.innerWidth;
+        let height = 2 * window.innerHeight;
+        ctx.canvas.width = width;
         ctx.canvas.height = height;
         radius = width / 60;
         console.log(window)
@@ -163,11 +184,11 @@ export function draw() {
         let verts = [];
         for (let i = 0; i < 80; i++) {
             // let x = Math.random() * size;
-            let y = (Math.random() * height * 2) - height/2;
-            let x = (Math.random() * width * 2) - width/2;
+            let y = (Math.random() * height * 2) - height / 2;
+            let x = (Math.random() * width * 2) - width / 2;
             // let y = x;
 
-            const s = new Circle({y, x}, i.toString());
+            const s = new Circle({ y, x }, i.toString());
             if (shapes.every(shape => !checkOverlap(shape, s))) {
                 shapes.push(s);
             }
@@ -191,10 +212,10 @@ export function draw() {
                 shapes.forEach(s => {
 
                     const d = distance(indice.shape1.position, indice.shape2.position, s.position);
-                    if( !(indice.shape1 === s || indice.shape2 === s) && 
-                        d < radius 
+                    if (!(indice.shape1 === s || indice.shape2 === s) &&
+                        d < radius
                         && boundCheck(indice.shape1.position, indice.shape2.position, s.position)
-                        ) {
+                    ) {
                         conflictShape = s;
                     }
                 })
@@ -202,7 +223,7 @@ export function draw() {
                 if (!conflictShape) {
                     verts.push(new Vertice(indice.shape2, indice.shape1));
                 } else {
-                    if(boundCheck(indice.shape1.position, indice.shape2.position, conflictShape.position)) {
+                    if (boundCheck(indice.shape1.position, indice.shape2.position, conflictShape.position)) {
                         console.log(indice.shape1, indice.shape2, conflictShape)
                     }
 
@@ -214,24 +235,20 @@ export function draw() {
 
         let interval = setInterval(() => {
             try {
-                let width = 2*window.innerWidth;
-                let height = 2*window.innerHeight;
-                ctx.canvas.width  = width;
+                let width = 2 * window.innerWidth;
+                let height = 2 * window.innerHeight;
+                ctx.canvas.width = width;
                 ctx.canvas.height = height;
                 ctx.clearRect(0, 0, width, height);
-
-                var grd = ctx.createLinearGradient(0, 0, width, 0);
-                grd.addColorStop(0, '#00ffff');
-                grd.addColorStop(1, "#703fff");
-
-                // Fill with gradient
-                ctx.fillStyle = grd;
-                ctx.fillRect(0, 0, width, height);
+                const state = { ctx, height, width };
+                
+                new Background().draw(state)
 
                 shapes.concat(verts).forEach(shape => {
                     shape.update()
-                    shape.draw(ctx)
+                    shape.draw(state)
                 })
+
             } catch (e) {
                 console.error(e);
                 clearInterval(interval)
