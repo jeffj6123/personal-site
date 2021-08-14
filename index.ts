@@ -53,11 +53,9 @@ function moveTowards(position: IPoint, destination: IPoint, speed): IPoint {
     }else if(position.y === destination.y) {
         ySpeed = 0;
     }else{
-        const hypotenuse = getDistanceBetweenShapes(position,destination);
         let angle = Math.atan(Math.abs(position.x - destination.x) / Math.abs(position.y - destination.y)); // * 180/Math.PI
-        ySpeed = hypotenuse * Math.sin(angle);
-        xSpeed = hypotenuse * Math.cos(angle);
-        console.log(xSpeed, ySpeed)
+        ySpeed = speed * Math.cos(angle);
+        xSpeed = speed * Math.sin(angle);
     }
     
     return {
@@ -187,16 +185,16 @@ class Circle extends BaseShape {
         state.ctx.fillText(this.id, this.position.x + radius, this.position.y);
     }
 
-    // update(state: IUpdateInfo) {
-    //     if( Math.abs(this.goalPosition.x - this.position.x) === 0 &&
-    //         Math.abs(this.goalPosition.y - this.position.y) === 0) {
+    update(state: IUpdateInfo) {
+        if( Math.abs(this.goalPosition.x - this.position.x) === 0 &&
+            Math.abs(this.goalPosition.y - this.position.y) === 0) {
             
-    //         this.goalPosition.x = (this.initialPosition.x + Math.random() * 20 ) 
-    //         this.goalPosition.y = (this.initialPosition.y + Math.random() * 20 )
-    //     }else{
-    //         this.position = moveTowards(this.position, this.goalPosition, this.speed * (state.tickSizeInMilliseconds / 1000))
-    //     }
-    // }
+            this.goalPosition.x = (this.initialPosition.x + Math.random() * 20 ) 
+            this.goalPosition.y = (this.initialPosition.y + Math.random() * 20 )
+        }else{
+            this.position = moveTowards(this.position, this.goalPosition, this.speed * (state.tickSizeInMilliseconds / 1000))
+        }
+    }
 }
 
 class Vertice extends BaseShape {
@@ -236,7 +234,6 @@ class Crawler extends BaseShape {
     }
 
     draw(state: IDrawInfo) {
-        // ctx.fillStyle = 'rgb(200, 0, 0)';
         state.ctx.fillStyle = 'lightgray'
         state.ctx.lineWidth = 3;
         state.ctx.beginPath();
@@ -246,24 +243,11 @@ class Crawler extends BaseShape {
         state.ctx.closePath();
         state.ctx.fill();
 
-
-        // state.ctx.fillStyle = 'rgb(249, 172, 83)'
-        // state.ctx.beginPath();
-        // state.ctx.arc(this.position.x, this.position.y, radius / 2, 0, FULL_RADIUS, true);
-        // state.ctx.fill();
-
         state.ctx.fillText(this.id, this.position.x + radius, this.position.y);
     }
 
     update(state: IUpdateInfo) {
-        // if( Math.abs(this.goalPosition.x - this.position.x) === 0 &&
-        //     Math.abs(this.goalPosition.y - this.position.y) === 0) {
-            
-        //     this.goalPosition.x = (this.initialPosition.x + Math.random() * 20 ) 
-        //     this.goalPosition.y = (this.initialPosition.y + Math.random() * 20 )
-        // }else{
         this.position = moveTowards(this.position, this.goalNode.position, this.speed * (state.tickSizeInMilliseconds / 1000))
-        // }
     }
 }
 
@@ -351,13 +335,13 @@ export function draw() {
                 background.draw(state)
                 background.update();
 
-                crawler.draw(state)
-                crawler.update(updateState);
-
                 verts.concat(shapes).forEach(shape => {
                     shape.update(updateState)
                     shape.draw(state)
                 })
+                
+                crawler.draw(state)
+                crawler.update(updateState);
 
                 previousTime = currentTime;
             } catch (e) {
