@@ -10,6 +10,10 @@ export interface IDrawInfo {
     height: number;
 }
 
+export interface IUpdateInfo {
+    tickSizeInMilliseconds: number;
+}
+
 function distance(circle1Ref: IPoint, circle2Ref: IPoint, point: IPoint) {
     let circle2 = circle2Ref;
     let circle1 = circle1Ref;
@@ -27,6 +31,39 @@ function distance(circle1Ref: IPoint, circle2Ref: IPoint, point: IPoint) {
     const denominator = Math.sqrt((x2minsx1 * x2minsx1) + (y2minusy1 * y2minusy1));
 
     return numerator / denominator;
+}
+
+const moveTowardsOneDimensional = (current :number, destination: number, speed: number): number => {
+    if(current !== destination) {
+        if(current < destination) {
+           return Math.min(current += speed, destination) 
+        }else{
+            return Math.max(current -= speed, destination)
+        }
+    }else{
+        return destination;
+    }
+}
+
+function moveTowards(position: IPoint, destination: IPoint, speed): IPoint {
+    let xSpeed = speed;
+    let ySpeed = speed;
+    if(position.x === destination.y ) {
+        xSpeed = 0;
+    }else if(position.y === destination.y) {
+        ySpeed = 0;
+    }else{
+        const hypotenuse = getDistanceBetweenShapes(position,destination);
+        let angle = Math.atan(Math.abs(position.x - destination.x) / Math.abs(position.y - destination.y)); // * 180/Math.PI
+        ySpeed = hypotenuse * Math.sin(angle);
+        xSpeed = hypotenuse * Math.cos(angle);
+        console.log(xSpeed, ySpeed)
+    }
+    
+    return {
+        x: moveTowardsOneDimensional(position.x, destination.x, xSpeed),
+        y: moveTowardsOneDimensional(position.y, destination.y, ySpeed)
+    };
 }
 
 const boundCheck = (shape1: IPoint, shape2: IPoint, conflict: IPoint) => {
@@ -86,18 +123,29 @@ export class BaseShape {
 
     draw(state: IDrawInfo) { }
 
-    update() { }
+    update(state: IUpdateInfo) { }
 }
 
 export class Background extends BaseShape {
+    gradiantStart = 0;
     constructor() {
         super('background')
     }
 
+    update() {
+        if(this.gradiantStart > 1) {
+            this.gradiantStart -= .01
+        }else if(this.gradiantStart < 0){
+            this.gradiantStart += .01
+        }
+    }
+
     draw(state: IDrawInfo) {
 
-        var grd = state.ctx.createLinearGradient(0, 0, state.width, 0);
-        grd.addColorStop(0, '#00ffff');
+        var grd = state.ctx.createLinearGradient(0, 0, state.width, state.height);
+
+        grd.addColorStop(0, "#703fff");
+        grd.addColorStop(1 - this.gradiantStart, '#00ffff');
         grd.addColorStop(1, "#703fff");
 
         // Fill with gradient
@@ -108,54 +156,64 @@ export class Background extends BaseShape {
 }
 
 class Circle extends BaseShape {
+    initialPosition: IPoint;
+    goalPosition: IPoint;
+    speed = 10;
+
     constructor(public position: IPoint,
         public id: string) {
         super(id);
+        this.initialPosition = {...position}
+        this.goalPosition = {...position};
     }
 
     draw(state: IDrawInfo) {
         // ctx.fillStyle = 'rgb(200, 0, 0)';
-        state.ctx.strokeStyle = 'rgb(0, ' + Math.floor(255 / size * this.position.x) + ', ' +
-            Math.floor(255 / size * this.position.y) + ')';
+        state.ctx.fillStyle = 'lightgray'
         state.ctx.lineWidth = 3;
         state.ctx.beginPath();
 
         state.ctx.arc(this.position.x, this.position.y, radius, 0, FULL_RADIUS, true); // Outer circle
 
         state.ctx.closePath();
-        state.ctx.stroke();
-
-
-        state.ctx.fillStyle = 'rgb(249, 172, 83)'
-        // 'rgb(0, ' + Math.floor(255 / size * this.position.x) + ', ' +
-        //     Math.floor(255 / size * this.position.y) + ')';
-        state.ctx.beginPath();
-        state.ctx.arc(this.position.x, this.position.y, radius / 2, 0, FULL_RADIUS, true);
         state.ctx.fill();
+
+
+        // state.ctx.fillStyle = 'rgb(249, 172, 83)'
+        // state.ctx.beginPath();
+        // state.ctx.arc(this.position.x, this.position.y, radius / 2, 0, FULL_RADIUS, true);
+        // state.ctx.fill();
 
         state.ctx.fillText(this.id, this.position.x + radius, this.position.y);
     }
 
-    update() {
-        // this.x = (this.x + this.xOffset) % size;
-        // this.y = (this.y + this.yoffSet ) % size;
-    }
+    // update(state: IUpdateInfo) {
+    //     if( Math.abs(this.goalPosition.x - this.position.x) === 0 &&
+    //         Math.abs(this.goalPosition.y - this.position.y) === 0) {
+            
+    //         this.goalPosition.x = (this.initialPosition.x + Math.random() * 20 ) 
+    //         this.goalPosition.y = (this.initialPosition.y + Math.random() * 20 )
+    //     }else{
+    //         this.position = moveTowards(this.position, this.goalPosition, this.speed * (state.tickSizeInMilliseconds / 1000))
+    //     }
+    // }
 }
 
 class Vertice extends BaseShape {
+    lineWidth = (Math.random() + 1)* 5;
+    color = "";
+    static colors = ["#BDBDBD", "#9E9E9E", "#7D7D7D", "#696969"];
     constructor(public circle1: Circle,
         public circle2: Circle,
         public green = true) {
         super(Vertice.getVerticeId(circle1, circle2));
-    }
-
-    update() {
-
+        
+        this.color = Vertice.colors[Math.floor((Math.random() * Vertice.colors.length))];
     }
 
     draw(state: IDrawInfo) {
-        state.ctx.strokeStyle = this.green ? 'green' : "red";
-        state.ctx.lineWidth = 5;
+        state.ctx.strokeStyle = this.green ? this.color : "red";
+        state.ctx.lineWidth = this.lineWidth;
         state.ctx.beginPath();
         state.ctx.moveTo(this.circle1.position.x, this.circle1.position.y);
         state.ctx.lineTo(this.circle2.position.x, this.circle2.position.y);
@@ -168,7 +226,46 @@ class Vertice extends BaseShape {
     }
 }
 
+class Crawler extends BaseShape {
+    position: IPoint;
+    speed = 30;
+    constructor(private goalNode: Circle, private startNode: Circle) {
+        super('crawler');
 
+        this.position = {...startNode.position};
+    }
+
+    draw(state: IDrawInfo) {
+        // ctx.fillStyle = 'rgb(200, 0, 0)';
+        state.ctx.fillStyle = 'lightgray'
+        state.ctx.lineWidth = 3;
+        state.ctx.beginPath();
+
+        state.ctx.arc(this.position.x, this.position.y, radius / 2, 0, FULL_RADIUS, true); // Outer circle
+
+        state.ctx.closePath();
+        state.ctx.fill();
+
+
+        // state.ctx.fillStyle = 'rgb(249, 172, 83)'
+        // state.ctx.beginPath();
+        // state.ctx.arc(this.position.x, this.position.y, radius / 2, 0, FULL_RADIUS, true);
+        // state.ctx.fill();
+
+        state.ctx.fillText(this.id, this.position.x + radius, this.position.y);
+    }
+
+    update(state: IUpdateInfo) {
+        // if( Math.abs(this.goalPosition.x - this.position.x) === 0 &&
+        //     Math.abs(this.goalPosition.y - this.position.y) === 0) {
+            
+        //     this.goalPosition.x = (this.initialPosition.x + Math.random() * 20 ) 
+        //     this.goalPosition.y = (this.initialPosition.y + Math.random() * 20 )
+        // }else{
+        this.position = moveTowards(this.position, this.goalNode.position, this.speed * (state.tickSizeInMilliseconds / 1000))
+        // }
+    }
+}
 
 export function draw() {
     let canvas = document.getElementById('canvas') as HTMLCanvasElement;
@@ -182,11 +279,12 @@ export function draw() {
         console.log(window)
         let shapes: Circle[] = [];
         let verts = [];
-        for (let i = 0; i < 80; i++) {
-            // let x = Math.random() * size;
-            let y = (Math.random() * height * 2) - height / 2;
-            let x = (Math.random() * width * 2) - width / 2;
-            // let y = x;
+        for (let i = 0; i < 2; i++) {
+            let y = (Math.random() * height);
+            let x = (Math.random() * width );
+
+            // let y = (Math.random() * height * 2) - height / 2;
+            // let x = (Math.random() * width * 2) - width / 2;
 
             const s = new Circle({ y, x }, i.toString());
             if (shapes.every(shape => !checkOverlap(shape, s))) {
@@ -223,9 +321,9 @@ export function draw() {
                 if (!conflictShape) {
                     verts.push(new Vertice(indice.shape2, indice.shape1));
                 } else {
-                    if (boundCheck(indice.shape1.position, indice.shape2.position, conflictShape.position)) {
-                        console.log(indice.shape1, indice.shape2, conflictShape)
-                    }
+                    // if (boundCheck(indice.shape1.position, indice.shape2.position, conflictShape.position)) {
+                    //     console.log(indice.shape1, indice.shape2, conflictShape)
+                    // }
 
                     verts.push(new Vertice(indice.shape2, indice.shape1, false));
                 }
@@ -233,30 +331,41 @@ export function draw() {
 
         })
 
+        let crawler = new Crawler(shapes[0], shapes[1])
+        let background = new Background();
+
+        let previousTime = new Date();
         let interval = setInterval(() => {
             try {
+                const currentTime = new Date();
+                const tick = currentTime.getTime() - previousTime.getTime();
+
                 let width = 2 * window.innerWidth;
                 let height = 2 * window.innerHeight;
                 ctx.canvas.width = width;
                 ctx.canvas.height = height;
                 ctx.clearRect(0, 0, width, height);
                 const state = { ctx, height, width };
-                
-                new Background().draw(state)
+                const updateState = {tickSizeInMilliseconds: tick};
 
-                shapes.concat(verts).forEach(shape => {
-                    shape.update()
+                background.draw(state)
+                background.update();
+
+                crawler.draw(state)
+                crawler.update(updateState);
+
+                verts.concat(shapes).forEach(shape => {
+                    shape.update(updateState)
                     shape.draw(state)
                 })
 
+                previousTime = currentTime;
             } catch (e) {
                 console.error(e);
                 clearInterval(interval)
             }
-        }, 1)
+        }, 16)
     }
 }
 
 draw();
-
-// console.log(boundCheck( {x: 0, y:0}, {x: 30, y: 30}, {x:50, y:50}))
