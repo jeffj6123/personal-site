@@ -1,5 +1,5 @@
 const size = 500;
-const shapeCount = 10;
+const shapeCount = 30;
 
 let radius = 20;
 const FULL_RADIUS = Math.PI * 2;
@@ -156,7 +156,7 @@ export class Background extends BaseShape {
 class Circle extends BaseShape {
     initialPosition: IPoint;
     goalPosition: IPoint;
-    speed = 10;
+    speed = 5;
 
     constructor(public position: IPoint,
         public id: string) {
@@ -167,6 +167,7 @@ class Circle extends BaseShape {
 
     draw(state: IDrawInfo) {
         // ctx.fillStyle = 'rgb(200, 0, 0)';
+
         state.ctx.fillStyle = 'lightgray'
         state.ctx.lineWidth = 3;
         state.ctx.beginPath();
@@ -174,6 +175,8 @@ class Circle extends BaseShape {
         state.ctx.arc(this.position.x, this.position.y, radius, 0, FULL_RADIUS, true); // Outer circle
 
         state.ctx.closePath();
+        state.ctx.shadowBlur = 20;
+        state.ctx.shadowColor = "black";
         state.ctx.fill();
 
 
@@ -189,8 +192,8 @@ class Circle extends BaseShape {
         if( Math.abs(this.goalPosition.x - this.position.x) === 0 &&
             Math.abs(this.goalPosition.y - this.position.y) === 0) {
             
-            this.goalPosition.x = (this.initialPosition.x + Math.random() * 20 ) 
-            this.goalPosition.y = (this.initialPosition.y + Math.random() * 20 )
+            this.goalPosition.x = (this.initialPosition.x + Math.random() * 20 ) + 10
+            this.goalPosition.y = (this.initialPosition.y + Math.random() * 20 ) + 10
         }else{
             this.position = moveTowards(this.position, this.goalPosition, this.speed * (state.tickSizeInMilliseconds / 1000))
         }
@@ -216,7 +219,11 @@ class Vertice extends BaseShape {
         state.ctx.moveTo(this.circle1.position.x, this.circle1.position.y);
         state.ctx.lineTo(this.circle2.position.x, this.circle2.position.y);
         state.ctx.closePath();
+        // state.ctx.shadowBlur = 20;
+        // state.ctx.shadowColor = "black";
         state.ctx.stroke();
+
+        state.ctx.shadowBlur = 0;
     }
 
     public static getVerticeId(circle1: Circle, circle2: Circle): string {
@@ -234,7 +241,7 @@ class Crawler extends BaseShape {
     }
 
     draw(state: IDrawInfo) {
-        state.ctx.fillStyle = 'lightgray'
+        state.ctx.fillStyle = '#006400'
         state.ctx.lineWidth = 3;
         state.ctx.beginPath();
 
@@ -248,6 +255,12 @@ class Crawler extends BaseShape {
 
     update(state: IUpdateInfo) {
         this.position = moveTowards(this.position, this.goalNode.position, this.speed * (state.tickSizeInMilliseconds / 1000))
+
+        if(this.position.x == this.goalNode.position.x && this.position.y === this.goalNode.position.y) {
+            const temp = this.goalNode;
+            this.goalNode = this.startNode;
+            this.startNode = temp;
+        }
     }
 }
 
@@ -263,7 +276,7 @@ export function draw() {
         console.log(window)
         let shapes: Circle[] = [];
         let verts = [];
-        for (let i = 0; i < 2; i++) {
+        for (let i = 0; i < shapeCount; i++) {
             let y = (Math.random() * height);
             let x = (Math.random() * width );
 
@@ -316,7 +329,7 @@ export function draw() {
         })
 
         let crawler = new Crawler(shapes[0], shapes[1])
-        let background = new Background();
+        // let background = new Background();
 
         let previousTime = new Date();
         let interval = setInterval(() => {
@@ -332,8 +345,8 @@ export function draw() {
                 const state = { ctx, height, width };
                 const updateState = {tickSizeInMilliseconds: tick};
 
-                background.draw(state)
-                background.update();
+                // background.draw(state)
+                // background.update();
 
                 verts.concat(shapes).forEach(shape => {
                     shape.update(updateState)
@@ -348,7 +361,7 @@ export function draw() {
                 console.error(e);
                 clearInterval(interval)
             }
-        }, 16)
+        }, 50)
     }
 }
 
