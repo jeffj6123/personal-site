@@ -111,7 +111,7 @@ class Circle extends BaseShape {
         ctx.arc(this.position.x, this.position.y, radius / 2, 0, FULL_RADIUS, true);
         ctx.fill();
 
-        ctx.fillText(this.id, this.position.x + radius , this.position.y);
+        // ctx.fillText(this.id, this.position.x + radius , this.position.y);
     }
 
     update() {
@@ -195,24 +195,24 @@ export function draw() {
                     }
                     verts.push(new Vertice(indice.shape2, indice.shape1));
                 } else {
-                    verts.push(new Vertice(indice.shape2, indice.shape1, false));
+                    // verts.push(new Vertice(indice.shape2, indice.shape1, false));
                 }
             })
 
         })
 
-        let interval = setInterval(() => {
-            try {
-                ctx.clearRect(0, 0, size, size);
+        // let interval = setInterval(() => {
+        //     try {
+        //         ctx.clearRect(0, 0, size, size);
 
-                shapes.concat(verts).forEach(shape => {
-                    shape.update()
-                    shape.draw(ctx)
-                })
-            } catch (e) {
-                console.error(e);
-                clearInterval(interval)
-            }
-        }, 1)
+        //         shapes.concat(verts).forEach(shape => {
+        //             shape.update()
+        //             shape.draw(ctx)
+        //         })
+        //     } catch (e) {
+        //         console.error(e);
+        //         clearInterval(interval)
+        //     }
+        // }, 1)
     }
 }
