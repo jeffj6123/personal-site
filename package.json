@@ -10,7 +10,9 @@
     "parcel": "^2.0.0-beta.2",
     "typescript": "^4.3.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@parcel/transformer-image": "^2.0.0-rc.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "parcel index.html"

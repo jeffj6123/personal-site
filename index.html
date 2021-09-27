@@ -13,32 +13,162 @@
 
 <body>
     <canvas id="canvas" class="chart-container"></canvas>
+    <!-- <div class="header"></div> -->
 
-    <div class="header"></div>
+    <div class="card left-overview">
+        <div>
+            <div class="link active">Skills</div>
+            <div class="link">Work</div>
+            <div class="link">Projects</div>
+        </div>
 
-    <div class="layout-container">
-        <div style="display: flex; flex-direction: row;">
-            <div class="card overview">
-                <h1>Jeffrey Jarry</h1>
-                <div class="underline spacer"></div>
-                <div>
-                    I am software engineer with an emphasis in frontend development.
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <i class="social-icon ri-github-fill"></i>
+            <i class="social-icon ri-linkedin-box-fill"></i>
+            <i class="social-icon ri-mail-line"></i>
+        </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; overflow: auto; height: 100%">
+        <div class="layout-container">
+            <div class="landing-screen screen">
+                <div class="name-text">
+                    <h1>Jeffrey Jarry</h1>
+                    <div class="underline spacer"></div>
                 </div>
-    
-                <div class="socials">
-                    <i class="social-icon ri-github-fill"></i>
-                    <i class="social-icon ri-github-fill"></i>
-                    <i class="social-icon ri-github-fill"></i>
+                <div></div>
+                <div>
+                    <h1>Projects</h1>
+                    <div class="underline spacer"></div>
+
+                    <div style="display: flex;">
+                        <div class="card project-tile" style="margin-right: 15px;">
+                            <img src="./FFLogo.png" style="height: 100%;">
+                            <div>
+                                <h2>FFDecks
+                                    <a href="https://ffdecks.com" target="_blank" style="color: var(--accent-color); float: right;">
+                                        <i class="link-out ri-links-line"></i>
+                                    </a>
+
+                                </h2>
+                                <div>
+                                    FF Decks is a FFTCG Deck builder, card database, and tournament meta analysis site.
+                                </div>
+                                <div style="display: flex;
+                                justify-content: space-around; font-size: 30px; margin-top: 10px;">
+                                    <i style="color: #f14e00" class="ri-html5-line"></i>
+                                    <i style="color: #f00000" class="ri-angularjs-fill"></i>
+                                    <i style="color: blue" class="ri-css3-line"></i>
+                                    <img src="./python-logo.svg" style="height: 30px;">
+                                    <img src="./typescript-log.svg" style="height: 30px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card project-tile">
+
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="content-layout">
-                <div class="card">
-                    
+            <div class="screen">
+                <div>
+                    <h1>Skills</h1>
+                    <div class="underline spacer"></div>
+                    <div class="card">
+                        <ul>
+                            <li>
+                                Javascript and Typescript
+                            </li>
+                            <li>
+                                HTML and CSS
+                            </li>
+                            <li>
+                                Python - Flask / Falcon
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="screen">
+                <div class="">
+                    <h1>History</h1>
+                    <div class="underline spacer"></div>
+                    <div>
+                        <div class="timeline-container">
+                            <div class="timeline-item card">
+                                <div class="timeline-block">
+                                    <div class="timeline-top"></div>
+                                    <div class="timeline-middle">Now</div>
+                                    <div class="timeline-bottom"></div>
+                                </div>
+                                <div class="timeline-description">
+                                    <h2 class="timeline-title "><img src="./ms-logo.svg"
+                                            class="timeline-image">Microsoft</h2>
+                                    <ul>
+                                        <li>
+                                            Develop the web based dashboard SFX
+                                        </li>
+                                        <li>
+                                            HTML and CSS
+                                        </li>
+                                        <li>
+                                            Python - Flask / Falcon
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="timeline-item card">
+                                <div class="timeline-block">
+                                    <div class="timeline-bleeder"></div>
+                                    <div class="timeline-top"></div>
+                                    <div class="timeline-middle">2018</div>
+                                    <div class="timeline-bottom"></div>
+                                </div>
+                                <div class="timeline-description">
+                                    <h2 class="timeline-title "><img src="./osu.png" class="timeline-image">Ohio State
+                                        University</h2>
+                                    <div>
+                                        Graduation : 2018
+                                    </div>
+                                    <div>
+                                        Graduated from The Ohio State Univeristy with a degree in Software Engineering.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item card">
+                                <div class="timeline-block">
+                                    <div class="timeline-bleeder"></div>
+                                    <div class="timeline-top"></div>
+                                    <div class="timeline-middle">2017</div>
+                                    <div class="timeline-bottom"></div>
+                                    <div class="timeline-middle">2017</div>
+                                    <div class="timeline-bottom"></div>
+                                </div>
+                                <div class="timeline-description">
+                                    <h2 class="timeline-title "><img src="./ms-logo.svg" class="timeline-image">Scott's
+                                        Miracle Gro</h2>
+                                    <ul>
+                                        <li>
+                                            Develop the web based dashboard SFX
+                                        </li>
+                                        <li>
+                                            HTML and CSS
+                                        </li>
+                                        <li>
+                                            Python - Flask / Falcon
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 </body>
 
 </html>
