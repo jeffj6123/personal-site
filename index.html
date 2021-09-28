@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <script type="module" src="index.ts"></script>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- TODO download -->
     <link href="https://cdn.jsdelivr.net/npm/remixicon@2.5.0/fonts/remixicon.css" rel="stylesheet">
@@ -13,7 +14,8 @@
 
 <body>
     <canvas id="canvas" class="chart-container"></canvas>
-    <!-- <div class="header"></div> -->
+    <!-- <div class="header">
+    </div> -->
 
     <div class="card left-overview">
         <div>
@@ -32,16 +34,25 @@
     <div style="display: flex; flex-direction: column; overflow: auto; height: 100%">
         <div class="layout-container">
             <div class="landing-screen screen">
-                <div class="name-text">
-                    <h1>Jeffrey Jarry</h1>
-                    <div class="underline spacer"></div>
+        
+                <div style="align-self: center;
+                flex: 1;
+                display: flex;
+                align-items: center;">
+                    <div class="name-text">
+                        Jeffrey Jarry
+                        <div class="underline spacer"></div>
+                        <span>
+                            I am Web Developer
+                        </span>
+                    </div>
+
                 </div>
-                <div></div>
                 <div>
                     <h1>Projects</h1>
                     <div class="underline spacer"></div>
 
-                    <div style="display: flex;">
+                    <div style="display: flex; flex-wrap: wrap;">
                         <div class="card project-tile" style="margin-right: 15px;">
                             <img src="./FFLogo.png" style="height: 100%;">
                             <div>
@@ -52,7 +63,7 @@
 
                                 </h2>
                                 <div>
-                                    FF Decks is a FFTCG Deck builder, card database, and tournament meta analysis site.
+                                    FFDecks is a FFTCG Deck builder, card database, and tournament meta analysis site.
                                 </div>
                                 <div style="display: flex;
                                 justify-content: space-around; font-size: 30px; margin-top: 10px;">
