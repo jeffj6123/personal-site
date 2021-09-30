@@ -1,6 +1,6 @@
 import { shapeCount } from "./constants";
 import { AStarFinding, Node } from "./pathFinding";
-import { Circle, Crawler, IPoint, ShapeHandler, Vertice } from "./shape";
+import { Circle, Crawler, IPoint, ISquarePoint, RectCircleColliding, ShapeHandler, textRenderer, Vertice } from "./shape";
 
 
 export interface IDrawInfo {
@@ -67,33 +67,31 @@ export function draw() {
         let height = 2 * window.innerHeight;
         ctx.canvas.width = width;
         ctx.canvas.height = height;
+
         Circle.radius = width / 60;
-        console.log(window)
+
+        //get location for text
+        const largeText = Math.min(width / 8, 200);
+        ctx.canvas.width = width;
+        ctx.canvas.height = height;
+        ctx.font = `${largeText}px Ariel`;
+        const textInfo = ctx.measureText("Jeffrey Jarry");
+        let refRect: ISquarePoint = {
+            x: width /2 - textInfo.width/2, 
+            y: height * .33 - largeText,
+            width: textInfo.width,
+            height: largeText
+        }
+        console.log(refRect)
+        
         let shapes: Circle[] = [];
         let verts: Vertice[] = [];
 
-        // let i = 0;
-        // while(i < height) {
-        //         const s = new Circle({ y: 200, x: i }, i.toString());
-        //         shapes.push(s);
-        //     i += Circle.radius * 3
-        // }
-        // for(let i = 0; i < 40; i++) {
-        //     for(let j = 0; j < 30 ; j++) {
-        //         const s = new Circle({ y: ( i / 20) * width, x: (j / 20) * height }, j.toString() + i.toString());
-        //         shapes.push(s);
-        //     }
-        // }
-
         for (let i = 0; i < shapeCount * 2; i++) {
             let y = (Math.random() * height);
-            let x = (Math.random() * width );
-
-            // let y = (Math.random() * height * 2) - height / 2;
-            // let x = (Math.random() * width * 2) - width / 2;
-
+            let x = 10 + (Math.random() * width * .95 );
             const s = new Circle({ y, x }, i.toString());
-            if (shapes.every(shape => !checkOverlap(shape, s))) {
+            if (shapes.every(shape => !checkOverlap(shape, s)) && !RectCircleColliding({...s.position, radius: Circle.radius * 1.5}, refRect) ) {
                 shapes.push(s);
             }
         }
@@ -141,8 +139,8 @@ export function draw() {
         shapes.forEach(s => handler.circles[s.id] = s);
 
         let crawler = new Crawler(handler, path.splice(0,1));
-
-        document.addEventListener('click', (event) => {
+        let name = new textRenderer(crawler);
+        canvas.addEventListener('click', (event) => {
             console.log({
                 x: event.offsetX * 2,
                 y: event.offsetY * 2
@@ -151,11 +149,8 @@ export function draw() {
                 x: event.offsetX * 2,
                 y: event.offsetY * 2
             })
-            // console.table(pathFinding.nodes)
-            console.log(closest)
             crawler.setNewpath(pathFinding.generatePath(crawler.nextNode.asPathFindingNode(), closest))
           })
-
 
         let previousTime = new Date();
         let interval = setInterval(() => {
@@ -179,6 +174,9 @@ export function draw() {
                 crawler.draw(state)
                 crawler.update(updateState);
 
+                // ctx.fillRect(refRect.x, refRect.y, refRect.width, refRect.height)
+
+                name.draw(state);
                 previousTime = currentTime;
             } catch (e) {
                 console.error(e);

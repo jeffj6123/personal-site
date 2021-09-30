@@ -2,24 +2,29 @@ import { IDrawInfo, IUpdateInfo } from ".";
 import { FULL_RADIUS } from "./constants";
 import { INodePathFindingInfo, Node } from "./pathFinding";
 
-// function distance(circle1Ref: IPoint, circle2Ref: IPoint, point: IPoint) {
-//     let circle2 = circle2Ref;
-//     let circle1 = circle1Ref;
+export interface ICirclePoint extends IPoint {
+    radius: number;
+}
 
-//     if (circle2.x < circle1.x) {
-//         circle2 = circle1Ref;
-//         circle1 = circle2Ref;
-//     }
+export interface ISquarePoint extends IPoint {
+    width: number;
+    height: number;
+}
 
-//     const x2minsx1 = (circle2.x - circle1.x);
-//     const y2minusy1 = (circle2.y - circle1.y);
+export function RectCircleColliding(circle: ICirclePoint, rect: ISquarePoint){
+    var distX = Math.abs(circle.x - rect.x-rect.width/2);
+    var distY = Math.abs(circle.y - rect.y-rect.height/2);
 
-//     const numerator = Math.abs(x2minsx1 * (circle1.y - point.y) -
-//         (circle1.x - point.x) * y2minusy1)
-//     const denominator = Math.sqrt((x2minsx1 * x2minsx1) + (y2minusy1 * y2minusy1));
+    if (distX > (rect.width/2 + circle.radius)) { return false; }
+    if (distY > (rect.height/2 + circle.radius)) { return false; }
 
-//     return numerator / denominator;
-// }
+    if (distX <= (rect.width/2)) { return true; } 
+    if (distY <= (rect.height/2)) { return true; }
+
+    var dx=distX-rect.width/2;
+    var dy=distY-rect.height/2;
+    return (dx*dx+dy*dy<=(circle.radius*circle.radius));
+}
 
 function evaluateDistance(node: IPoint, goalNode: IPoint, tolerance: number): boolean {
     const x = (node.x - goalNode.x) * (node.x - goalNode.x);
@@ -92,8 +97,6 @@ export class Circle extends BaseShape {
     }
 
     draw(state: IDrawInfo) {
-        // ctx.fillStyle = 'rgb(200, 0, 0)';
-
         state.ctx.fillStyle = this.tempColor || 'lightgray';
         state.ctx.lineWidth = 3;
         state.ctx.beginPath();
@@ -104,12 +107,6 @@ export class Circle extends BaseShape {
         state.ctx.shadowBlur = 20;
         state.ctx.shadowColor = "black";
         state.ctx.fill();
-
-
-        // state.ctx.fillStyle = 'rgb(249, 172, 83)'
-        // state.ctx.beginPath();
-        // state.ctx.arc(this.position.x, this.position.y, radius / 2, 0, FULL_RADIUS, true);
-        // state.ctx.fill();
 
         // state.ctx.font = "30px Ariel";
         // state.ctx.fillText(this.id, this.position.x + Circle.radius *1.2, this.position.y);
@@ -137,7 +134,10 @@ export class Circle extends BaseShape {
 export class Vertice extends BaseShape {
     lineWidth = (Math.random() + 1) * 5;
     color = "";
+
     tempColor = "";
+    crawlerPosition: Crawler;
+
     static colors = ["#BDBDBD", "#9E9E9E", "#7D7D7D", "#696969"];
     constructor(public circle1: Circle,
         public circle2: Circle,
@@ -148,17 +148,44 @@ export class Vertice extends BaseShape {
     }
 
     draw(state: IDrawInfo) {
-        state.ctx.strokeStyle = this.tempColor || this.color;
-        state.ctx.lineWidth = this.lineWidth * (this.tempColor ? 2 : 1);
-        state.ctx.beginPath();
-        state.ctx.moveTo(this.circle1.position.x, this.circle1.position.y);
-        state.ctx.lineTo(this.circle2.position.x, this.circle2.position.y);
-        state.ctx.closePath();
-        // state.ctx.shadowBlur = 20;
-        // state.ctx.shadowColor = "black";
-        state.ctx.stroke();
+        //Render how far the crawler is
+        if(this.crawlerPosition) {
 
-        state.ctx.shadowBlur = 0;
+            let start: Circle;
+            let end: Circle;
+            if(this.crawlerPosition.nextNode.id === this.circle1.id) {
+                start = this.circle2;
+                end = this.circle1;
+            }else{
+                start = this.circle1;
+                end = this.circle2;
+            }
+
+            state.ctx.beginPath();
+            state.ctx.strokeStyle = this.tempColor;
+            state.ctx.lineWidth = this.lineWidth * 2;
+            state.ctx.moveTo(start.position.x, start.position.y);
+            state.ctx.lineTo(this.crawlerPosition.position.x, this.crawlerPosition.position.y);
+            state.ctx.closePath();
+            state.ctx.stroke();
+
+            state.ctx.strokeStyle = this.color;
+            state.ctx.lineWidth = this.lineWidth;
+            state.ctx.beginPath();
+            state.ctx.moveTo(this.crawlerPosition.position.x, this.crawlerPosition.position.y);
+            state.ctx.lineTo(end.position.x, end.position.y);    
+            state.ctx.closePath();
+            state.ctx.stroke();
+
+        }else {
+            state.ctx.strokeStyle = this.tempColor || this.color;
+            state.ctx.lineWidth = this.lineWidth * (this.tempColor ? 2 : 1);
+            state.ctx.beginPath();
+            state.ctx.moveTo(this.circle1.position.x, this.circle1.position.y);
+            state.ctx.lineTo(this.circle2.position.x, this.circle2.position.y);
+            state.ctx.closePath();
+            state.ctx.stroke();
+        }
     }
 
     public static getVerticeId(circle1: Circle, circle2: Circle): string {
@@ -168,6 +195,8 @@ export class Vertice extends BaseShape {
     public static getVerticeIdWithoutCircle(id: string, id2: string): string {
         return [id, id2].sort().join("-");
     }
+
+
 }
 
 export class Crawler extends BaseShape {
@@ -175,6 +204,7 @@ export class Crawler extends BaseShape {
     speed = 240;
 
     public nextNode: Circle;
+    private currentVert: Vertice;
     currentIndex = 1;
     currentColor = "#006400";
     constructor(private handler: ShapeHandler, private nodes: INodePathFindingInfo[]) {
@@ -199,36 +229,36 @@ export class Crawler extends BaseShape {
 
     update(state: IUpdateInfo) {
         //When close to a node color it
-        if (Math.abs(this.position.x - this.nextNode.position.x) < Circle.radius) {
+        if (evaluateDistance(this.position, this.nextNode.position, Circle.radius / 2)) {
             this.nextNode.tempColor = this.currentColor;
         }
 
         //when there is
         if (this.currentIndex > -1) {
-            if (evaluateDistance(this.position, this.nextNode.position, Circle.radius / 5)
-                // this.position.x == this.nextNode.position.x &&
-                // this.position.y === this.nextNode.position.y
-                ) {
+            if (evaluateDistance(this.position, this.nextNode.position, Circle.radius / 5)) {
                     this.position = this.nextNode.position;
+
+
+                if(this.currentVert) {
+                    this.currentVert.crawlerPosition = null;
+                }
 
                 if (this.currentIndex < this.nodes.length) {
                     const currentNode = this.nextNode;
 
                     this.nextNode = this.handler.circles[this.nodes[this.currentIndex].node.id];
+                    
+
                     if(currentNode.id !== this.nextNode.id) {
-                        this.handler.verticies[Vertice.getVerticeId(currentNode, this.nextNode)].tempColor = this.currentColor;
-                
+                        const vert = this.handler.verticies[Vertice.getVerticeId(currentNode, this.nextNode)];
+                        vert.tempColor = this.currentColor;
+                        vert.crawlerPosition = this;
+                        this.currentVert = vert;
+                        console.log(vert)
+
                     }
                     this.currentIndex++;
                 } else {
-
-                    // this.nodes.forEach((node, index) => {
-                    //     this.handler.circles[node.node.id].tempColor = "";
-
-                    //     if (index > 0) {
-                    //         this.handler.verticies[Vertice.getVerticeIdWithoutCircle(node.node.id, this.nodes[index - 1].node.id)].tempColor = "";
-                    //     }
-                    // });
                     this.currentIndex = -1;
                 }
             }
@@ -242,6 +272,27 @@ export class Crawler extends BaseShape {
         this.nodes = nodes;
         this.currentColor = '#' + Math.floor(Math.random()*16777215).toString(16);
         console.log(this);
+    }
+}
+
+export class textRenderer  extends BaseShape {
+    constructor(private crawler: Crawler) {
+        super("name");
+    }
+
+    draw(state: IDrawInfo) {
+        state.ctx.fillStyle = this.crawler.currentColor;
+        state.ctx.lineWidth = 3;
+        state.ctx.beginPath();
+
+
+        const largeText = Math.min(state.width / 8, 200);
+        state.ctx.font = `${largeText}px Ariel`;
+        state.ctx.textAlign = "center"; // To Align Center
+        
+        state.ctx.fillText("Jeffrey Jarry", state.width / 2, state.height * .33);
+        state.ctx.font = `${largeText * .3}px Ariel`;
+        state.ctx.fillText("Try clicking around", state.width / 2, state.height * .33 + largeText * .3 * 2)
     }
 }
 
