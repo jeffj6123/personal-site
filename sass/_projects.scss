@@ -1,0 +1,29 @@
+.project-tile {
+    min-height: 150px;
+    transition: .5s;
+    display: flex;
+    flex: 1;
+    box-sizing: border-box;
+}
+
+.project-tile:hover>.link-out {
+    transform: scale(1.5);
+}
+
+.project-tile img {
+    height: 100%;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+
+@media only screen and (max-width: 600px) {
+    .project-tile {
+        width: 100%;
+        min-width: 100%;
+
+        img {
+            max-height: 140px;
+        }
+    }
+}

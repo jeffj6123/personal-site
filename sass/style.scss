@@ -1,4 +1,6 @@
 @use '_header';
+@use '_bounce';
+@use '_projects';
 
 :root {
   /* 66 66 66 */
@@ -67,12 +69,6 @@ h1,h2,h3 {
 .layout-container {
   padding: 0px 10%;
   position: relative;
-}
-
-@media only screen and (max-width: 600px) {
-  .layout-container {
-    padding: 0px 10px;
-  }
 }
 
 .overview > h1 {
@@ -200,23 +196,6 @@ ul li {
     text-shadow: 5px 0px #077639;
 }
 
-.project-tile {
-  min-height: 150px;
-  transition: .5s;
-  display: flex;
-  flex:1;
-}
-
-.project-tile:hover > .link-out {
-  transform: scale(1.5);
-}
-
-.project-tile img {
-  height: 100%;
-  border-radius: 5px;
-  margin-right: 10px;
-}
-
 .screen {
   height: 100vh;
   position: relative;
@@ -242,9 +221,9 @@ ul li {
   height: 30px;
 
   &:hover {
-    width: 50%;
-    left: 25%;
-    height: 60px;
+    width: 30%;
+    left: 35%;
+    height: 40px;
     font-size: 25px;
   }
 }
@@ -256,5 +235,30 @@ ul li {
 
   100% {
 
+  }
+}
+
+
+@media only screen and (max-width: 600px) {
+  .layout-container {
+    padding: 0px 10px;
+  }
+
+  .next-section {
+    width: 50%;
+    left: 25%;
+    bottom: 0px;
+    box-sizing: border-box;
+  
+    &:hover {
+      width: 80%;
+      left: 10%;
+      height: 40px;
+      font-size: 25px;
+    }
+  }
+
+  .socials {
+    visibility: hidden;
   }
 }
