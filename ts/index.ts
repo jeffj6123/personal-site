@@ -88,7 +88,7 @@ export function draw() {
         let verts: Vertice[] = [];
 
         for (let i = 0; i < shapeCount * 2; i++) {
-            let y = (Math.random() * height);
+            let y = 10 + (Math.random() * height * .95);
             let x = 10 + (Math.random() * width * .95 );
             const s = new Circle({ y, x }, i.toString());
             if (shapes.every(shape => !checkOverlap(shape, s)) && !RectCircleColliding({...s.position, radius: Circle.radius * 1.5}, refRect) ) {

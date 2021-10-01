@@ -13,14 +13,13 @@
 </head>
 
 <body>
-    <!-- <canvas id="canvas" class="chart-container"></canvas> -->
-    <!-- <div class="header">
-    </div> -->
-    <div style="display: flex; flex-direction: column; overflow: auto; height: 100%">
+    <a name="home"></a>
+    <div style="display: flex; flex-direction: column;">
         <div class="header">
             <div class="navigation">
-                <a class="link" href="#skills">Skills</a>
+                <a class="link" href="#home"><i style="display: flex;" class="ri-home-line"></i></a>
                 <a class="link" href="#projects">Projects</a>
+                <a class="link" href="#skills">Skills</a>
                 <a class="link" href="#history">Work</a>
             </div>
             <div style="flex: 1;"></div>
@@ -30,16 +29,18 @@
                 <i class="social-icon ri-mail-line"></i>
             </div>
         </div>
-        <div class="layout-container">
-            <div class="landing-screen screen">
-            <canvas id="canvas" class="chart-container"></canvas>
-
-                <div style="align-self: center;
-                flex: 1;
-                display: flex;
-                align-items: center;
-                z-index: 1;">
+        <div >
+            <div class="screen">
+                <canvas id="canvas" class="chart-container"></canvas>
+                <div class="card next-section" >
+                    <i class="ri-arrow-down-fill"></i>
+                    See Projects
+                    <i class="ri-arrow-down-fill"></i>
                 </div>
+            </div>
+
+            <div class="layout-container">
+            <div class="screen">
                 <div id="projects">
                     <h1>Projects</h1>
                     <div class="underline spacer"></div>
@@ -171,6 +172,8 @@
                     </div>
                 </div>
             </div>
+            </div>
+
         </div>
 </body>
 

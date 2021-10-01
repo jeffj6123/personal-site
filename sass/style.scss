@@ -4,6 +4,11 @@
   /* 66 66 66 */
   --main-bg-color: rgb(47 46 46);
   --accent-color: rgb(7 118 57);
+  --header-size: 50px;
+}
+
+html {
+  scroll-behavior: smooth !important;
 }
 
 html,
@@ -14,10 +19,16 @@ body {
   color: white; 
   font-family: 'Roboto,sans-serif';
   background-color: #121212;
-
 }
 
 
+[id]::before {
+  content: '';
+  display: block;
+  height:      var(--header-size);
+  margin-top: var(--header-size);
+  visibility: hidden;
+}
 
 h1,h2,h3 {
   margin-bottom: 0px;
@@ -25,11 +36,9 @@ h1,h2,h3 {
 }
 
 .chart-container {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: calc(100vh - var(--header-size));
   background-color: #121212;
-  position: absolute;
-  left: 0;
 }
 
 .card {
@@ -210,10 +219,42 @@ ul li {
 
 .screen {
   height: 100vh;
+  position: relative;
 }
 
 .landing-screen {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+
+.next-section {
+  transition: 2s;
+  position: absolute;
+  bottom: 50px;
+  width: 20%;
+  left: 40%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  height: 30px;
+
+  &:hover {
+    width: 50%;
+    left: 25%;
+    height: 60px;
+    font-size: 25px;
+  }
+}
+
+@keyframes arrow {
+  0%   {
+    
+  }
+
+  100% {
+
+  }
 }
