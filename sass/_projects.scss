@@ -4,16 +4,22 @@
     display: flex;
     flex: 1;
     box-sizing: border-box;
+    min-width: 380px;
+    max-height: 200px;
 }
 
 .project-tile:hover>.link-out {
     transform: scale(1.5);
 }
 
-.project-tile img {
-    height: 100%;
-    border-radius: 5px;
-    margin-right: 10px;
+.project-tile {
+
+    .icon {
+        height: 100%;
+        // width: 50%;
+        border-radius: 5px;
+        margin-right: 10px;
+    }
 }
 
 
@@ -22,8 +28,19 @@
         width: 100%;
         min-width: 100%;
 
-        img {
-            max-height: 140px;
+        .icon {
+            height: 100%;
+            // max-height: 140px;
+            width: 50%;
         }
     }
+}
+
+.resources {
+    display: flex;
+    justify-content: space-around;
+    font-size: 30px;
+    margin-top: auto;
+    gap: 15px;
+    place-content: end;
 }

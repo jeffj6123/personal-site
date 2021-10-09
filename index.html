@@ -45,10 +45,11 @@
                     <h1>Projects</h1>
                     <div class="underline spacer"></div>
 
-                    <div style="display: flex; flex-wrap: wrap;">
-                        <div class="card project-tile" style="margin-right: 15px;">
-                            <img src="images/FFLogo.png" style="height: 100%;">
-                            <div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <div class="card project-tile" >
+                            <img class="icon" src="images/FFLogo.png">
+                            <div style="    display: flex;
+                            flex-direction: column;">
                                 <h2>FFDecks
                                     <a href="https://ffdecks.com" target="_blank" style="color: var(--accent-color); float: right;">
                                         <i class="link-out ri-links-line"></i>
@@ -58,20 +59,20 @@
                                 <div>
                                     FFDecks is a FFTCG Deck builder, card database, and tournament meta analysis site.
                                 </div>
-                                <div style="display: flex;
-                                justify-content: space-around; font-size: 30px; margin-top: 10px;">
-                                    <i style="color: #f14e00" class="ri-html5-line"></i>
-                                    <i style="color: #f00000" class="ri-angularjs-fill"></i>
-                                    <i style="color: blue" class="ri-css3-line"></i>
-                                    <img src="images/python-logo.svg" style="height: 30px;">
-                                    <img src="images/typescript-log.svg" style="height: 30px;">
+                                <div class="resources">
+                                    <i style="color: #f14e00" class="ri-html5-line resource"></i>
+                                    <i style="color: #f00000" class="ri-angularjs-fill resource"></i>
+                                    <i style="color: blue" class="ri-css3-line resource"></i>
+                                    <img src="images/python-logo.svg" class=" resource" style="height: 30px;">
+                                    <img src="images/typescript-log.svg" class=" resource" style="height: 30px;">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="card project-tile" style="margin-right: 15px;">
-                            <img src="images/sfx.svg" style="height: 100%;">
-                            <div>
+                        <div class="card project-tile">
+                            <img src="images/sfx.svg" class="icon">
+                            <div style="    display: flex;
+                            flex-direction: column;">
                                 <h2>Service Fabric
                                     <a href="https://ffdecks.com" target="_blank" style="color: var(--accent-color); float: right;">
                                         <i class="link-out ri-links-line"></i>
@@ -79,14 +80,13 @@
 
                                 </h2>
                                 <div>
-                                    Service Fabric Explorer is the web dashboard for viewing Service Fabric clusters
+                                    Service Fabric Explorer is the web dashboard for viewing Service Fabric clusters.
                                 </div>
-                                <div style="display: flex;
-                                justify-content: space-around; font-size: 30px; margin-top: 10px;">
-                                    <i style="color: #f14e00" class="ri-html5-line"></i>
-                                    <i style="color: #f00000" class="ri-angularjs-fill"></i>
-                                    <i style="color: blue" class="ri-css3-line"></i>
-                                    <img src="images/typescript-log.svg" style="height: 30px;">
+                                <div class="resources">
+                                    <i style="color: #f14e00" class="ri-html5-line resource"></i>
+                                    <i style="color: #f00000" class="ri-angularjs-fill resource"></i>
+                                    <i style="color: blue" class="ri-css3-line resource"></i>
+                                    <img src="images/typescript-log.svg" class=" resource" style="height: 30px;">
                                 </div>
                             </div>
                         </div>
@@ -129,15 +129,24 @@
                                 <div class="timeline-description">
                                     <h2 class="timeline-title "><img src="images/ms-logo.svg"
                                             class="timeline-image">Microsoft</h2>
-                                    <ul>
+                                    
+                                            Started working at Microsoft out of College and joined the Service Fabric team as a software engineer.
+                                            Originally just working on the service fabric CLI but responsibilities expanded to 
+                                            other aspects of the product. These responsibilities include managing client SDKs, API specs,
+                                            and most importantly improving the experience around cluster management and live site scenarios.
+                                            The primary mode of improving that experience is through SFX(link) to work as a dashboard for
+                                             customers and live site engineers.
+                                            
+                                             <h2>Languages used</h2>
+                                             <ul>
                                         <li>
-                                            Develop the web based dashboard SFX
+                                            Angularjs, angular, HTML and CSS
                                         </li>
                                         <li>
-                                            HTML and CSS
+                                            Python
                                         </li>
                                         <li>
-                                            Python - Flask / Falcon
+                                            C#
                                         </li>
                                     </ul>
                                 </div>
@@ -156,7 +165,9 @@
                                         Graduation : 2018
                                     </div>
                                     <div>
-                                        Graduated from The Ohio State Univeristy with a degree in Software Engineering.
+                                        Graduated from The Ohio State Univeristy with a degree in Computer Science.
+                                        Followed a course with emphasis on data structures and algorithms and partipicated in multiple
+                                        hackathons, winning first place in the Osu Hackathon for innovation. 
                                     </div>
                                 </div>
                             </div>
@@ -173,6 +184,9 @@
                                 <div class="timeline-description">
                                     <h2 class="timeline-title "><img src="images/ms-logo.svg" class="timeline-image">Scott's
                                         Miracle Gro</h2>
+
+                                        Interned 
+
                                     <ul>
                                         <li>
                                             Develop the web based dashboard SFX
