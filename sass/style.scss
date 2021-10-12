@@ -1,6 +1,7 @@
 @use '_header';
 @use '_bounce';
 @use '_projects';
+@use '_timeline';
 
 :root {
   /* 66 66 66 */
@@ -99,76 +100,6 @@ ul li {
 }
 
 
-/* Timeline  */
-
-.timeline-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.timeline-item {
-  display: flex;
-  margin-bottom: 50px;
-}
-
-.timeline-block {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 75px;
-}
-
-.timeline-top {
-  flex: 1;
-  background-color: var(--accent-color);
-  width: 5px;
-}
-
-.timeline-middle {
-  height: 40px;
-  width: 40px;
-  border-radius: 74px;
-  border: 3px solid var(--accent-color);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: .5s;
-}
-
-.timeline-middle:hover {
-  height: 50px;
-  width: 50px;
-}
-
-.timeline-bottom {
-  background-color: var(--accent-color);
-  width: 5px;
-  flex: 1;
-}
-
-.timeline-bleeder {
-    height: 70px;
-    position: absolute;
-    top: -70px;
-    width: 5px;
-    background-color: var(--accent-color);
-}
-
-.timeline-title {
-  display: flex;
-}
-
-.timeline-image {
-  width: 25px;
-  margin-right: 5px;
-}
-
-.timeline-description {
-
-}
-
-
 .link {
   margin-bottom: 5px;
   font-size: 20px;
@@ -220,6 +151,8 @@ ul li {
   align-items: center;
   font-size: 20px;
   height: 30px;
+  text-decoration: initial;
+  color: white;
 
   &:hover {
     width: 30%;
