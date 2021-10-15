@@ -287,11 +287,13 @@ export class textRenderer  extends BaseShape {
 
 
         const largeText = Math.min(state.width / 8, 200);
-        state.ctx.font = `${largeText}px Ariel`;
+
+        state.ctx.font = `normal ${largeText}px Aldrich`;
         state.ctx.textAlign = "center"; // To Align Center
-        
+        // font-family: 'Aldrich', sans-serif;
+
         state.ctx.fillText("Jeffrey Jarry", state.width / 2, state.height * .33);
-        state.ctx.font = `${largeText * .3}px Ariel`;
+        state.ctx.font = `${largeText * .3}px Aldrich`;
         state.ctx.fillText("Try clicking around", state.width / 2, state.height * .33 + largeText * .3 * 2)
     }
 }

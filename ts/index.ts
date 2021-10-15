@@ -2,7 +2,7 @@ import { shapeCount } from "./constants";
 import { AStarFinding, Node } from "./pathFinding";
 import { Circle, Crawler, IPoint, ISquarePoint, RectCircleColliding, ShapeHandler, textRenderer, Vertice } from "./shape";
 
-
+const canvasMultiplier = 1;
 export interface IDrawInfo {
     ctx: CanvasRenderingContext2D;
     width: number;
@@ -63,8 +63,8 @@ export function draw() {
     let canvas = document.getElementById('canvas') as HTMLCanvasElement;
     if (canvas.getContext) {
         let ctx = canvas.getContext('2d');
-        let width = 2 * window.innerWidth;
-        let height = 2 * window.innerHeight;
+        let width = canvasMultiplier * window.innerWidth;
+        let height = canvasMultiplier * window.innerHeight;
         ctx.canvas.width = width;
         ctx.canvas.height = height;
 
@@ -142,12 +142,12 @@ export function draw() {
         let name = new textRenderer(crawler);
         canvas.addEventListener('click', (event) => {
             console.log({
-                x: event.offsetX * 2,
-                y: event.offsetY * 2
+                x: event.offsetX * canvasMultiplier,
+                y: event.offsetY * canvasMultiplier
             });
             const closest = pathFinding.findClosestNodeToAPoint({
-                x: event.offsetX * 2,
-                y: event.offsetY * 2
+                x: event.offsetX * canvasMultiplier,
+                y: event.offsetY * canvasMultiplier
             })
             crawler.setNewpath(pathFinding.generatePath(crawler.nextNode.asPathFindingNode(), closest))
           })
@@ -158,10 +158,11 @@ export function draw() {
                 const currentTime = new Date();
                 const tick = currentTime.getTime() - previousTime.getTime();
 
-                let width = 2 * window.innerWidth;
-                let height = 2 * window.innerHeight;
+                let width = canvasMultiplier * window.innerWidth;
+                let height = canvasMultiplier * window.innerHeight;
                 ctx.canvas.width = width;
                 ctx.canvas.height = height;
+                
                 ctx.clearRect(0, 0, width, height);
                 const state = { ctx, height, width };
                 const updateState = {tickSizeInMilliseconds: tick};
@@ -182,7 +183,7 @@ export function draw() {
                 console.error(e);
                 clearInterval(interval)
             }
-        }, 50)
+        }, 25)
     }
 }
 
