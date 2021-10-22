@@ -1,6 +1,7 @@
-import { shapeCount } from "./constants";
-import { AStarFinding, Node } from "./pathFinding";
-import { Circle, Crawler, IPoint, ISquarePoint, RectCircleColliding, ShapeHandler, textRenderer, Vertice } from "./shape";
+import { shapeCount } from "./ts/constants";
+import { AStarFinding, Node } from "./ts/pathFinding";
+import { Circle, Crawler, IPoint, ISquarePoint, RectCircleColliding, ShapeHandler, textRenderer, Vertice } from "./ts/shape";
+import "./sass/style.scss";
 
 const canvasMultiplier = 1;
 export interface IDrawInfo {

@@ -4,7 +4,6 @@
 @use '_timeline';
 
 :root {
-  /* 66 66 66 */
   --main-bg-color: rgb(47 46 46);
   --accent-color: rgb(7 118 57);
   --header-size: 50px;
@@ -52,7 +51,7 @@ h1,h2,h3 {
   border-radius: 5px;
   z-index: 1;
   opacity: .9;
-  margin-bottom: 15px;
+  margin-bottom: 30px;
 }
 
 .underline {
@@ -144,8 +143,8 @@ ul li {
   transition: 2s;
   position: absolute;
   bottom: 50px;
-  width: 20%;
-  left: 40%;
+  width: 40%;
+  left: 30%;
   display: flex;
   justify-content: space-between;
   align-items: center;

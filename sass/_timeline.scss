@@ -54,6 +54,14 @@
       width: 5px;
       background-color: var(--accent-color);
   }
+
+  .osu-bleeder {
+    background-image: linear-gradient(red 50%, var(--accent-color));
+  }
+
+  .osu {
+    border-color: red;
+  }
   
   .timeline-title {
     display: flex;

@@ -1,4 +1,4 @@
-import { IDrawInfo, IUpdateInfo } from ".";
+import { IDrawInfo, IUpdateInfo } from "..";
 import { FULL_RADIUS } from "./constants";
 import { INodePathFindingInfo, Node } from "./pathFinding";
 
