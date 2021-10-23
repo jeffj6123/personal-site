@@ -65,7 +65,7 @@ export function draw() {
     if (canvas.getContext) {
         let ctx = canvas.getContext('2d');
         let width = canvasMultiplier * window.innerWidth;
-        let height = canvasMultiplier * window.innerHeight;
+        let height = canvasMultiplier * window.innerHeight * 4;
         ctx.canvas.width = width;
         ctx.canvas.height = height;
 
@@ -79,7 +79,7 @@ export function draw() {
         const textInfo = ctx.measureText("Jeffrey Jarry");
         let refRect: ISquarePoint = {
             x: width /2 - textInfo.width/2, 
-            y: height * .33 - largeText,
+            y: height * .1 - largeText,
             width: textInfo.width,
             height: largeText
         }
@@ -141,7 +141,7 @@ export function draw() {
 
         let crawler = new Crawler(handler, path.splice(0,1));
         let name = new textRenderer(crawler);
-        canvas.addEventListener('click', (event) => {
+        document.addEventListener('click', (event) => {
             console.log({
                 x: event.offsetX * canvasMultiplier,
                 y: event.offsetY * canvasMultiplier
@@ -160,7 +160,7 @@ export function draw() {
                 const tick = currentTime.getTime() - previousTime.getTime();
 
                 let width = canvasMultiplier * window.innerWidth;
-                let height = canvasMultiplier * window.innerHeight;
+                let height = canvasMultiplier * window.innerHeight * 4;
                 ctx.canvas.width = width;
                 ctx.canvas.height = height;
                 

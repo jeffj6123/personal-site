@@ -7,6 +7,8 @@
   --main-bg-color: rgb(47 46 46);
   --accent-color: rgb(7 118 57);
   --header-size: 50px;
+  --osu-color: #c11945;
+  --msft-color: #0697d9;
 }
 
 html {
@@ -40,7 +42,7 @@ h1,h2,h3 {
 
 .chart-container {
   width: 100%;
-  height: calc(100vh - var(--header-size));
+  height: calc(400vh - var(--header-size));
   background-color: #121212;
 }
 
