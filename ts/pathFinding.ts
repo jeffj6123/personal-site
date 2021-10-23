@@ -20,7 +20,7 @@ export interface INodePathFindingInfo {
 
 export class AStarFinding {
 
-    private edgeMap: Record<string, Edge[]> = {};
+    public edgeMap: Record<string, Edge[]> = {};
     constructor(public nodes: Node[],
         private edges: Edge[]) {
         this.nodes.forEach(node => {

@@ -196,6 +196,9 @@ export class Vertice extends BaseShape {
         return [id, id2].sort().join("-");
     }
 
+    public getOtherCircle(circle: Circle): Circle {
+        return [this.circle1, this.circle2].filter(n => this.circle1.id !== n.id)[0];
+    }
 
 }
 
