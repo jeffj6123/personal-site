@@ -2,7 +2,7 @@
 @use '_bounce';
 @use '_projects';
 @use '_timeline';
-
+@use '_about';
 :root {
   --main-bg-color: rgb(47 46 46);
   --accent-color: rgb(7 118 57);
@@ -23,6 +23,7 @@ body {
   color: white; 
   font-family: 'Roboto,sans-serif';
   background-color: #121212;
+  font-size: 16px;
 }
 
 
@@ -93,11 +94,13 @@ ul li::before {
   margin-left: -1em;
   font-size: 26px;
   line-height: 23px;
+  align-self: normal;
 }
 
 ul li {
   display: flex;
-    align-items: center;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 
