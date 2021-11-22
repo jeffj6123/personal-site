@@ -1,0 +1,46 @@
+.landing-name {
+    animation-name: fade-in;
+    animation-duration: 3s;
+
+    margin-left: 10%;
+    font-size: 3rem;
+    position: absolute;
+    top: 50%;
+    text-shadow: 2px 2px 2px 2px #000000;
+    font-family: 'Aldrich', sans-serif;
+
+    .name {
+        font-size: 6rem;
+    }
+
+    .making-current {
+        animation-name: fade-in-out;
+        animation-duration: 4s;
+        animation-iteration-count: infinite;
+    }
+}
+
+
+@media only screen and (max-width: 600px) {
+    .landing-name {
+        // margin: 1;
+        font-size: 2rem;
+        top: 30%;
+    
+        .name {
+            font-size: 3rem;
+        }
+    }
+}
+
+@keyframes fade-in {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+
+  @keyframes fade-in-out {
+    0% {opacity: 0;}
+    20% {opacity: 1;}
+    60% {opacity: 1;}
+    100% {opacity: 0;}
+}

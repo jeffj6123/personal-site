@@ -178,7 +178,7 @@ export function draw() {
 
                 // ctx.fillRect(refRect.x, refRect.y, refRect.width, refRect.height)
 
-                name.draw(state);
+                // name.draw(state);
                 previousTime = currentTime;
             } catch (e) {
                 console.error(e);
@@ -188,4 +188,23 @@ export function draw() {
     }
 }
 
+const changeTest = () => {
+    const test = document.getElementById("test");
+    let currentIndex = 1;
+    const makes = [
+        "Websites",
+        "Games",
+        "prototypes",
+        "digital experiences"
+    ]
+    setInterval(() => {
+        test.innerHTML = makes[currentIndex];
+        currentIndex ++;
+        if(currentIndex === makes.length) {
+            currentIndex = 1;
+        }
+    }, 4000)
+}
+
 draw();
+changeTest();

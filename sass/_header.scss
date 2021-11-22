@@ -11,14 +11,9 @@
     box-sizing: border-box;
     padding: 0px 5%;
     z-index: 2;
+    font-family: 'Aldrich', sans-serif;
 
     .navigation {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .socials {
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -32,8 +27,7 @@
         border-bottom: 3px solid transparent;
     }
 
-
-    a:active {
+    a:hover, a:active, a.active {
         border-bottom: 3px solid var(--accent-color);
       }
   }
@@ -41,8 +35,8 @@
   .socials {
     display: flex;
     align-items: center;
-    justify-content: space-around;
     height: 40px;
+    gap: 10px;
   }
   
   .social-icon {
@@ -59,9 +53,14 @@
   }
 
 
-  @media only screen and (max-width: 600px) {
-    .header {
-      padding: 0px;
-    }
+  // @media only screen and (max-width: 600px) {
+  //   .header {
+  //     padding: 0px;
+  //   }
+
+  //   .social-icon {
+  //     width: 0px;
+
+  //   }
   
-  }
+  // }

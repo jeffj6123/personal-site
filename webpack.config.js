@@ -7,6 +7,7 @@ module.exports = {
     mode: "development",
     devServer: {
        hot: true,
+        watchFiles: ['index.html']
     },
     devtool: "source-map",
     entry: {
@@ -42,6 +43,10 @@ module.exports = {
                 loader: "ts-loader",
                 exclude: /node_modules/
             },
+            {
+                test: /\.html$/,
+                loader: "raw-loader"
+              }
         ]
     },
     resolve: {

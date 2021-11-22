@@ -18,21 +18,36 @@
     <div style="display: flex; flex-direction: column;">
         <div class="header">
             <div class="navigation">
-                <a class="link" href="#home"><i style="display: flex;" class="ri-home-line"></i></a>
+                <a class="link" href="#home" style="margin-right: auto;"><i style="display: flex;" class="ri-home-line"></i></a>
                 <a class="link" href="#projects">Projects</a>
                 <a class="link" href="#About">About</a>
                 <a class="link" href="#history">History</a>
             </div>
             <div style="flex: 1;"></div>
-            <div class="socials">
-                <i class="social-icon ri-github-fill"></i>
-                <i class="social-icon ri-linkedin-box-fill"></i>
-                <i class="social-icon ri-mail-line"></i>
-            </div>
+
         </div>
         <div>
             <div class="screen">
+                <div>
+                    <div class="landing-name">
+                        <div>
+                            <span>Hello, I am</span>
+                        </div>
+                        <div class="highlight-text name" >
+                            Jeffrey Jarry
+                        </div>
+                        <div>
+                            and I like to make <span class="highlight-text making-current" id="test">websites</span>
+                        </div>
+                        <div class="socials">
+                            <i class="social-icon ri-github-fill"></i>
+                            <i class="social-icon ri-linkedin-box-fill"></i>
+                            <i class="social-icon ri-mail-line"></i>
+                        </div>
+                    </div>
+                </div>
                 <canvas id="canvas" class="chart-container"></canvas>
+
                 <a class="card next-section" href="#projects">
                     <i class="bounce ri-arrow-down-fill"></i>
                     See Projects
@@ -41,12 +56,12 @@
             </div>
 
             <div class="layout-container">
-                <div class="screen">
+                <div class="screen">b
                     <div id="projects">
                         <h1>Projects</h1>
                         <div class="underline spacer"></div>
 
-                        <div style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; flex-direction: column;">
                             <div class="card project-tile">
                                 <img class="icon" src="images/FFLogo.png">
                                 <div style="    display: flex;
@@ -58,11 +73,11 @@
                                         </a>
 
                                     </h2>
-                                    <div>
-                                        FFFDecks is a Final Fantasy Trading Card Game deck builder, tournament results
+                                    <p>
+                                        FFDecks is a Final Fantasy Trading Card Game deck builder, tournament results
                                         hub providing meta analysis, playtesting platform, card database, collection
                                         manager, and community content hub.
-                                    </div>
+                                    </p>
                                     <div class="resources">
                                         <i style="color: #f14e00" class="ri-html5-line resource"></i>
                                         <i style="color: #f00000" class="ri-angularjs-fill resource"></i>
@@ -84,10 +99,10 @@
                                         </a>
 
                                     </h2>
-                                    <div>
+                                    <p>
                                         Service Fabric Explorer is an application for inspecting and managing cloud
                                         applications and nodes in a Microsoft Azure Service Fabric cluster.
-                                    </div>
+                                    </p>
                                     <div class="resources">
                                         <i style="color: #f14e00" class="ri-html5-line resource"></i>
                                         <i style="color: #f00000" class="ri-angularjs-fill resource"></i>
@@ -101,77 +116,77 @@
                 </div>
 
                 <div class="screen" id="About">
-                    <div>
+                    <div class="about">
                         <h1>About</h1>
                         <div class="underline spacer"></div>
                         <div class="card">
-                            <div class="about">
-                                I am a Software Engineer with an interest in building web based applications.
-                                I have been building software since 2016 and professionally since 2018, when I joined Microsoft.
-                                Some of my favorite parts are hackathons and prototyping out new ideas. 
-                            </div>
-
-                            <div style="margin-top: 20px;">
-                                Other interests
-                            </div>
+                            <p>
+                                I am a Software Engineer with an interest in building <span class="highlight-text">web based applications</span> .
+                                I have been building software since 2016 and professionally since 2018, when I joined <span class="highlight-text">Microsoft</span>.
+                                Some of my favorite parts of development are hackathons and prototyping out new ideas. 
+                            </p>
                         </div>
 
-                        <div class="card">
+                        <div>
                             <h2>Technology</h2>
-                            <ul>
-                                <li>
-                                    <div class="technology-section">
-                                        <h3>
-                                            Javascript and Typescript
-                                        </h3>
-                                        <div class="technology-details">
-                                            Angularjs, Angular, Express, Firebase, Material
+                            <div class="underline spacer"></div>
+                            <div class="card">
+                            <div>
+                                <ul>
+                                    <li>
+                                        <div class="technology-section">
+                                            <h3>
+                                                Javascript and Typescript
+                                            </h3>
+                                            <div class="technology-details">
+                                                Angularjs, Angular, Express, Firebase, Angular Material
+                                            </div>
+                                        </div> 
+                                    </li>
+                                    <li>
+                                        <div class="technology-section">
+                                            <h3>
+                                                HTML and CSS
+                                            </h3>
                                         </div>
-                                    </div> 
-                                </li>
-                                <li>
-                                    <div class="technology-section">
-                                        <h3>
-                                            HTML and CSS
-                                        </h3>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="technology-section">
-                                        <h3>
-                                            Python     
-                                        </h3>
-                                        <div class="technology-details">
-                                            Flask and Falcon
+                                    </li>
+                                    <li>
+                                        <div class="technology-section">
+                                            <h3>
+                                                Python     
+                                            </h3>
+                                            <div class="technology-details">
+                                                Flask and Falcon
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="technology-section">
-                                        <h3>
-                                            Databases
-                                        </h3>
-                                        <div class="technology-details">
-                                            Google Datastore, Firebase/Firestore, Mongodb
+                                    </li>
+                                    <li>
+                                        <div class="technology-section">
+                                            <h3>
+                                                Databases
+                                            </h3>
+                                            <div class="technology-details">
+                                                Google Datastore, Firebase/Firestore, Mongodb
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="technology-section">
-                                        <h3>
-                                        Cloud platforms
-                                        </h3>
-                                        <div>
-                                            Azure, Google Cloud Platform
-                                        </div>    
-                                    </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                    <li>
+                                        <div class="technology-section">
+                                            <h3>
+                                            Cloud platforms
+                                            </h3>
+                                            <div class="technology-details">
+                                                Azure, Google Cloud Platform
+                                            </div>    
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="screen" id="history">
+                <div class="screen" id="history"> 
                     <div class="">
                         <h1>History</h1>
                         <div class="underline spacer"></div>
@@ -185,10 +200,18 @@
                                     <div>
                                         <h2 class="timeline-title "><img src="images/ms-logo.svg"
                                                 class="timeline-image">Microsoft</h2>
+                                        
+                                                <div>
+                                                    <div>
 
-                                        <div class="timeline-description">
-                                            Started working at Microsoft out of College and joined the Service Fabric
+                                                    </div>
+                                                </div>
+                                        <p class="timeline-description">
+                                            I Started working at Microsoft out of College and joined the Service Fabric
                                             team as a software engineer.
+                                            My focus has been on frontend development, CLI and sdk management.
+                                            I have primarily worked on SFX
+
                                             Originally just working on the service fabric CLI but responsibilities
                                             expanded to
                                             other aspects of the product. These responsibilities include managing client
@@ -210,7 +233,7 @@
                                                 <li>
                                                     C#
                                                 </li>
-                                        </div>
+                                            </p>
                                         </ul>
                                     </div>
                                 </div>
@@ -230,13 +253,13 @@
 
                                             <div class="timeline-description">
                                                 Graduation : 2018
-                                                <div>
+                                                <p>
                                                     Graduated from The Ohio State Univeristy with a degree in Computer
                                                     Science.
                                                     Followed a course with emphasis on data structures and algorithms
                                                     and partipicated in multiple
                                                     hackathons, winning first place in the Osu Hackathon for innovation.
-                                                </div>
+                                                </p>
                                             </div>
                                         </div>
 
@@ -257,7 +280,7 @@
                                                 class="timeline-image">Scott's
                                             Miracle Gro</h2>
 
-                                        <div class="timeline-description">
+                                        <p class="timeline-description">
                                             Intern at Scotts Miracle Gro as a Full Stack Developer / Intern Project
 
                                             <h4>Internship 1</h4>
@@ -287,7 +310,7 @@
                                                     Python - webapp2
                                                 </li>
                                             </ul>
-                                        </div>
+                                        </p>
                                     </div>
                                 </div>
                             </div>
