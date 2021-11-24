@@ -34,6 +34,9 @@ p {
   margin: 0px;
 }
 
+.shadow {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 
 // [id]::before {
 //   content: '';
@@ -63,6 +66,7 @@ h2 {
   background-color: #121212;
 }
 
+// TODO move box shadow to a common class
 .card {
   background-color: var(--main-bg-color);
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -70,7 +74,7 @@ h2 {
   border-radius: 5px;
   z-index: 1;
   opacity: .9;
-  margin-bottom: 30px;
+  // margin-bottom: 30px;
 }
 
 .underline {
@@ -106,8 +110,8 @@ ul li::before {
   color: var(--accent-color);
   font-weight: bold;
   display: inline-block;
-  width: .75em;
-  margin-left: -1em;
+  margin-right: 1rem;
+  margin-left: -1rem;
   font-size: 26px;
   line-height: 23px;
   align-self: normal;

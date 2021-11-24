@@ -42,14 +42,14 @@
   .social-icon {
     font-size: 40px;
     transition: .3s;
-    color: var(--accent-color);
     width: 40px;
     text-align: center;
 
     &:hover {
         font-size: 45px;
         width: 45px;
-    }
+        color: var(--accent-color);
+      }
   }
 
 

@@ -5,6 +5,7 @@ const path = require("path");
 module.exports = {
     target: 'web', 
     mode: "development",
+    watch: true,
     devServer: {
        hot: true,
         watchFiles: ['index.html']
