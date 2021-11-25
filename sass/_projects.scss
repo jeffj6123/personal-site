@@ -11,15 +11,19 @@ $project-overflow: 10%;
     // max-height: 200px;
 
     .project-content {
-        margin-left: -1 * $project-overflow;
-        padding-left: $project-overflow;
+        margin-left: calc(-1 * $project-overflow);
+        padding-left: calc($project-overflow + 10px);
+        height: fit-content;
+    }
+
+    .project-content-left {
+        margin-right: calc(-1 * $project-overflow);
+        padding-right: calc($project-overflow + 10px);
+        height: fit-content;
     }
 
     .icon {
-        height: 100%;
-        z-index: 2;
         border-radius: 5px;
-        margin-right: 10px;
     }
 }
 
@@ -33,9 +37,9 @@ $project-overflow: 10%;
         min-width: 100%;
 
         .icon {
-            height: 100%;
+            // height: 100%;
             // max-height: 140px;
-            width: 50%;
+            // width: 50%;
         }
     }
 }
@@ -51,48 +55,60 @@ $project-overflow: 10%;
 
 
 .top-image {
-    width: 70%;
-    margin: auto !important;
-    margin-bottom: -13% !important;
-    background-color: blue;
-    z-index: 1 !important;
-    transform: translateX(-100px);
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-delay: 6.6s;
+    margin-bottom: -10%;
+    margin: auto;
+    z-index: 2;
+    width: calc(33% - 5px);
 }
 
 .bottom-image {
-    margin-top: -13% !important;
-    z-index: 1 !important;
-    width: 70%;
-    margin: auto !important;
-    transform: translateX(-100px);
+    width: calc(50% - 5px);
+    margin-bottom: -10%;
+    margin: auto;
+    z-index: 2;
 }
 
 .middle-image {
-    // animation-name: moving-image;
-    animation-duration: 4s;
+    width: 250px;
+    height: 250px;
+    z-index: 3;
+    animation-duration: 10s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
+    margin: auto;
 }
 
 @keyframes moving-image {
     0% {
-        transform: translateY(-87%);
-        z-index: 1;
+        transform: translateY(0%);
+        z-index: 2;
+        width: 150px;
+        height: 150px;
     }
 
     33% {
-        transform: translateY(0px);
-        z-index: 2;
+        transform: translateY(50%);
+        z-index: 3;
+        width: 180px;
+        height: 180px;
     }
     66% {
-        transform: translateY(87%);
-        z-index: 1;
+        transform: translateY(125%);
+        z-index: 2;
+        width: 150px;
+        height: 150px;
     }
     67% {
-        z-index: .9;
+        z-index: 1;
     }
     100% {
-        transform: translateY(-87%);
+        transform: translateY(0%);
         z-index: 1;
+        width: 150px;
+        height: 150px;
     }
 }
