@@ -106,15 +106,15 @@ ul {
 }
 
 ul li::before {
-  content: "\2022";
+  content: "•";
   color: var(--accent-color);
   font-weight: bold;
   display: inline-block;
   margin-right: 1rem;
-  margin-left: -1rem;
-  font-size: 26px;
+  margin-left: -2rem;
+  font-size: 4rem;
   line-height: 23px;
-  align-self: normal;
+  align-self: baseline;
 }
 
 ul li {
