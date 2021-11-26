@@ -10,8 +10,8 @@
     align-items: center;
     box-sizing: border-box;
     padding: 0px 5%;
-    z-index: 2;
-    font-family: 'Aldrich', sans-serif;
+    z-index: 4;
+    font-family: var(--header-font);
 
     .navigation {
         display: flex;

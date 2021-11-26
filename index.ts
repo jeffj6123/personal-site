@@ -65,7 +65,7 @@ export function draw() {
     if (canvas.getContext) {
         let ctx = canvas.getContext('2d');
         let width = canvasMultiplier * window.innerWidth;
-        let height = canvasMultiplier * window.innerHeight * 4;
+        let height = canvasMultiplier * window.innerHeight;
         ctx.canvas.width = width;
         ctx.canvas.height = height;
 
@@ -160,7 +160,7 @@ export function draw() {
                 const tick = currentTime.getTime() - previousTime.getTime();
 
                 let width = canvasMultiplier * window.innerWidth;
-                let height = canvasMultiplier * window.innerHeight * 4;
+                let height = canvasMultiplier * window.innerHeight;
                 ctx.canvas.width = width;
                 ctx.canvas.height = height;
                 

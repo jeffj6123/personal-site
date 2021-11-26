@@ -1,17 +1,24 @@
+@use 'vars';
 @use '_header';
 @use '_bounce';
 @use '_projects';
 @use '_timeline';
 @use '_about';
-@use '_landing.scss';
+@use '_landing';
 
 :root {
   --main-bg-color: rgb(47 46 46);
   --accent-color: rgb(31 216 114);//rgb(7 118 57);
   --header-size: 50px;
+
   --osu-color: #c11945;
   --msft-color: #0697d9;
+  
   --base-font-size: 1.1rem;
+  --header-font: 'Aldrich', sans-serif;
+  --text-font: 'M PLUS 2', sans-serif;
+
+  --box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(70, 70, 70, 0.19);
 }
 
 html {
@@ -24,7 +31,7 @@ body {
   height: 100%;
   margin: 0px;
   color: white; 
-  font-family: 'M PLUS 2', sans-serif;
+  font-family: var(--text-font);
   background-color: #121212;
 }
 
@@ -35,21 +42,13 @@ p {
 }
 
 .shadow {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  box-shadow: var(--box-shadow);
 }
-
-// [id]::before {
-//   content: '';
-//   display: block;
-//   height:      var(--header-size);
-//   margin-top: var(--header-size);
-//   visibility: hidden;
-// }
 
 h1,h2,h3, h4 {
   margin-bottom: 0px;
   margin-top: 0px;
-  font-family: 'Aldrich', sans-serif;
+  font-family: var(--header-font);
 }
 
 h1 {
@@ -62,19 +61,21 @@ h2 {
 
 .chart-container {
   width: 100%;
-  height: calc(400vh - var(--header-size));
+  height: calc(100vh - var(--header-size));
   background-color: #121212;
 }
 
-// TODO move box shadow to a common class
 .card {
-  background-color: var(--main-bg-color);
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  // background-color: var(--main-bg-color);
+  // box-shadow: var(--box-shadow);
   padding: 10px;
   border-radius: 5px;
   z-index: 1;
   opacity: .9;
-  // margin-bottom: 30px;
+}
+
+.margin-bottom {
+    margin-bottom: 30px;
 }
 
 .underline {
@@ -102,16 +103,16 @@ h2 {
 
 
 ul {
-  list-style: none; 
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
 }
 
 ul li::before {
   content: "•";
   color: var(--accent-color);
   font-weight: bold;
-  display: inline-block;
-  margin-right: 1rem;
-  margin-left: -2rem;
+  margin-right: 0.5rem;
   font-size: 4rem;
   line-height: 23px;
   align-self: baseline;
@@ -153,7 +154,7 @@ ul li {
 }
 
 .screen {
-  height: 100vh;
+  min-height: 100vh;
   position: relative;
 }
 
@@ -162,7 +163,6 @@ ul li {
   flex-direction: column;
   justify-content: space-between;
 }
-
 
 .next-section {
   transition: 2s;
@@ -197,9 +197,9 @@ ul li {
 }
 
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: vars.$small-screen-size) {
   .layout-container {
-    padding: 0px 10px;
+    padding: 0px 10px !important;
   }
 
   .next-section {
@@ -214,12 +214,12 @@ ul li {
       font-size: 25px;
     }
   }
+
+  p {
+    font-size: 1rem;
+  }
 }
 
 .highlight-text {
   color: var(--accent-color);
-  // transition: .5s;
-  // &:hover {
-  //   font-size: calc(var(--base-font-size) * 1.1);
-  // }
 }

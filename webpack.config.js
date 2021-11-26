@@ -8,7 +8,7 @@ module.exports = {
     watch: true,
     devServer: {
        hot: true,
-        watchFiles: ['index.html']
+        watchFiles: ['index.html', 'sass/style.scss']
     },
     devtool: "source-map",
     entry: {
