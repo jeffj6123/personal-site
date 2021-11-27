@@ -154,11 +154,12 @@ export function draw() {
 
 
         document.addEventListener('mousemove', debounced(10, (event: MouseEvent) => {
-            console.log(event)
+            // console.log(event)
             const closest = pathFinding.findClosestNodeToAPoint({
-                x: event.offsetX * canvasMultiplier,
-                y: event.offsetY * canvasMultiplier
+                x: event.pageX * canvasMultiplier,
+                y: event.pageY * canvasMultiplier
             })
+            // console.log(closest)
             crawler.setNewpath(pathFinding.generatePath(crawler.nextNode.asPathFindingNode(), closest))
         } ))
 
@@ -213,6 +214,20 @@ const changeTest = () => {
         }
     }, 4000)
 }
+
+const callback: IntersectionObserverCallback = function(entries) {
+    console.log("test")
+    entries.forEach(entry => {
+      entry.target.classList.add("is-visible");
+    });
+  };
+  
+const observer = new IntersectionObserver(callback, {threshold: .3});
+
+const targets = document.querySelectorAll(".show-on-scroll");
+targets.forEach(function(target) {
+observer.observe(target);
+});
 
 draw();
 changeTest();

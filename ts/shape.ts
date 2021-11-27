@@ -257,7 +257,7 @@ export class Crawler extends BaseShape {
                         vert.tempColor = this.currentColor;
                         vert.crawlerPosition = this;
                         this.currentVert = vert;
-                        console.log(vert)
+                        // console.log(vert)
 
                     }
                     this.currentIndex++;
@@ -273,7 +273,7 @@ export class Crawler extends BaseShape {
     setNewpath(nodes: INodePathFindingInfo[]) {
         this.currentIndex = 0;
         this.nodes = nodes;
-        console.log(this);
+        // console.log(this);
     }
 
     setNewColor() {

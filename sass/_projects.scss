@@ -31,12 +31,14 @@ $project-overflow: 10%;
 }
 
 .project-tile {
-    min-height: 150px;
-    transition: .5s;
     display: flex;
     flex: 1;
     box-sizing: border-box;
     align-items: center;
+
+    transition: 1s;
+    opacity: 0;
+    will-change: transform, opacity;
 
     .circle {
         background-color: white;
@@ -46,6 +48,10 @@ $project-overflow: 10%;
 
     .icon {
         border-radius: 5px;
+    }
+
+    &.is-visible {
+        opacity: 1;
     }
 }
 
