@@ -6,6 +6,14 @@ $project-overflow: 10%;
     order: 1;
 }
 
+.fade-left {
+    background-image: linear-gradient(to right, #121212 5%, #2c2b2b);
+}
+
+.fade-right {
+    background-image: linear-gradient(to left, #121212 5%, #2c2b2b);
+}
+
 .project-content {
     display: flex;
     flex-direction: column;

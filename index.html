@@ -31,7 +31,7 @@
         <div>
             <div class="screen">
                 <div>
-                    <div class="landing-name">
+                    <div class="landing-name" id="landing-tile">
                         <div>
                             <span>Hello, I am</span>
                         </div>
@@ -64,8 +64,8 @@
                         <div class="underline spacer"></div>
 
                         <div style="display: flex; flex-wrap: wrap; gap: 10px; flex-direction: column;">
-                            <div class=" project-tile margin-bottom card" style="    background-image: linear-gradient(to right, #121212 5%, #2c2b2b);">
-                                <img class="icon shadow middle-image moving-image" src="images/FFLogo.png">
+                            <div class=" project-tile margin-bottom card fade-left">
+                                <!-- <img class="icon shadow middle-image moving-image" src="images/FFLogo.png"> -->
                                 <div class="project-content-right">
                                     <div>
                                         <h2>FFDecks
@@ -115,8 +115,8 @@
                                 </div>
                             </div>
 
-                            <div class="project-tile margin-bottom">
-                                <div class="card project-content-left">
+                            <div class="project-tile margin-bottom fade-right card">
+                                <div class="card">
                                     <h2>Service Fabric Explorer
                                         <a href="https://github.com/microsoft/service-fabric-explorer" target="_blank"
                                             style="color: var(--accent-color); float: right;">
@@ -154,9 +154,9 @@
                                         <img src="images/typescript-log.svg" class=" resource" style="height: 30px;">
                                     </div>
                                 </div>
-                                <div class="shadow circle mobile-first">
+                                <!-- <div class="shadow circle mobile-first">
                                     <img class="icon middle-image" src="images/sfx.svg">
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -244,147 +244,100 @@
                             </div>
                         </div>
                     </div>
+                    
+                </div>
+                <div class="screen" id="history">
+                    <h2>Work History</h2>
+                    <div class="underline spacer"></div>
+                    
+                    <div class="card main-bg job-tile margin-bottom">
+                        <h3>Microsoft - Azure</h3>
+                        <div class="job-timespent"  style="display: flex; align-items: center; gap:10px;">
+                            May, 2018 <i class="ri-arrow-right-line"></i>
+                            Now
+                        </div>
+                        <div class="job-role">
+                            Software Engineer 2 (61)
+                        </div>
 
-                    <div class="screen" id="history">
-                        <div class="">
-                            <h1>History</h1>
-                            <div class="underline spacer"></div>
-                            <div>
-                                <div class="timeline-container">
-                                    <div class="timeline-item card microsoft">
-                                        <div class="timeline-block">
-                                            <div class="timeline-middle">Now</div>
-                                            <div class="timeline-bottom timeline-rod"></div>
-                                        </div>
-                                        <div>
-                                            <h2 class="timeline-title "><img src="images/ms-logo.svg"
-                                                    class="timeline-image">Microsoft</h2>
+                        <div class="job-description">
+                            <ul>
+                                <li>
+                                    Working within the supportability and observability part of the Azure Service Fabric team with a focus
+                                    on improving the experience.
+                                    Improvements come from open communication with end users, support engineers, and other internal teams.
+                                </li>
 
-                                            <div>
-                                                <div>
+                                <li>
+                                    Write modern, well documented and tested code. Primarily writing in Typescript and Angular with testing done 
+                                    in Cypress and karma.
+                                </li>
 
-                                                </div>
-                                            </div>
-                                            <p class="timeline-description">
-                                                I Started working at Microsoft out of College and joined the Service
-                                                Fabric
-                                                team as a software engineer.
-                                                My focus has been on frontend development, CLI and sdk management.
-                                                I have primarily worked on SFX
+                                <li>
+                                    Responsible for designing REST APIs, maintaining SDKs, and updating documentation.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card main-bg job-tile margin-bottom">
+                        <h3>Scott's Miracle Gro</h3>
+                        <div class="job-timespent"  style="display: flex; align-items: center; gap:10px;">
+                            May, 2017 <i class="ri-arrow-right-line"></i> Jan, 2018
+                            
+                        </div>
+                        <div class="job-role">
+                            Full Stack Intern
+                        </div>
 
-                                                Originally just working on the service fabric CLI but responsibilities
-                                                expanded to
-                                                other aspects of the product. These responsibilities include managing
-                                                client
-                                                SDKs, API specs,
-                                                and most importantly improving the experience around cluster management
-                                                and
-                                                live site scenarios.
-                                                The primary mode of improving that experience is through SFX(link) to
-                                                work
-                                                as a dashboard for
-                                                customers and live site engineers.
+                        <div class="job-description">
+                            <ul>
+                                <li>
+                                    Led project development of internal application for trailer yard
+                                    management system to reduce costs.
+                                </li>
 
-                                            <h3>Technology used</h3>
-                                            <ul>
-                                                <li>
-                                                    Angularjs, angular, HTML and CSS
-                                                </li>
-                                                <li>
-                                                    Python
-                                                </li>
-                                                <li>
-                                                    C#
-                                                </li>
-                                                </p>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    <div class="timeline-item card osu">
-                                        <div class="timeline-block">
-                                            <div class="timeline-bleeder timeline-rod"></div>
-                                            <div class="timeline-top timeline-rod"></div>
-                                            <div class="timeline-middle osu">2018</div>
-                                            <div class="timeline-bottom timeline-rod"></div>
-                                        </div>
-                                        <!-- <div>
-                                            <h2 class="timeline-title ">
-                                                <img src="images/osu.png" class="timeline-image">
-                                                Ohio State University
-                                            </h2>
-                                            <div>
+                                <li>
+                                    Performed full stack development with Google app engine,
+                                    webapp2, and Angular 4.
+                                </li>
 
-                                                <div class="timeline-description">
-                                                    Graduation : 2018
-                                                    <p>
-                                                        Graduated from The Ohio State Univeristy with a degree in
-                                                        Computer
-                                                        Science.
-                                                        Followed a course with emphasis on data structures and
-                                                        algorithms
-                                                        and partipicated in multiple
-                                                        hackathons, winning first place in the Osu Hackathon for
-                                                        innovation.
-                                                    </p>
-                                                </div>
-                                            </div>
+                                <li>
+                                    Performed Requirement gathering, timeline
+                                        projection, user training, and developer training.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card main-bg job-tile margin-bottom">
+                        <h3>Scott's Miracle Gro</h3>
+                        <div class="job-timespent"  style="display: flex; align-items: center; gap:10px;">
+                            May, 2016 <i class="ri-arrow-right-line"></i> Sept, 2017
+                            
+                        </div>
+                        <div class="job-role">
+                            Full Stack Intern
+                        </div>
 
-                                        </div> -->
-                                    </div>
+                        <div class="job-description">
+                            <ul>
+                                <li>
+                                    Developed and integrated new features into an existing codebase for an
+                                    internal use application. Worked within a scrum, agile methodology for delivering updates
+                                </li>
 
-                                    <div class="timeline-item card scotts">
-                                        <div class="timeline-block">
-                                            <div class="timeline-bleeder timeline-rod osu-bleeder"></div>
-                                            <div class="timeline-top timeline-rod"></div>
-                                            <div class="timeline-middle">Jan 2018</div>
-                                            <div class="timeline-bottom timeline-rod"></div>
-                                            <div class="timeline-middle">May 2017</div>
-                                            <div class="timeline-bottom timeline-rod"></div>
-                                        </div>
-                                        <div>
-                                            <h2 class="timeline-title "><img src="images/ms-logo.svg"
-                                                    class="timeline-image">Scott's
-                                                Miracle Gro</h2>
+                                <li>
+                                    New feature
+                                    implementation / updates were done using angularjs 1.5, bootstrap, google
+                                    app engine, couchdb, and python.
+                                </li>
 
-                                            <p class="timeline-description">
-                                                Intern at Scotts Miracle Gro as a Full Stack Developer / Intern Project
-
-                                            <h4>Internship 1</h4>
-
-                                            Developed and integrated new features into an existing codebase for an
-                                            internal use application. Worked within a scrum, agile methodology to
-                                            implement features under strict deadlines and expectations. New feature
-                                            implementation / updates were done using angularjs 1.5, bootstrap, google
-                                            app engine, couchdb, and python. Lead user testing and release of new
-                                            features at the end of the development cycle.
-
-                                            <h4>Internship 2</h4>
-                                            Manager. Led project development of internal application for trailer yard
-                                            management system. Performed full stack development with Google app engine,
-                                            webapp2, and Angular 4. Performed Requirement gathering, timeline
-                                            projection, user training, and developer training.
-
-                                            <h3>Technology used</h3>
-                                            <ul>
-                                                <li>
-                                                    Google app engine
-                                                </li>
-                                                <li>
-                                                    HTML, CSS, Javascript, Angularjs and Angular
-                                                </li>
-                                                <li>
-                                                    Python - webapp2
-                                                </li>
-                                            </ul>
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                <li>
+                                    Lead user testing and release of new features at the end of the development cycle.
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
-
             </div>
 </body>
 

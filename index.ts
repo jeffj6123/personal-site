@@ -2,6 +2,7 @@ import { shapeCount } from "./ts/constants";
 import { AStarFinding, Node } from "./ts/pathFinding";
 import { Circle, Crawler, IPoint, ISquarePoint, RectCircleColliding, ShapeHandler, textRenderer, Vertice } from "./ts/shape";
 import "./sass/style.scss";
+import { debounced } from "./ts/debounce";
 
 const canvasMultiplier = 1;
 export interface IDrawInfo {
@@ -77,12 +78,17 @@ export function draw() {
         ctx.canvas.height = height;
         ctx.font = `${largeText}px Ariel`;
         const textInfo = ctx.measureText("Jeffrey Jarry");
-        let refRect: ISquarePoint = {
-            x: width /2 - textInfo.width/2, 
-            y: height * .1 - largeText,
-            width: textInfo.width,
-            height: largeText
-        }
+
+        let landingTile = document.getElementById('landing-tile');
+
+        let refRect: ISquarePoint = landingTile.getBoundingClientRect();
+
+        // let refRect: ISquarePoint = {
+        //     x: width /2 - textInfo.width/2, 
+        //     y: height * .1 - largeText,
+        //     width: textInfo.width,
+        //     height: largeText
+        // }
         console.log(refRect)
         
         let shapes: Circle[] = [];
@@ -142,16 +148,19 @@ export function draw() {
         let crawler = new Crawler(handler, path.splice(0,1));
         let name = new textRenderer(crawler);
         document.addEventListener('click', (event) => {
-            console.log({
-                x: event.offsetX * canvasMultiplier,
-                y: event.offsetY * canvasMultiplier
-            });
+            crawler.setNewColor();
+          })
+
+
+
+        document.addEventListener('mousemove', debounced(10, (event: MouseEvent) => {
+            console.log(event)
             const closest = pathFinding.findClosestNodeToAPoint({
                 x: event.offsetX * canvasMultiplier,
                 y: event.offsetY * canvasMultiplier
             })
             crawler.setNewpath(pathFinding.generatePath(crawler.nextNode.asPathFindingNode(), closest))
-          })
+        } ))
 
         let previousTime = new Date();
         let interval = setInterval(() => {
@@ -176,8 +185,6 @@ export function draw() {
                 crawler.draw(state)
                 crawler.update(updateState);
 
-                // ctx.fillRect(refRect.x, refRect.y, refRect.width, refRect.height)
-
                 // name.draw(state);
                 previousTime = currentTime;
             } catch (e) {
@@ -195,7 +202,8 @@ const changeTest = () => {
         "Websites",
         "Games",
         "prototypes",
-        "digital experiences"
+        "digital experiences",
+        "useful tools"
     ]
     setInterval(() => {
         test.innerHTML = makes[currentIndex];

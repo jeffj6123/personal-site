@@ -273,8 +273,11 @@ export class Crawler extends BaseShape {
     setNewpath(nodes: INodePathFindingInfo[]) {
         this.currentIndex = 0;
         this.nodes = nodes;
-        this.currentColor = '#' + Math.floor(Math.random()*16777215).toString(16);
         console.log(this);
+    }
+
+    setNewColor() {
+        this.currentColor = '#' + Math.floor(Math.random()*16777215).toString(16);
     }
 }
 
