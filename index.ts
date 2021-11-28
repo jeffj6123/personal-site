@@ -83,22 +83,16 @@ export function draw() {
 
         let refRect: ISquarePoint = landingTile.getBoundingClientRect();
 
-        // let refRect: ISquarePoint = {
-        //     x: width /2 - textInfo.width/2, 
-        //     y: height * .1 - largeText,
-        //     width: textInfo.width,
-        //     height: largeText
-        // }
         console.log(refRect)
-        
+
         let shapes: Circle[] = [];
         let verts: Vertice[] = [];
 
         for (let i = 0; i < shapeCount * 2; i++) {
             let y = 10 + (Math.random() * height * .95);
-            let x = 10 + (Math.random() * width * .95 );
+            let x = 10 + (Math.random() * width * .95);
             const s = new Circle({ y, x }, i.toString());
-            if (shapes.every(shape => !checkOverlap(shape, s)) && !RectCircleColliding({...s.position, radius: Circle.radius * 1.5}, refRect) ) {
+            if (shapes.every(shape => !checkOverlap(shape, s)) && !RectCircleColliding({ ...s.position, radius: Circle.radius * 1.5 }, refRect)) {
                 shapes.push(s);
             }
         }
@@ -136,22 +130,18 @@ export function draw() {
 
         })
 
-        let pathFinding = new AStarFinding(shapes.map( s => { return s.asPathFindingNode()}), verts.map(v => {return {nodes: [v.circle1.asPathFindingNode(), v.circle2.asPathFindingNode()], id: v.id}}))
-        console.log(pathFinding.generatePath(shapes[0].asPathFindingNode(), shapes[1].asPathFindingNode()))
-
+        let pathFinding = new AStarFinding(shapes.map(s => { return s.asPathFindingNode() }), verts.map(v => { return { nodes: [v.circle1.asPathFindingNode(), v.circle2.asPathFindingNode()], id: v.id } }))
         const path = pathFinding.generatePath(shapes[0].asPathFindingNode(), shapes[1].asPathFindingNode());
 
         let handler = new ShapeHandler();
         verts.forEach(vert => handler.verticies[vert.id] = vert);
         shapes.forEach(s => handler.circles[s.id] = s);
 
-        let crawler = new Crawler(handler, path.splice(0,1));
+        let crawler = new Crawler(handler, path.splice(0, 1));
         let name = new textRenderer(crawler);
         document.addEventListener('click', (event) => {
             crawler.setNewColor();
-          })
-
-
+        })
 
         document.addEventListener('mousemove', debounced(10, (event: MouseEvent) => {
             // console.log(event)
@@ -161,7 +151,7 @@ export function draw() {
             })
             // console.log(closest)
             crawler.setNewpath(pathFinding.generatePath(crawler.nextNode.asPathFindingNode(), closest))
-        } ))
+        }))
 
         let previousTime = new Date();
         let interval = setInterval(() => {
@@ -173,16 +163,16 @@ export function draw() {
                 let height = canvasMultiplier * window.innerHeight;
                 ctx.canvas.width = width;
                 ctx.canvas.height = height;
-                
+
                 ctx.clearRect(0, 0, width, height);
                 const state = { ctx, height, width };
-                const updateState = {tickSizeInMilliseconds: tick};
+                const updateState = { tickSizeInMilliseconds: tick };
 
                 [].concat(verts).concat(shapes).forEach(shape => {
                     shape.update(updateState)
                     shape.draw(state)
                 })
-                
+
                 crawler.draw(state)
                 crawler.update(updateState);
 
@@ -208,26 +198,32 @@ const changeTest = () => {
     ]
     setInterval(() => {
         test.innerHTML = makes[currentIndex];
-        currentIndex ++;
-        if(currentIndex === makes.length) {
+        currentIndex++;
+        if (currentIndex === makes.length) {
             currentIndex = 1;
         }
     }, 4000)
 }
 
-const callback: IntersectionObserverCallback = function(entries) {
-    console.log("test")
+const callback: IntersectionObserverCallback = entries => {
     entries.forEach(entry => {
-      entry.target.classList.add("is-visible");
+        if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+        }
     });
-  };
-  
-const observer = new IntersectionObserver(callback, {threshold: .3});
+};
 
-const targets = document.querySelectorAll(".show-on-scroll");
-targets.forEach(function(target) {
-observer.observe(target);
-});
+const setObservers = () => {
+    const observer = new IntersectionObserver(callback);
 
-draw();
-changeTest();
+    const targets = document.querySelectorAll(".show-on-scroll");
+    targets.forEach(function (target) {
+        observer.observe(target);
+    });
+}
+
+window.onload = () => {
+    setObservers();
+    draw();
+    changeTest();
+};

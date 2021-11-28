@@ -1,66 +1,54 @@
-
 .header {
-    min-height: var(--header-size);
-    background-color: var(--main-bg-color);
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    position: sticky;
-    top: 0px;
+  min-height: var(--header-size);
+  background-color: var(--main-bg-color);
+  box-shadow: var(--box-shadow);
+  position: sticky;
+  top: 0px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0px 5%;
+  z-index: 4;
+  font-family: var(--header-font);
+
+  .navigation {
     display: flex;
     flex-direction: row;
     align-items: center;
-    box-sizing: border-box;
-    padding: 0px 5%;
-    z-index: 4;
-    font-family: var(--header-font);
-
-    .navigation {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-    }
-
-    .link {
-        padding: 5px;
-        margin: 5px;
-        color: white;
-        text-decoration: unset;
-        border-bottom: 3px solid transparent;
-    }
-
-    a:hover, a:active, a.active {
-        border-bottom: 3px solid var(--accent-color);
-      }
   }
 
-  .socials {
-    display: flex;
-    align-items: center;
-    height: 40px;
-    gap: 10px;
-  }
-  
-  .social-icon {
-    font-size: 40px;
-    transition: .3s;
-    width: 40px;
-    text-align: center;
-
-    &:hover {
-        font-size: 45px;
-        width: 45px;
-        color: var(--accent-color);
-      }
+  .link {
+    padding: 5px;
+    margin: 5px;
+    color: white;
+    text-decoration: unset;
+    border-bottom: 3px solid transparent;
   }
 
+  a:hover,
+  a:active,
+  a.active {
+    border-bottom: 3px solid var(--accent-color);
+  }
+}
 
-  // @media only screen and (max-width: 600px) {
-  //   .header {
-  //     padding: 0px;
-  //   }
+.socials {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  gap: 10px;
+}
 
-  //   .social-icon {
-  //     width: 0px;
+.social-icon {
+  font-size: 40px;
+  transition: .3s;
+  // width: 40px;
+  text-align: center;
 
-  //   }
-  
-  // }
+  &:hover {
+    font-size: 45px;
+    // width: 45px;
+    color: var(--accent-color);
+  }
+}

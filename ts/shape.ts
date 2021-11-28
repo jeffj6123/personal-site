@@ -132,7 +132,7 @@ export class Circle extends BaseShape {
 }
 
 export class Vertice extends BaseShape {
-    lineWidth = (Math.random() + 1) * 5;
+    lineWidth = Circle.radius * .075 *  (Math.random() + 1) * 5;
     color = "";
 
     tempColor = "";
@@ -150,7 +150,6 @@ export class Vertice extends BaseShape {
     draw(state: IDrawInfo) {
         //Render how far the crawler is
         if(this.crawlerPosition) {
-
             let start: Circle;
             let end: Circle;
             if(this.crawlerPosition.nextNode.id === this.circle1.id) {
@@ -163,7 +162,7 @@ export class Vertice extends BaseShape {
 
             state.ctx.beginPath();
             state.ctx.strokeStyle = this.tempColor;
-            state.ctx.lineWidth = this.lineWidth * 2;
+            state.ctx.lineWidth = this.lineWidth * 1.5;
             state.ctx.moveTo(start.position.x, start.position.y);
             state.ctx.lineTo(this.crawlerPosition.position.x, this.crawlerPosition.position.y);
             state.ctx.closePath();
@@ -250,15 +249,12 @@ export class Crawler extends BaseShape {
                     const currentNode = this.nextNode;
 
                     this.nextNode = this.handler.circles[this.nodes[this.currentIndex].node.id];
-                    
 
                     if(currentNode.id !== this.nextNode.id) {
                         const vert = this.handler.verticies[Vertice.getVerticeId(currentNode, this.nextNode)];
                         vert.tempColor = this.currentColor;
                         vert.crawlerPosition = this;
                         this.currentVert = vert;
-                        // console.log(vert)
-
                     }
                     this.currentIndex++;
                 } else {
@@ -273,7 +269,6 @@ export class Crawler extends BaseShape {
     setNewpath(nodes: INodePathFindingInfo[]) {
         this.currentIndex = 0;
         this.nodes = nodes;
-        // console.log(this);
     }
 
     setNewColor() {

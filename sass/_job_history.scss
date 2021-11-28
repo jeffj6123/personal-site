@@ -1,0 +1,26 @@
+.job-timespent {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.slide-down {
+    &.is-visible {
+        animation-duration: 3s;
+        animation-name: slidedown;
+        animation-fill-mode: forwards;
+    }
+}
+
+@keyframes slidedown {
+    from {
+        opacity: 0;
+        transform: translate(0, calc(-100% - 30px));
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0%);
+    }
+}

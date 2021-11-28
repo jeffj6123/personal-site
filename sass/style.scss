@@ -5,10 +5,11 @@
 @use '_timeline';
 @use '_about';
 @use '_landing';
+@use '_job_history';
 
 :root {
   --main-bg-color: rgb(47 46 46);
-  --accent-color: rgb(31 216 114);//rgb(7 118 57);
+  --accent-color: rgb(31 216 114);
   --header-size: 50px;
 
   --osu-color: #c11945;
@@ -71,7 +72,6 @@ h2 {
 
 .card {
   // background-color: var(--main-bg-color);
-  // box-shadow: var(--box-shadow);
   padding: 10px;
   border-radius: 5px;
   z-index: 1;
@@ -160,6 +160,15 @@ ul li {
 .screen {
   min-height: 100vh;
   position: relative;
+
+  &.gap {
+    &::before {
+      content: '';
+      display: block;
+      height: var(--header-size);
+      visibility: hidden;
+    }
+  }
 }
 
 .landing-screen {

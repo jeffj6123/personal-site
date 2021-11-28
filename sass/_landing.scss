@@ -43,3 +43,21 @@
     60% {opacity: 1;}
     100% {opacity: 0;}
 }
+
+.contact-info {
+    display: flex;
+    .info {
+        width: 0px;
+        transition: 1s;
+        // transition-property: max-width;
+        overflow: hidden;
+        height: 0px;
+    }
+
+    &:hover, &:focus {
+        .info {
+            width: fit-content;
+            height: initial
+        }
+    }
+}
