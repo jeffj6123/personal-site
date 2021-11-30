@@ -132,10 +132,13 @@ export class Circle extends BaseShape {
 }
 
 export class Vertice extends BaseShape {
-    lineWidth = Circle.radius * .075 *  (Math.random() + 1) * 5;
+    readonly lineWidthModifier = 1.5;
+    readonly lineWidth = Circle.radius * .075 *  (Math.random() + 1) * 5;
     color = "";
 
-    tempColor = "";
+    //Keep track of the previous temporary color to render over when passing another time
+    previousColor = "";
+    currentColor = "";
     crawlerPosition: Crawler;
 
     static colors = ["#BDBDBD", "#9E9E9E", "#7D7D7D", "#696969"];
@@ -145,6 +148,7 @@ export class Vertice extends BaseShape {
         super(Vertice.getVerticeId(circle1, circle2));
 
         this.color = Vertice.colors[Math.floor((Math.random() * Vertice.colors.length))];
+        this.previousColor = this.color;
     }
 
     draw(state: IDrawInfo) {
@@ -160,31 +164,25 @@ export class Vertice extends BaseShape {
                 end = this.circle2;
             }
 
-            state.ctx.beginPath();
-            state.ctx.strokeStyle = this.tempColor;
-            state.ctx.lineWidth = this.lineWidth * 1.5;
-            state.ctx.moveTo(start.position.x, start.position.y);
-            state.ctx.lineTo(this.crawlerPosition.position.x, this.crawlerPosition.position.y);
-            state.ctx.closePath();
-            state.ctx.stroke();
+            Vertice.renderLine(start.position, this.crawlerPosition.position, this.currentColor, this.lineWidth * this.lineWidthModifier, state.ctx);
 
-            state.ctx.strokeStyle = this.color;
-            state.ctx.lineWidth = this.lineWidth;
-            state.ctx.beginPath();
-            state.ctx.moveTo(this.crawlerPosition.position.x, this.crawlerPosition.position.y);
-            state.ctx.lineTo(end.position.x, end.position.y);    
-            state.ctx.closePath();
-            state.ctx.stroke();
+            const nextLineWidth = this.lineWidth * (this.previousColor !== this.color ? 1.5 : 1);
+            Vertice.renderLine(this.crawlerPosition.position, end.position, this.previousColor, nextLineWidth, state.ctx);
 
         }else {
-            state.ctx.strokeStyle = this.tempColor || this.color;
-            state.ctx.lineWidth = this.lineWidth * (this.tempColor ? 2 : 1);
-            state.ctx.beginPath();
-            state.ctx.moveTo(this.circle1.position.x, this.circle1.position.y);
-            state.ctx.lineTo(this.circle2.position.x, this.circle2.position.y);
-            state.ctx.closePath();
-            state.ctx.stroke();
+            const width = this.lineWidth * (this.currentColor ? 1.5 : 1);
+            Vertice.renderLine(this.circle1.position, this.circle2.position, this.currentColor || this.previousColor, width, state.ctx);
         }
+    }
+
+    public static renderLine(point1: IPoint, point2: IPoint, color: string, width: number, ctx: CanvasRenderingContext2D) {
+        ctx.beginPath();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.moveTo(point1.x, point1.y);
+        ctx.lineTo(point2.x, point2.y);
+        ctx.closePath();
+        ctx.stroke();
     }
 
     public static getVerticeId(circle1: Circle, circle2: Circle): string {
@@ -196,7 +194,7 @@ export class Vertice extends BaseShape {
     }
 
     public getOtherCircle(circle: Circle): Circle {
-        return [this.circle1, this.circle2].filter(n => this.circle1.id !== n.id)[0];
+        return [this.circle1, this.circle2].filter(n => circle.id !== n.id)[0];
     }
 
 }
@@ -225,8 +223,6 @@ export class Crawler extends BaseShape {
 
         state.ctx.closePath();
         state.ctx.fill();
-
-        // state.ctx.fillText(this.id, this.position.x + Circle.radius, this.position.y);
     }
 
     update(state: IUpdateInfo) {
@@ -242,6 +238,8 @@ export class Crawler extends BaseShape {
 
 
                 if(this.currentVert) {
+                    //TODO move elsewhere
+                    this.currentVert.previousColor = this.currentVert.currentColor;
                     this.currentVert.crawlerPosition = null;
                 }
 
@@ -252,7 +250,7 @@ export class Crawler extends BaseShape {
 
                     if(currentNode.id !== this.nextNode.id) {
                         const vert = this.handler.verticies[Vertice.getVerticeId(currentNode, this.nextNode)];
-                        vert.tempColor = this.currentColor;
+                        vert.currentColor = this.currentColor;
                         vert.crawlerPosition = this;
                         this.currentVert = vert;
                     }
