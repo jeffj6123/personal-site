@@ -44,54 +44,54 @@ export function detectIslands(handler: AStarFinding): IIsland[] {
     return islands;
 }
 
-export function generateEdge(island1: IIsland, island2: IIsland) {
+export function generateEdgeIds(handler: AStarFinding, islands: IIsland[]) {
+    let newVerts: string[][] = [];
+    //take one island and find closest matching island - combine them
+    //take next island and repeat until 1 island is left
+    while(islands.length > 1) {
+        const currentIsland = islands.pop();
+        let verts: string[] = [];
+        let closest = 100000;
+        let closestIsland = islands[0];
 
-    island1.nodes.forEach(node1 => {
-        island2.nodes.forEach(node2 => {
-
+        //for all other islands check for closest node
+        islands.forEach(island => {
+            currentIsland.nodes.forEach(node1 => {
+                island.nodes.forEach(node2 => {
+                    if(checkForValidVertice(handler.getNode(node1.id), handler.getNode(node2.id), handler.nodes)) {
+                        const distance = getDistanceBetweenPoints(node1, node2);
+                        if(closest > distance) {
+                            verts = [node1.id, node2.id];
+                            closest = distance;
+                            closestIsland = island;
+                        }
+                    }
+                })
+            })
         })
-    })
 
-}
+        currentIsland.nodes.concat(closestIsland.nodes);
+        newVerts.push(verts);
+    }
 
-
-interface IVertGenerationInfo {
-    distance: number,
-    shape1: Node,
-    shape2: Node,
-    id: string;
+    return newVerts;
 }
 
 export function generateVertices(shapes: Circle[]): Vertice[] {
+    const shapePoints = shapes.map(shapes => shapes.position);
     let verts = [];
 
     shapes.forEach(shape => {
-
-        const pairs = shapes.map((s, index) => {
+        const pairs = shapes.map(s => {
             return {
                 distance: getDistanceBetweenPoints(shape.position, s.position),
                 shape1: shape,
-                shape2: s,
-                id: index
+                shape2: s
             }
         }).filter((a) => a.shape1 !== a.shape2).sort((a, b) => a.distance - b.distance).slice(0, 3);
 
-
         pairs.forEach(indice => {
-
-            let conflictShape = null;
-            shapes.forEach(s => {
-
-                const d = getDistanceBetweenPoints(indice.shape1.position, indice.shape2.position);
-                if (!(indice.shape1 === s || indice.shape2 === s) &&
-                    d < Circle.radius
-                    && boundCheck(indice.shape1.position, indice.shape2.position, s.position, Circle.radius)
-                ) {
-                    conflictShape = s;
-                }
-            })
-
-            if (!conflictShape) {
+            if (checkForValidVertice(indice.shape1.position, indice.shape2.position, shapePoints)) {
                 verts.push(new Vertice(indice.shape2, indice.shape1));
             }
         })
@@ -102,8 +102,19 @@ export function generateVertices(shapes: Circle[]): Vertice[] {
 }
 
 
-export const checkForValidVertice = () => {
+export const checkForValidVertice = (point1: IPoint, point2: IPoint, points: IPoint[]): boolean => {
+    let valid = true;;
+    points.forEach(s => {
+        const distance = getDistanceBetweenPoints(point1, point2);
+        if (!(point1 === s || point2 === s) &&
+            distance < Circle.radius
+            && boundCheck(point1, point2, s, Circle.radius)
+        ) {
+            valid = false;
+        }
+    })
 
+    return valid;
 }
 
 

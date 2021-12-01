@@ -3,7 +3,7 @@ import { AStarFinding, Node } from "./ts/pathFinding";
 import { Circle, Crawler, IPoint, ISquarePoint, RectCircleColliding, ShapeHandler, textRenderer, Vertice } from "./ts/shape";
 import "./sass/style.scss";
 import { debounced } from "./ts/debounce";
-import { checkOverlap, detectIslands, generateVertices } from "./ts/graph";
+import { checkOverlap, detectIslands, generateEdgeIds, generateVertices } from "./ts/graph";
 
 const canvasMultiplier = 1;
 export interface IDrawInfo {
@@ -28,13 +28,6 @@ export function draw() {
 
         Circle.radius = width / 60;
 
-        //get location for text
-        // const largeText = Math.min(width / 8, 200);
-        // ctx.canvas.width = width;
-        // ctx.canvas.height = height;
-        // ctx.font = `${largeText}px Ariel`;
-        // const textInfo = ctx.measureText("Jeffrey Jarry");
-
         let landingTile = document.getElementById('landing-tile');
 
         let refRect: ISquarePoint = landingTile.getBoundingClientRect();
@@ -54,18 +47,21 @@ export function draw() {
 
         let verts: Vertice[] = generateVertices(shapes);
 
-        let pathFinding = new AStarFinding(shapes.map(s => { return s.asPathFindingNode() }), verts.map(v => { return { nodes: [v.circle1.asPathFindingNode(), v.circle2.asPathFindingNode()], id: v.id } }))
-        
-        //TEMPT TODO
-        detectIslands(pathFinding);
-
-        const path = pathFinding.generatePath(shapes[0].asPathFindingNode(), shapes[1].asPathFindingNode());
-
         let handler = new ShapeHandler();
         verts.forEach(vert => handler.verticies[vert.id] = vert);
         shapes.forEach(s => handler.circles[s.id] = s);
 
-        let crawler = new Crawler(handler, path.splice(0, 1));
+        let pathFinding = new AStarFinding(shapes.map(s => { return s.asPathFindingNode() }), verts.map(v => { return { nodes: [v.circle1.asPathFindingNode(), v.circle2.asPathFindingNode()], id: v.id } }))
+    
+        //move elsewhere
+        const islands = detectIslands(pathFinding);
+        const newIds = generateEdgeIds(pathFinding, islands);
+        newIds.forEach(ids => {
+            const vert = new Vertice(handler.circles[ids[0]], handler.circles[ids[1]]);
+            verts.push(vert);
+        })
+        
+        let crawler = new Crawler(handler, shapes[0]);
         let name = new textRenderer(crawler);
         document.addEventListener('click', (event) => {
             crawler.setNewColor();
@@ -79,6 +75,8 @@ export function draw() {
 
             crawler.setNewpath(pathFinding.generatePath(crawler.nextNode.asPathFindingNode(), closest))
         }))
+
+        const items = [].concat(verts).concat(shapes);
 
         let previousTime = new Date();
         let interval = setInterval(() => {
@@ -95,7 +93,7 @@ export function draw() {
                 const state = { ctx, height, width };
                 const updateState = { tickSizeInMilliseconds: tick };
 
-                [].concat(verts).concat(shapes).forEach(shape => {
+                items.forEach(shape => {
                     shape.update(updateState)
                     shape.draw(state)
                 })
@@ -103,7 +101,6 @@ export function draw() {
                 crawler.draw(state)
                 crawler.update(updateState);
 
-                // name.draw(state);
                 previousTime = currentTime;
             } catch (e) {
                 console.error(e);

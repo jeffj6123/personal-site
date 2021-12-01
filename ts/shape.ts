@@ -1,5 +1,6 @@
 import { IDrawInfo, IUpdateInfo } from "..";
 import { FULL_RADIUS } from "./constants";
+import { getDistanceBetweenPoints } from "./graph";
 import { INodePathFindingInfo, Node } from "./pathFinding";
 
 export interface ICirclePoint extends IPoint {
@@ -113,11 +114,9 @@ export class Circle extends BaseShape {
     }
 
     update(state: IUpdateInfo) {
-        if (Math.abs(this.goalPosition.x - this.position.x) === 0 &&
-            Math.abs(this.goalPosition.y - this.position.y) === 0) {
-
-            this.goalPosition.x = (this.initialPosition.x + Math.random() * 20) + 10
-            this.goalPosition.y = (this.initialPosition.y + Math.random() * 20) + 10
+        if (getDistanceBetweenPoints(this.goalPosition, this.position) === 0) {
+            this.goalPosition.x = (this.initialPosition.x + Math.random() * 20) - 10
+            this.goalPosition.y = (this.initialPosition.y + Math.random() * 20) - 10
         } else {
             this.position = moveTowards(this.position, this.goalPosition, this.speed * (state.tickSizeInMilliseconds / 1000))
         }
@@ -205,13 +204,14 @@ export class Crawler extends BaseShape {
 
     public nextNode: Circle;
     private currentVert: Vertice;
+    nodes: INodePathFindingInfo[] = [];
     currentIndex = 1;
     currentColor = "#006400";
-    constructor(private handler: ShapeHandler, private nodes: INodePathFindingInfo[]) {
+    constructor(private handler: ShapeHandler, private startingPosition: Circle) {
         super('crawler');
 
-        this.position = handler.circles[nodes[0].node.id].position;
-        this.nextNode = handler.circles[nodes[0].node.id];
+        this.position = this.startingPosition.position;
+        this.nextNode = startingPosition;
     }
 
     draw(state: IDrawInfo) {
