@@ -3,6 +3,7 @@ import { AStarFinding, Node } from "./ts/pathFinding";
 import { Circle, Crawler, IPoint, ISquarePoint, RectCircleColliding, ShapeHandler, textRenderer, Vertice } from "./ts/shape";
 import "./sass/style.scss";
 import { debounced } from "./ts/debounce";
+import { checkOverlap, detectIslands, generateVertices } from "./ts/graph";
 
 const canvasMultiplier = 1;
 export interface IDrawInfo {
@@ -14,51 +15,6 @@ export interface IDrawInfo {
 export interface IUpdateInfo {
     tickSizeInMilliseconds: number;
 }
-
-
-const boundCheck = (shape1: IPoint, shape2: IPoint, conflict: IPoint, radius) => {
-
-    let copy1 = { ...shape1 };
-    let copy2 = { ...shape2 };
-
-    if (copy1.x > copy2.x) {
-        copy1.x -= radius;
-        copy2.x += radius;
-    } else {
-        copy2.x -= radius;
-        copy1.x += radius;
-    }
-
-    if (copy1.y > copy2.y) {
-        copy1.y -= radius;
-        copy2.y += radius;
-    } else {
-        copy2.y -= radius;
-        copy1.y += radius;
-    }
-
-    const arr = [copy1, copy2, conflict];
-
-    arr.sort((a, b) => a.x - b.x);
-    const xCheck = arr[1] === conflict;
-
-    arr.sort((a, b) => a.y - b.y)
-    const yCheck = arr[1] === conflict;
-
-
-    return xCheck && yCheck;
-}
-
-const checkOverlap = (shape1: Circle, shape2: Circle) => {
-    const midPointDistance = getDistanceBetweenShapes(shape1.position, shape2.position);
-
-    return midPointDistance < (Circle.radius * 2)
-}
-
-const getDistanceBetweenShapes = (shape1: IPoint, shape2: IPoint) => {
-    return Math.sqrt(Math.pow((shape1.x) - (shape2.x), 2) + Math.pow((shape1.y) - (shape2.y), 2));
-}
-
 
 
 export function draw() {
@@ -73,11 +29,11 @@ export function draw() {
         Circle.radius = width / 60;
 
         //get location for text
-        const largeText = Math.min(width / 8, 200);
-        ctx.canvas.width = width;
-        ctx.canvas.height = height;
-        ctx.font = `${largeText}px Ariel`;
-        const textInfo = ctx.measureText("Jeffrey Jarry");
+        // const largeText = Math.min(width / 8, 200);
+        // ctx.canvas.width = width;
+        // ctx.canvas.height = height;
+        // ctx.font = `${largeText}px Ariel`;
+        // const textInfo = ctx.measureText("Jeffrey Jarry");
 
         let landingTile = document.getElementById('landing-tile');
 
@@ -86,7 +42,6 @@ export function draw() {
         console.log(refRect)
 
         let shapes: Circle[] = [];
-        let verts: Vertice[] = [];
 
         for (let i = 0; i < shapeCount * 2; i++) {
             let y = 10 + (Math.random() * height * .95);
@@ -97,40 +52,13 @@ export function draw() {
             }
         }
 
-        shapes.forEach(shape => {
-
-            const pairs = shapes.map((s, index) => {
-                return {
-                    distance: getDistanceBetweenShapes(shape.position, s.position),
-                    shape1: shape,
-                    shape2: s,
-                    id: index
-                }
-            }).filter((a) => a.shape1 !== a.shape2).sort((a, b) => a.distance - b.distance).slice(0, 3);
-
-
-            pairs.forEach(indice => {
-
-                let conflictShape = null;
-                shapes.forEach(s => {
-
-                    const d = getDistanceBetweenShapes(indice.shape1.position, indice.shape2.position);
-                    if (!(indice.shape1 === s || indice.shape2 === s) &&
-                        d < Circle.radius
-                        && boundCheck(indice.shape1.position, indice.shape2.position, s.position, Circle.radius)
-                    ) {
-                        conflictShape = s;
-                    }
-                })
-
-                if (!conflictShape) {
-                    verts.push(new Vertice(indice.shape2, indice.shape1));
-                }
-            })
-
-        })
+        let verts: Vertice[] = generateVertices(shapes);
 
         let pathFinding = new AStarFinding(shapes.map(s => { return s.asPathFindingNode() }), verts.map(v => { return { nodes: [v.circle1.asPathFindingNode(), v.circle2.asPathFindingNode()], id: v.id } }))
+        
+        //TEMPT TODO
+        detectIslands(pathFinding);
+
         const path = pathFinding.generatePath(shapes[0].asPathFindingNode(), shapes[1].asPathFindingNode());
 
         let handler = new ShapeHandler();
@@ -144,12 +72,11 @@ export function draw() {
         })
 
         document.addEventListener('mousemove', debounced(10, (event: MouseEvent) => {
-            // console.log(event)
             const closest = pathFinding.findClosestNodeToAPoint({
                 x: event.pageX * canvasMultiplier,
                 y: event.pageY * canvasMultiplier
             })
-            // console.log(closest)
+
             crawler.setNewpath(pathFinding.generatePath(crawler.nextNode.asPathFindingNode(), closest))
         }))
 

@@ -1,4 +1,13 @@
-import { IPoint } from "./shape";
+import { getDistanceBetweenPoints } from "./graph";
+import { BaseShape, IPoint } from "./shape";
+
+export class GraphHandler {
+    private edgeMap: Record<string, BaseShape> = {};
+
+    constructor() {
+
+    }
+}
 
 export interface Node extends IPoint {
     id: string;
@@ -19,23 +28,37 @@ export interface INodePathFindingInfo {
 
 
 export class AStarFinding {
+    private edgeMap2: Record<string, string[]> = {};
+    private nodeMap: Record<string, Node> = {};
 
-    public edgeMap: Record<string, Edge[]> = {};
+    // public edgeMap: Record<string, Edge[]> = {};
+
     constructor(public nodes: Node[],
         private edges: Edge[]) {
+
         this.nodes.forEach(node => {
-            this.edgeMap[node.id] = [];
+            this.edgeMap2[node.id] = [];
+            this.nodeMap[node.id] = node;
         })
 
         edges.forEach(edge => {
-            edge.nodes.forEach(node => {
-                this.edgeMap[node.id].push(edge);
-            })
+            const id1 = edge.nodes[0].id;
+            const id2 = edge.nodes[1].id;
+            this.edgeMap2[id1].push(id2)
+            this.edgeMap2[id2].push(id1)
         })
     }
 
     step() {
 
+    }
+
+    getNode(id: string): Node {
+        return this.nodeMap[id];
+    }
+
+    getNodeEdges(id: string): string[] {
+        return this.edgeMap2[id];
     }
 
     generatePath(startNode: Node, endNode: Node): INodePathFindingInfo[] {
@@ -52,12 +75,12 @@ export class AStarFinding {
 
         while (currentNode && currentNode.node.id !== endNode.id) {
 
-            this.edgeMap[currentNode.node.id].forEach(edge => {
-                const newNode = edge.nodes.filter(n => currentNode.node.id !== n.id)[0];
+            this.edgeMap2[currentNode.node.id].forEach(edge => {
+                const newNode = this.nodeMap[edge];
 
                 if (!seen.has(newNode.id)) {
-                    const hCost = this.evaluateDistance(newNode, endNode);
-                    const gCost = this.evaluateDistance(currentNode.node, newNode) //+ currentNode.gCost;
+                    const hCost = getDistanceBetweenPoints(newNode, endNode);
+                    const gCost = getDistanceBetweenPoints(currentNode.node, newNode)
                     available.push({
                         parent: currentNode,
                         node: newNode,
@@ -79,12 +102,6 @@ export class AStarFinding {
 
         //TODO CHECK THAT ITS END NODE
         return this.getPathAsList(currentNode);
-    }
-
-    evaluateDistance(node: IPoint, goalNode: IPoint): number {
-        const x = (node.x - goalNode.x) * (node.x - goalNode.x);
-        const y = (node.y - goalNode.y) * (node.y - goalNode.y);
-        return Math.sqrt(x + y );
     }
 
     getLowestCostNode(nodes: INodePathFindingInfo[], remove = false): INodePathFindingInfo {
@@ -123,9 +140,9 @@ export class AStarFinding {
 
     findClosestNodeToAPoint(point: IPoint): Node {
         let node = this.nodes[0];
-        let distance = this.evaluateDistance(point, node);
+        let distance = getDistanceBetweenPoints(point, node);
         this.nodes.forEach(n => {
-            const d = this.evaluateDistance(point, n);
+            const d = getDistanceBetweenPoints(point, n);
             if(d < distance) {
                 node = n;
                 distance = d;
