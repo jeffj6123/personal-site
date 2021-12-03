@@ -39,8 +39,6 @@ export function detectIslands(handler: AStarFinding): IIsland[] {
 
         islands.push(island);
     }
-
-    console.log(islands);
     return islands;
 }
 

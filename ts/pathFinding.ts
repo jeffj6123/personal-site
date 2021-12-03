@@ -123,7 +123,6 @@ export class AStarFinding {
     }
 
     getPathAsList(node: INodePathFindingInfo): INodePathFindingInfo[] {
-        
         let nodes = [];
         
         while(node) {
@@ -147,7 +146,6 @@ export class AStarFinding {
                 node = n;
                 distance = d;
             }
-            // console.log(n, d)
         })
 
         return node;
