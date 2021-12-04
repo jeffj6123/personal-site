@@ -57,16 +57,21 @@ export class Heap<T> {
             const leftChild = this.getLeftChild(index);
             const rightChild = this.getRightChild(index);
 
-            if (leftChild > rightChild) {
-                if (leftChild < this.size() &&
-                    this.internal[leftChild].value < this.internal[index].value) {
-                    this.swap(leftChild, index);
-                    index = leftChild;
-                }
-            } else if (rightChild < this.size() &&
-                this.internal[rightChild].value < this.internal[index].value) {
-                this.swap(rightChild, index);
-                index = rightChild;
+            let smallest = index;
+
+            if (leftChild < this.size() &&
+                this.internal[leftChild].value < this.internal[smallest].value) {
+                smallest = leftChild;
+            }
+            
+            if (rightChild < this.size() &&
+                this.internal[rightChild].value < this.internal[smallest].value) {
+                smallest = rightChild;
+            }
+
+            if(smallest != index) {
+                this.swap(index, smallest)
+                index = smallest;
             }
         }
     }
