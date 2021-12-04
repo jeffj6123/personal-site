@@ -44,6 +44,7 @@ export function detectIslands(handler: AStarFinding): IIsland[] {
 
 export function generateEdgeIds(handler: AStarFinding, islands: IIsland[]) {
     let newVerts: string[][] = [];
+
     //take one island and find closest matching island - combine them
     //take next island and repeat until 1 island is left
     while(islands.length > 1) {

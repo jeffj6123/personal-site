@@ -15,11 +15,11 @@ export class Heap<T> {
     getNext() {
         const item = this.internal[0];
         const next = this.internal.pop();
-        if(this.size() > 0) {
+        if (this.size() > 0) {
             this.internal[0] = next
+            this.heapifyUp(0);
         }
-        this.heapifyUp(0);
-        return item.value
+        return item.item;
     }
 
     add(item: T, value: number) {
@@ -33,10 +33,7 @@ export class Heap<T> {
 
     heapifyDown(index: number) {
         const item = this.internal[index];
-
-        let loopCount = 0;
         while (index > 0) {
-            loopCount += 1
             const parent = this.getParent(index);
 
             if (item.value < this.internal[parent].value) {
@@ -50,10 +47,7 @@ export class Heap<T> {
     }
 
     heapifyUp(index: number) {
-        let loopCount = 0;
         while (index < this.size()) {
-            loopCount += 1
-
             const leftChild = this.getLeftChild(index);
             const rightChild = this.getRightChild(index);
 
@@ -63,15 +57,17 @@ export class Heap<T> {
                 this.internal[leftChild].value < this.internal[smallest].value) {
                 smallest = leftChild;
             }
-            
+
             if (rightChild < this.size() &&
                 this.internal[rightChild].value < this.internal[smallest].value) {
                 smallest = rightChild;
             }
 
-            if(smallest != index) {
+            if (smallest !== index) {
                 this.swap(index, smallest)
                 index = smallest;
+            } else {
+                break;
             }
         }
     }

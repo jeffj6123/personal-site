@@ -40,7 +40,8 @@ export function draw() {
             let y = 10 + (Math.random() * height * .95);
             let x = 10 + (Math.random() * width * .95);
             const s = new Circle({ y, x }, i.toString());
-            if (shapes.every(shape => !checkOverlap(shape, s)) && !RectCircleColliding({ ...s.position, radius: Circle.radius * 1.5 }, refRect)) {
+            if (shapes.every(shape => !checkOverlap(shape, s)) && 
+                !RectCircleColliding({ ...s.position, radius: Circle.radius * 1.5 }, refRect)) {
                 shapes.push(s);
             }
         }

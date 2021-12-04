@@ -1,4 +1,5 @@
 import { getDistanceBetweenPoints } from "./graph";
+import { Heap } from "./heap";
 import { BaseShape, IPoint } from "./shape";
 
 export class GraphHandler {
@@ -28,29 +29,22 @@ export interface INodePathFindingInfo {
 
 
 export class AStarFinding {
-    private edgeMap2: Record<string, string[]> = {};
+    private edgeMap: Record<string, string[]> = {};
     private nodeMap: Record<string, Node> = {};
 
-    // public edgeMap: Record<string, Edge[]> = {};
-
-    constructor(public nodes: Node[],
-        private edges: Edge[]) {
+    constructor(public nodes: Node[], edges: Edge[]) {
 
         this.nodes.forEach(node => {
-            this.edgeMap2[node.id] = [];
+            this.edgeMap[node.id] = [];
             this.nodeMap[node.id] = node;
         })
 
         edges.forEach(edge => {
             const id1 = edge.nodes[0].id;
             const id2 = edge.nodes[1].id;
-            this.edgeMap2[id1].push(id2)
-            this.edgeMap2[id2].push(id1)
+            this.edgeMap[id1].push(id2)
+            this.edgeMap[id2].push(id1)
         })
-    }
-
-    step() {
-
     }
 
     getNode(id: string): Node {
@@ -58,13 +52,12 @@ export class AStarFinding {
     }
 
     getNodeEdges(id: string): string[] {
-        return this.edgeMap2[id];
+        return this.edgeMap[id];
     }
 
     generatePath(startNode: Node, endNode: Node): INodePathFindingInfo[] {
         const seen = new Set();
-
-        const available: INodePathFindingInfo[] = [];
+        const heap = new Heap<INodePathFindingInfo>();
 
         let currentNode: INodePathFindingInfo = {
             parent: null,
@@ -74,52 +67,27 @@ export class AStarFinding {
         };
 
         while (currentNode && currentNode.node.id !== endNode.id) {
+            this.edgeMap[currentNode.node.id].forEach(edge => {
+                const nextNode = this.nodeMap[edge];
 
-            this.edgeMap2[currentNode.node.id].forEach(edge => {
-                const newNode = this.nodeMap[edge];
+                if (!seen.has(nextNode.id)) {
+                    const hCost = getDistanceBetweenPoints(nextNode, endNode);
+                    const gCost = getDistanceBetweenPoints(currentNode.node, nextNode) + currentNode.gCost;
 
-                if (!seen.has(newNode.id)) {
-                    const hCost = getDistanceBetweenPoints(newNode, endNode);
-                    const gCost = getDistanceBetweenPoints(currentNode.node, newNode)
-                    available.push({
+                    const newNode = {
                         parent: currentNode,
-                        node: newNode,
+                        node: nextNode,
                         hCost,
                         gCost
-                    });
+                    };
+                    heap.add(newNode, this.getTotalCost(newNode))
 
-                    seen.add(newNode.id);
+                    seen.add(nextNode.id);
                 }
             })
-            const nextNode = this.getLowestCostNode(available, true);
-            if(nextNode) {
-                currentNode = nextNode;
-            }else{
-                break;
-            }
-            
+            currentNode = heap.getNext();
         }
-
-        //TODO CHECK THAT ITS END NODE
         return this.getPathAsList(currentNode);
-    }
-
-    getLowestCostNode(nodes: INodePathFindingInfo[], remove = false): INodePathFindingInfo {
-        let node = nodes[0];
-        let index = 0;
-
-        nodes.forEach((info, i) => {
-            if (this.getTotalCost(info) < this.getTotalCost(node)) {
-                node = info;
-                index = i;
-            }
-        })
-
-        if (remove) {
-            nodes.splice(index, 1);
-        }
-
-        return node;
     }
 
     getPathAsList(node: INodePathFindingInfo): INodePathFindingInfo[] {
