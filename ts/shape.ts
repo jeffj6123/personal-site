@@ -1,7 +1,7 @@
 import { IDrawInfo, IUpdateInfo } from "..";
 import { FULL_RADIUS } from "./constants";
 import { getDistanceBetweenPoints } from "./graph";
-import { INodePathFindingInfo, Node } from "./pathFinding";
+import { Edge, INodePathFindingInfo, Node } from "./pathFinding";
 
 export interface ICirclePoint extends IPoint {
     radius: number;
@@ -196,6 +196,10 @@ export class Vertice extends BaseShape {
         return [this.circle1, this.circle2].filter(n => circle.id !== n.id)[0];
     }
 
+    public getAspathFinding(): Edge {
+        return { nodes: [this.circle1.asPathFindingNode(), this.circle2.asPathFindingNode()], id: this.id }
+    }
+
 }
 
 export class Crawler extends BaseShape {
@@ -302,6 +306,10 @@ export class ShapeHandler {
     circles: Record<string, Circle> = {};
 
     constructor() {
+
+    }
+
+    update() {
 
     }
 }

@@ -35,16 +35,24 @@ export class AStarFinding {
     constructor(public nodes: Node[], edges: Edge[]) {
 
         this.nodes.forEach(node => {
-            this.edgeMap[node.id] = [];
-            this.nodeMap[node.id] = node;
+            this.addNode(node);
         })
 
         edges.forEach(edge => {
-            const id1 = edge.nodes[0].id;
-            const id2 = edge.nodes[1].id;
-            this.edgeMap[id1].push(id2)
-            this.edgeMap[id2].push(id1)
+            this.addEdge(edge)
         })
+    }
+
+    addNode(node: Node) {
+        this.edgeMap[node.id] = [];
+        this.nodeMap[node.id] = node;
+    }
+
+    addEdge(edge: Edge) {
+        const id1 = edge.nodes[0].id;
+        const id2 = edge.nodes[1].id;
+        this.edgeMap[id1].push(id2)
+        this.edgeMap[id2].push(id1)
     }
 
     getNode(id: string): Node {
