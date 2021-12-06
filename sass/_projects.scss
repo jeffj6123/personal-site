@@ -25,7 +25,7 @@ $project-overflow: 10%;
     flex: 1;
     box-sizing: border-box;
     align-items: center;
-    opacity: 0;
+    // opacity: 0;
 
     .icon {
         border-radius: 5px;
@@ -126,4 +126,15 @@ $project-overflow: 10%;
 
 .projects-container {
     overflow: hidden;
+}
+
+
+.bounce-in {
+    animation-name: bounce-in;
+    animation-timing-function: ease-in-out;
+    animation-duration: .5s;
+}
+@keyframes bounce-in {
+    0%  { transform: translateY(-20px); }
+    100% { transform: translateY(0); }
 }
