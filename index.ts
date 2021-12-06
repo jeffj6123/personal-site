@@ -102,8 +102,8 @@ export function draw() {
                     shape.draw(state)
                 })
 
-                crawler.draw(state)
                 crawler.update(updateState);
+                crawler.draw(state)
 
                 previousTime = currentTime;
             } catch (e) {
