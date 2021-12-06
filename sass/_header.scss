@@ -24,11 +24,33 @@
     color: white;
     text-decoration: unset;
     border-bottom: 3px solid transparent;
+    /* Fallback: Set a background color. */
+
+    /* Create the gradient. */
+    // background: linear-gradient(90deg, var(--accent-color) 49%, #fff 50%);
+    background: linear-gradient(90deg, #fff 49%, var(--accent-color) 50%);
+    transition: background .5s;
+    /* Set the background size and repeat properties. */
+    background-size: 200%;
+    background-position: 0%;
+    background-repeat: repeat;
+
+    /* Use the text as a mask for the background. */
+    /* This will show the gradient as a text color rather than element bg. */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+
+    &:hover {
+      background-position: -100%;
+    }
   }
 
+  a:visited,
   a:hover,
   a:active,
-  a.active {
+  a:focus {
     border-bottom: 3px solid var(--accent-color);
   }
 }
@@ -36,5 +58,5 @@
 .socials {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
 }

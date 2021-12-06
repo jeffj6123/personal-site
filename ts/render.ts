@@ -1,3 +1,3 @@
-export class Render {
-    constructor()
-}
+// export class Render {
+//     constructor()
+// }

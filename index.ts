@@ -31,7 +31,7 @@ export function draw() {
         let landingTile = document.getElementById('landing-tile');
 
         let refRect: ISquarePoint = landingTile.getBoundingClientRect();
-        refRect.y + 50;
+        refRect.y - 50;
 
         console.log(landingTile.getBoundingClientRect())
 
