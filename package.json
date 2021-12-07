@@ -29,7 +29,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --hot",
-    "build": "webpack"
+    "build": "webpack",
+    "deploy": "firebase hosting:channel:deploy testing"
   },
   "author": "",
   "license": "ISC"

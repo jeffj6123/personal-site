@@ -1,3 +1,5 @@
+@use '_vars';
+
 .landing-name {
     animation-name: fade-in;
     animation-duration: 3s;
@@ -21,11 +23,11 @@
 }
 
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: vars.$small-screen-size) {
     .landing-name {
         font-size: 2rem;
         top: 30%;
-
+        margin-left: 5%;
         .name {
             font-size: 3rem;
         }

@@ -42,6 +42,8 @@
     -moz-background-clip: text;
     -moz-text-fill-color: transparent;
 
+    font-weight: 900;
+
     &:hover {
       background-position: -100%;
     }
@@ -59,4 +61,5 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  height: 70px;
 }
