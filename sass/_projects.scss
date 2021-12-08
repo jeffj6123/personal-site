@@ -49,6 +49,12 @@ $project-overflow: 10%;
             transform: rotate(-5deg);
             top: -43px;
         }
+        .link-out {
+            right: 5px;
+            top: -15px;
+            transform: rotate(
+        15deg);            
+        }
     }
 
 }
@@ -76,6 +82,7 @@ $project-overflow: 10%;
     right: -10px;
     position: absolute;
     top: -28px;
+    transition: .5s all;
 }
 
 
@@ -110,6 +117,12 @@ $project-overflow: 10%;
         height: 150px;
     }
 
+    .project-title {
+        font-size: 1.35rem;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
 }
 
 .resources {
@@ -128,6 +141,8 @@ $project-overflow: 10%;
     padding: 10px;
     bottom: -22px;
     border: 2px solid #20d872;
+
+    transition: .5s all;
 }
 
 

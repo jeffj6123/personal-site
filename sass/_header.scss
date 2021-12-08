@@ -1,3 +1,5 @@
+@use 'vars';
+
 .header {
   min-height: var(--header-size);
   background-color: var(--main-bg-color);
@@ -62,4 +64,11 @@
   align-items: center;
   gap: 15px;
   height: 70px;
+  flex-wrap: wrap;
+}
+
+@media only screen and (max-width: vars.$mid-screen-size) {
+  .socials {
+    gap: 25px;
+  }
 }
