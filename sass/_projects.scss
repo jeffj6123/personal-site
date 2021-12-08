@@ -39,12 +39,16 @@ $project-overflow: 10%;
     margin-bottom: 60px !important;
 
     // opacity: 0;
+    border: 2px solid var(--main-bg-color);
 
     .icon {
         border-radius: 5px;
     }
 
     &:hover {
+        border: 2px solid var(--accent-color);
+        
+
         .project-title {
             transform: rotate(-5deg);
             top: -43px;
@@ -191,13 +195,7 @@ $project-overflow: 10%;
     flex-wrap: wrap;
     gap: 10px;
     flex-direction: column;
-    overflow: hidden;
 }
-
-.projects-container {
-    overflow: hidden;
-}
-
 
 .bounce-in {
     animation-name: bounce-in;
