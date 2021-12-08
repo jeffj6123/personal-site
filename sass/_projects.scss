@@ -205,6 +205,6 @@ $project-overflow: 10%;
     animation-duration: .5s;
 }
 @keyframes bounce-in {
-    0%  { transform: translateY(-20px); }
+    0%  { transform: translateY(50px); }
     100% { transform: translateY(0); }
 }
