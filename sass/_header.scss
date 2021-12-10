@@ -23,14 +23,14 @@
   .link {
     padding: 5px;
     margin: 5px;
-    color: white;
+    color: var(--main-text);
     text-decoration: unset;
     border-bottom: 3px solid transparent;
     /* Fallback: Set a background color. */
 
     /* Create the gradient. */
     // background: linear-gradient(90deg, var(--accent-color) 49%, #fff 50%);
-    background: linear-gradient(90deg, #fff 49%, var(--accent-color) 50%);
+    background: linear-gradient(90deg, var(--main-text) 49%, var(--accent-color) 50%);
     transition: background .5s;
     /* Set the background size and repeat properties. */
     background-size: 200%;

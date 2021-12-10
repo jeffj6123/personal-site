@@ -92,7 +92,7 @@
         width: 0;
         transition: .5s all;
         overflow: hidden;
-        color: white;
+        color: var(--main-text);
         white-space: nowrap;
         height: 100%;
         display: flex;
@@ -101,7 +101,7 @@
         border-radius: 50px;
         font-size: calc(1.5 * var(--base-font-size));
         z-index: 1;
-        padding-left: 45px;
+        padding-left: 48px;
     }
 
     &:hover,

@@ -1,9 +1,11 @@
-import { shapeCount } from "./ts/constants";
+import { darkMode, lightMode, nightModeStorageKey, shapeCount } from "./ts/constants";
 import { AStarFinding, Node } from "./ts/pathFinding";
 import { Circle, Crawler, IPoint, ISquarePoint, RectCircleColliding, ShapeHandler, textRenderer, Vertice } from "./ts/shape";
 import "./sass/style.scss";
 import { debounced } from "./ts/debounce";
 import { checkOverlap, detectIslands, generateEdgeIds, generateVertices } from "./ts/graph";
+import { ICSSConfig } from "./ts/interfaces";
+import { applyCSSVars, getFromLocalStorage, setLocalStorage } from "./ts/utils";
 
 const canvasMultiplier = 1;
 export interface IDrawInfo {
@@ -26,8 +28,7 @@ export function draw() {
         ctx.canvas.width = width;
         ctx.canvas.height = height;
 
-        Circle.radius = width / 60;
-
+        Circle.radius = Math.min(width / 60, 22);
         let landingTile = document.getElementById('landing-tile');
 
         let refRect: ISquarePoint = landingTile.getBoundingClientRect();
@@ -63,6 +64,7 @@ export function draw() {
             const vert = new Vertice(handler.circles[ids[0]], handler.circles[ids[1]]);
             verts.push(vert);
             pathFinding.addEdge(vert.getAspathFinding());
+            handler.verticies[vert.id] = vert;
         })
 
         let crawler = new Crawler(handler, shapes[0]);
@@ -133,6 +135,18 @@ const changeTest = () => {
     }, 4000)
 }
 
+const setNightMode = () => {
+    const test = document.getElementById("nightmode") as HTMLInputElement;
+    
+    test.checked = +getFromLocalStorage(nightModeStorageKey, "1") > 0;
+    applyCSSVars(test.checked)
+
+    test.addEventListener('click', () => {
+        applyCSSVars(test.checked)
+        setLocalStorage(nightModeStorageKey, test.checked ? "1" : "0")
+    })
+}
+
 const callback: IntersectionObserverCallback = entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -154,4 +168,5 @@ window.onload = () => {
     setObservers();
     draw();
     changeTest();
+    setNightMode();
 };

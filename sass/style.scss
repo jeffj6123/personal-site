@@ -6,11 +6,14 @@
 @use '_about';
 @use '_landing';
 @use '_job_history';
+@use '_checkbox';
 
 :root {
   --main-bg-color: rgb(47 46 46);
+  --bg-color: #121212;
   --accent-color: rgb(31 216 114);
   --header-size: 50px;
+  --main-text: #fff;
 
   --osu-color: #c11945;
   --msft-color: #0697d9;
@@ -18,7 +21,6 @@
   --base-font-size: 1.1rem;
   --header-font: 'Aldrich', sans-serif;
   --text-font: 'M PLUS 2', sans-serif;
-
   --box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(70, 70, 70, 0.19);
 }
 
@@ -31,9 +33,9 @@ body {
   width: 100%;
   height: 100%;
   margin: 0px;
-  color: white; 
+  color: var(--main-text); 
   font-family: var(--text-font);
-  background-color: #121212;
+  background-color: var(--bg-color);
 }
 
 p {
@@ -67,15 +69,13 @@ h2 {
 .chart-container {
   width: 100%;
   height: calc(100vh - var(--header-size));
-  background-color: #121212;
+  background-color: var(--bg-color);
 }
 
 .card {
-  // background-color: var(--main-bg-color);
   padding: 10px;
   border-radius: 5px;
   z-index: 1;
-  // opacity: .9;
 }
 
 .margin-bottom {
@@ -133,29 +133,6 @@ ul li {
   font-size: 20px;
 }
 
-
-@keyframes text-shadow {
-  0%   {
-    text-shadow: 150px 0px #077639;
-  }
-  25%  {
-    text-shadow: -70px 0px #077639;
-  }
-  50%  {
-    text-shadow: 35px 0px #077639;
-  }
-  100% {
-    text-shadow: 5 0px #077639;
-  }
-}
-
-.name-text {
-    animation-name: text-shadow;
-    animation-duration: 1s;
-    font-size: 46px;
-    text-shadow: 5px 0px #077639;
-}
-
 .screen {
   min-height: 100vh;
   position: relative;
@@ -188,7 +165,7 @@ ul li {
   font-size: 20px;
   height: 40px;
   text-decoration: initial;
-  color: white;
+  color: var(--main-text);
 
   &:hover {
     width: 30%;
@@ -234,4 +211,5 @@ ul li {
 
 .highlight-text {
   color: var(--accent-color);
+  font-weight: 900;
 }

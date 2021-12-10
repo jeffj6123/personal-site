@@ -105,7 +105,7 @@ export class Circle extends BaseShape {
         state.ctx.arc(this.position.x, this.position.y, Circle.radius, 0, FULL_RADIUS, true); // Outer circle
 
         state.ctx.closePath();
-        state.ctx.shadowBlur = 20;
+        state.ctx.shadowBlur = 10;
         state.ctx.shadowColor = "black";
         state.ctx.fill();
 
@@ -132,7 +132,7 @@ export class Circle extends BaseShape {
 
 export class Vertice extends BaseShape {
     readonly lineWidthModifier = 1.5;
-    readonly lineWidth = Circle.radius * .075 *  (Math.random() + 1) * 5;
+    readonly lineWidth = Circle.radius * .075 *  (Math.random() + 1) * 4;
     color = "";
 
     //Keep track of the previous temporary color to render over when passing another time
