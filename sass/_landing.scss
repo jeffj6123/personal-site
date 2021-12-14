@@ -3,12 +3,10 @@
 .landing-name {
     animation-name: fade-in;
     animation-duration: 3s;
-
     margin-left: 10%;
     font-size: 3rem;
     position: absolute;
     top: 40%;
-    text-shadow: 2px 2px 2px 2px #000000;
     font-family: 'Aldrich', sans-serif;
 
     .name {
@@ -62,30 +60,40 @@
     }
 }
 
+
+.socials {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    height: 70px;
+    flex-wrap: wrap;
+  }
+  
+  
+  @media only screen and (max-width: vars.$mid-screen-size) {
+    .socials {
+      gap: 25px;
+    }
+  }
+  
+
 .contact-info {
     width: auto;
     display: inline-flex;
     align-items: center;
-    position: relative;
     text-decoration: none;
     min-width: 56px;
     height: 50px;
     transition: .3s all;
-    max-width: 70px;
 
     .social-icon {
         position: absolute;
         font-size: 40px;
-        text-align: center;
         color: var(--main-bg-color);
         background-color: var(--accent-color);
-        border-radius: 50px;
+        border-radius: vars.$round-border-radius;
         padding: 8px;
         z-index: 2;
-        width: 40px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
     }
 
     .info {
@@ -98,10 +106,9 @@
         display: flex;
         align-items: center;
         background-color: var(--main-bg-color);
-        border-radius: 50px;
+        border-radius: vars.$round-border-radius;
         font-size: calc(1.5 * var(--base-font-size));
-        z-index: 1;
-        padding-left: 48px;
+        padding-left: 48px; //needed so when it collapses back it looks right
     }
 
     &:hover,

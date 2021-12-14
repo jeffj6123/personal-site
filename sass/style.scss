@@ -2,7 +2,6 @@
 @use '_header';
 @use '_bounce';
 @use '_projects';
-@use '_timeline';
 @use '_about';
 @use '_landing';
 @use '_job_history';
@@ -52,7 +51,7 @@ p {
   box-shadow: var(--box-shadow);
 }
 
-h1,h2,h3, h4 {
+h1,h2,h3,h4 {
   margin-bottom: 0px;
   margin-top: 0px;
   font-family: var(--header-font);
@@ -174,17 +173,6 @@ ul li {
     font-size: 25px;
   }
 }
-
-@keyframes arrow {
-  0%   {
-    
-  }
-
-  100% {
-
-  }
-}
-
 
 @media only screen and (max-width: vars.$small-screen-size) {
   .layout-container {

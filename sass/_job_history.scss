@@ -40,17 +40,13 @@
     border: 2px solid var(--accent-color);
     display: flex;
     flex-direction: column;
-    white-space: nowrap;
     justify-content: space-between;
-    align-content: center;
     color: var(--main-text);
-    gap: 10px;
     min-width: 240px
 }
 
 .job-role {
     background: var(--accent-color);
-    width: fit-content;
     font-weight: bold;
     text-shadow: 1px 1px black;
 }
