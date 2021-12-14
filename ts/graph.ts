@@ -112,13 +112,8 @@ export const checkForValidVertice = (point1: IPoint, point2: IPoint, points: IPo
             valid = false;
         }
     })
-
     return valid;
 }
-
-
-
-
 
 
 export const getDistanceBetweenPoints = (node: IPoint, goalNode: IPoint) => {
@@ -126,8 +121,6 @@ export const getDistanceBetweenPoints = (node: IPoint, goalNode: IPoint) => {
     const y = (node.y - goalNode.y) * (node.y - goalNode.y);
     return Math.sqrt(x + y );
 }
-
-
 
 export const checkOverlap = (shape1: Circle, shape2: Circle) => {
     //check if circles are

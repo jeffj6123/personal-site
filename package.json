@@ -8,6 +8,7 @@
     "axios": "^0.21.4",
     "cheerio": "^1.0.0-rc.10",
     "copy-webpack-plugin": "^9.0.1",
+    "firebase": "^9.6.1",
     "p5": "^1.4.0",
     "p5.collide2d": "^0.7.3"
   },
@@ -28,9 +29,9 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --hot",
-    "build": "webpack",
-    "deploy": "firebase hosting:channel:deploy testing"
+    "start": "webpack serve --open --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
+    "deploy": "firebase deploy"
   },
   "author": "",
   "license": "ISC"

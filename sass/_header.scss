@@ -4,15 +4,18 @@
   min-height: var(--header-size);
   background-color: var(--main-bg-color);
   box-shadow: var(--box-shadow);
+  font-family: var(--header-font);
+
   position: sticky;
   top: 0px;
+
   display: flex;
   flex-direction: row;
   align-items: center;
   box-sizing: border-box;
+
   padding: 0px 5%;
   z-index: 4;
-  font-family: var(--header-font);
 
   .navigation {
     display: flex;
@@ -26,19 +29,14 @@
     color: var(--main-text);
     text-decoration: unset;
     border-bottom: 3px solid transparent;
-    /* Fallback: Set a background color. */
 
-    /* Create the gradient. */
-    // background: linear-gradient(90deg, var(--accent-color) 49%, #fff 50%);
     background: linear-gradient(90deg, var(--main-text) 49%, var(--accent-color) 50%);
     transition: background .5s;
-    /* Set the background size and repeat properties. */
+
     background-size: 200%;
     background-position: 0%;
     background-repeat: repeat;
 
-    /* Use the text as a mask for the background. */
-    /* This will show the gradient as a text color rather than element bg. */
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     -moz-background-clip: text;
@@ -67,8 +65,46 @@
   flex-wrap: wrap;
 }
 
+
 @media only screen and (max-width: vars.$mid-screen-size) {
   .socials {
     gap: 25px;
+  }
+}
+
+.mobile-nav {
+  display: none;
+  cursor: pointer;
+}
+
+@media only screen and(max-width: vars.$small-screen-size) {
+  .mobile-nav {
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+
+  .navbar-wrapper {
+    position: absolute;
+    right: 0px;
+    height: 100vh;
+    z-index: 1;
+    background-color: var(--main-bg-color);
+    top: var(--header-size);
+    width: 50%;
+    opacity: .9;
+    transition: .5s all ease-in-out;
+    max-width: 0px;
+    overflow: hidden;
+
+    &.show {
+      max-width: 100%;
+    }
+
+    .navigation {
+      flex-direction: column;
+    }
+    
   }
 }

@@ -1,9 +1,3 @@
-/*
-   0
- 1   2
-3 4 5 6
-*/
-
 interface IHeapItem<T> {
     item: T;
     value: number;
@@ -97,19 +91,18 @@ export class Heap<T> {
     }
 }
 
+// let f = new Heap();
 
-let f = new Heap();
+// const items = [];
 
-const items = [];
+// for (let i = 0; i < 10; i++) {
+//     const item = Math.random() * 10;
+//     items.push(item);
+//     f.add(item, item);
+// }
 
-for (let i = 0; i < 10; i++) {
-    const item = Math.random() * 10;
-    items.push(item);
-    f.add(item, item);
-}
-
-console.log(items)
-console.log(f.internal)
-while (f.size() > 0) {
-    console.log("item" + f.getNext())
-}
+// console.log(items)
+// console.log(f.internal)
+// while (f.size() > 0) {
+//     console.log("item" + f.getNext())
+// }

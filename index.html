@@ -17,22 +17,28 @@
     <a name="home"></a>
     <div style="display: flex; flex-direction: column;">
         <div class="header">
-            <div class="navigation">
-                <a class="link" href="#home"><i style="display: flex;" class="ri-home-line"></i></a>
-                <a class="link" href="#projects">Projects</a>
-                <a class="link" href="#About">About</a>
-                <a class="link" href="#history">History</a>
+            <div class="navbar-wrapper">
+                <div class="navigation">
+                    <a class="link" href="#home"><i style="display: flex;" class="ri-home-line"></i></a>
+                    <a class="link" href="#projects">Projects</a>
+                    <a class="link" href="#About">About</a>
+                    <a class="link" href="#history">History</a>
             </div>
-
+            </div>
+    
             <div style="margin-left: auto;     margin-left: auto;
             display: flex;
             align-items: center;">
-                <i class="ri-sun-fill" style="font-size: 40px; color: #e9ac95;"></i>
+                <i class="ri-sun-fill" style="font-size: 35px; color: #e9ac95;"></i>
                 <label class="switch" style="margin-left: 10px; margin-right: 10px;">
                     <input type="checkbox"  id="nightmode">
                     <span class="slider round"></span>
                 </label>
-                <i class="ri-moon-fill" style="font-size: 40px;"></i>
+                <i class="ri-moon-fill" style="font-size: 35px;"></i>
+            </div>
+
+            <div class="mobile-nav" id="mobile-nav">
+                <i class="ri-menu-line"></i>
             </div>
         </div>
         <div>
@@ -60,7 +66,7 @@
                                 <div class="info shadow">Jeff Jarry</div>
                             </a>
 
-                            <a class="contact-info" href="https://www.linkedin.com/in/jeffrey-jarry-127946b6/"
+                            <a class="contact-info" href="mailto:jeffrey.jarry@gmail.com"
                                 target="_blank">
                                 <i class="social-icon ri-mail-line shadow"></i>
                                 <div class="info shadow">Jeffrey.jarry@gmail.com</div>
@@ -86,7 +92,6 @@
 
                         <div class="projects-container">
                             <div class="project-tile card shadow main-bg">
-                                <!-- <img class="icon shadow middle-image moving-image" src="images/FFLogo.png"> -->
                                 <h2 class="shadow bounce-in project-title">
                                     FFDecks
                                 </h2>
@@ -101,34 +106,25 @@
                                         </h2>
                                         <p>
                                             FFDecks is a Final Fantasy Trading Card Game deck builder, tournament
-                                            results
-                                            hub, meta analysis,
-                                            playtesting platform, card database, collection manager, and community
-                                            content
-                                            hub.
-
+                                            results hub, meta analyzer, playtesting platform,
+                                            card database and card tracker
                                         </p>
                                         <p style="margin-top: 10px;">
                                             This site was developed to fill the gap for the
-                                            community's lack of full encompassing websites to foster community growth
-                                            for
-                                            the game.
+                                            community's lack of a proper site fir
 
                                         <ul>
                                             <li>
-                                                This website was developed with angular and a backend written in python.
-                                                This website is hosted on google app engine and uses google datastores
-                                                and
-                                                firestore.
+                                                This site has an Angular frontend and a Python backend, hosted on Google App Engine
+                                                and data is stored in Google Datastore, Firebase Real Time Database, and Firestore.
                                             </li>
 
                                             <li>
-                                                Realized four different revenue streams.
+                                                Configured with four different revenue streams.
                                             </li>
 
                                             <li>
                                                 Voted number one community website by the players of the game.
-                                                Feature development was guided by community feedback.
                                             </li>
                                         </ul>
                                         </p>
@@ -154,13 +150,11 @@
                                         <i class="link-out ri-github-fill shadow"></i>
                                     </a>
                                     <p>
-                                        Service Fabric Explorer or SFX is an application for inspecting and managing
-                                        cloud
-                                        applications and nodes in a Microsoft Azure Service Fabric cluster.
+                                        Service Fabric Explorer (SFX) is an application for used to monitor and diagnose
+                                         Microsoft Azure Service Fabric cluster.
                                     </p>
                                     <p>
-                                        SFX is used to monitor and diagnose service fabric clusters for high production
-                                        work loads.
+
                                     <ul>
                                         <li>
                                             This website was originally written in angularjs but has been migrated to
@@ -170,9 +164,9 @@
 
                                         <li>
                                             This product is developed closely with feedback from support engineers,
-                                            other software engineers and end users.
+                                            product users.
                                             The development cycle used is very reactive to new feature requests to
-                                            always prioritize the highest impact items
+                                            always prioritize the highest impact items.
                                         </li>
 
                                         <li>
@@ -210,6 +204,7 @@
                                 2018 with a Bachelors Degree in <span class="highlight-text">Computer Science</span>.
                                 The courses I took had an emphasis on data structures and algorithms.
                                 While I was there I competed in multiple hackathons, and won most innovative from OH/IO.
+                                This is where I found I had a real interest in hackathons and quick prototyping of new ideas.
                             </p>
 
                         </div>
@@ -298,12 +293,11 @@
                         <div class="job-description">
                             <ul>
                                 <li>
-                                    Working within the supportability and observability part of the Azure Service Fabric
-                                    team.
+                                    I Work within the supportability and observability team of the Azure Service Fabric, developing Service Fabric Explorer.
                                 </li>
 
                                 <li>
-                                    Write modern, well documented and tested code. Working in Typescript and
+                                    Write modern, well documented and tested code. Primarily in Typescript and
                                     Angular with testing done in Cypress and karma.
                                 </li>
 
@@ -329,17 +323,17 @@
                         <div class="job-description">
                             <ul>
                                 <li>
-                                    Led project development of internal application for trailer yard
-                                    management system to reduce costs.
+                                    I Led project development of an internal application for a trailer yard
+                                    management system to reduce operating cost.
                                 </li>
 
                                 <li>
-                                    Performed full stack development with Google app engine,
+                                    I Performed full stack development with Google app engine,
                                     webapp2, and Angular 4.
                                 </li>
 
                                 <li>
-                                    Performed Requirement gathering, timeline
+                                    I Performed Requirement gathering, timeline
                                     projection, user training, and developer training.
                                 </li>
                             </ul>
@@ -351,7 +345,6 @@
                                 <h3>Scott's Miracle Gro</h3>
                                 <div class="job-timespent">
                                     May, 2016 <i class="ri-arrow-right-line"></i> Sept, 2017
-    
                                 </div>
                             </div>
                             <div class="job-role card shadow">
@@ -361,19 +354,17 @@
                         <div class="job-description">
                             <ul>
                                 <li>
-                                    Developed and integrated new features into an existing codebase for an
-                                    internal use application. Worked within a scrum, agile methodology for delivering
+                                    I developed and integrated new features into an existing codebase for an
+                                    internal use application. I Worked within a scrum methodology for delivering
                                     updates
                                 </li>
 
                                 <li>
-                                    New feature
-                                    implementation / updates were done using angularjs 1.5, bootstrap, google
-                                    app engine, couchdb, and python.
+                                    Development was done using Angularjs 1.5, Bootstrap, and Google App Engine.
                                 </li>
 
                                 <li>
-                                    Lead user testing and release of new features at the end of the development cycle.
+                                    I Led user testing and release of new features at the end of the development cycle.
                                 </li>
                             </ul>
                         </div>

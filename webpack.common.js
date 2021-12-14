@@ -4,18 +4,8 @@ const path = require("path");
 
 module.exports = {
     target: 'web', 
-    mode: "development",
-    watch: true,
-    devServer: {
-       hot: true,
-        watchFiles: ['index.html', 'sass/style.scss']
-    },
-    devtool: "source-map",
     entry: {
         "app": './index.ts',
-        "hot": 'webpack/hot/dev-server.js',
-        // Dev server client for web socket transport, hot and live reload logic
-        client: 'webpack-dev-server/client/index.js?hot=true&live-reload=true',
     },
     module: {
         rules: [
@@ -30,7 +20,6 @@ module.exports = {
                     }, {
                         loader: "sass-loader" // compiles Sass to CSS
                     }]
-
             },
             {
                 test: /\.js$/,

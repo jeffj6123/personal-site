@@ -1,13 +1,11 @@
-import { darkMode, lightMode, nightModeStorageKey, shapeCount } from "./ts/constants";
-import { AStarFinding, Node } from "./ts/pathFinding";
-import { Circle, Crawler, IPoint, ISquarePoint, RectCircleColliding, ShapeHandler, textRenderer, Vertice } from "./ts/shape";
+import { nightModeStorageKey, shapeCount } from "./ts/constants";
+import { AStarFinding } from "./ts/pathFinding";
+import { Circle, Crawler, ISquarePoint, RectCircleColliding, ShapeHandler, Vertice } from "./ts/shape";
 import "./sass/style.scss";
 import { debounced } from "./ts/debounce";
 import { checkOverlap, detectIslands, generateEdgeIds, generateVertices } from "./ts/graph";
-import { ICSSConfig } from "./ts/interfaces";
 import { applyCSSVars, getFromLocalStorage, setLocalStorage } from "./ts/utils";
-
-const canvasMultiplier = 1;
+import "./ts/firebase";
 export interface IDrawInfo {
     ctx: CanvasRenderingContext2D;
     width: number;
@@ -147,6 +145,16 @@ const setNightMode = () => {
     })
 }
 
+const setMobileNavBar = () => {
+    const navbarWrapper = document.getElementsByClassName("navbar-wrapper")[0] as HTMLElement;
+    const menuHandler = document.getElementById('mobile-nav');
+
+    menuHandler.addEventListener('click', () => {
+        navbarWrapper.classList.toggle("show")
+    })
+    
+}
+
 const callback: IntersectionObserverCallback = entries => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -169,4 +177,5 @@ window.onload = () => {
     draw();
     changeTest();
     setNightMode();
+    setMobileNavBar();
 };
