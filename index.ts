@@ -114,7 +114,7 @@ export function draw() {
     }
 }
 
-const changeTest = () => {
+const startCurrentMake = () => {
     const test = document.getElementById("test");
     let currentIndex = 1;
     const makes = [
@@ -124,6 +124,8 @@ const changeTest = () => {
         "digital experiences",
         "useful tools"
     ]
+    //add when interval starts to avoid delay
+    test.classList.add('making-current')
     setInterval(() => {
         test.innerHTML = makes[currentIndex];
         currentIndex++;
@@ -134,14 +136,14 @@ const changeTest = () => {
 }
 
 const setNightMode = () => {
-    const test = document.getElementById("nightmode") as HTMLInputElement;
+    const nightModeToggle = document.getElementById("nightmode") as HTMLInputElement;
     
-    test.checked = +getFromLocalStorage(nightModeStorageKey, "1") > 0;
-    applyCSSVars(test.checked)
+    nightModeToggle.checked = +getFromLocalStorage(nightModeStorageKey, "1") > 0;
+    applyCSSVars(nightModeToggle.checked)
 
-    test.addEventListener('click', () => {
-        applyCSSVars(test.checked)
-        setLocalStorage(nightModeStorageKey, test.checked ? "1" : "0")
+    nightModeToggle.addEventListener('click', () => {
+        applyCSSVars(nightModeToggle.checked)
+        setLocalStorage(nightModeStorageKey, nightModeToggle.checked ? "1" : "0")
     })
 }
 
@@ -175,7 +177,7 @@ const setObservers = () => {
 window.onload = () => {
     setObservers();
     draw();
-    changeTest();
+    startCurrentMake();
     setNightMode();
     setMobileNavBar();
 };

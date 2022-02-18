@@ -16,6 +16,7 @@
     .making-current {
         animation-name: fade-in-out;
         animation-duration: 4s;
+        animation-delay: .05s;
         animation-iteration-count: infinite;
     }
 }
@@ -47,11 +48,11 @@
         opacity: 0;
     }
 
-    20% {
+    10% {
         opacity: 1;
     }
 
-    60% {
+    70% {
         opacity: 1;
     }
 
