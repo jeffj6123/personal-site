@@ -1,0 +1,119 @@
+@use 'vars';
+
+.header {
+  min-height: var(--header-size);
+  background-color: var(--main-bg-color);
+  box-shadow: var(--box-shadow);
+  font-family: var(--header-font);
+
+  position: sticky;
+  top: 0px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+
+  padding: 0px 5%;
+  z-index: 4;
+  
+  .navigation {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .link {
+    padding: 5px;
+    margin: 5px;
+    color: var(--main-text);
+    border-bottom: 3px solid transparent;
+
+    background: linear-gradient(90deg, var(--main-text) 49%, var(--accent-color) 50%);
+    transition: background .5s;
+
+    text-decoration: unset;
+    background-size: 200%;
+    background-position: 0%;
+    background-repeat: repeat;
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -moz-background-clip: text;
+    -moz-text-fill-color: transparent;
+
+    font-weight: 900;
+
+    &:hover {
+      background-position: -100%;
+    }
+  }
+
+  a:visited,
+  a:hover,
+  a:active,
+  a:focus {
+    border-bottom: 3px solid var(--accent-color);
+  }
+}
+
+.view-code {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  color: var(--accent-color);
+  align-items: center;
+  border-bottom: 3px solid transparent;
+  margin-left: auto;
+  margin-right: 15px;
+}
+
+.mobile-nav {
+  display: none;
+  cursor: pointer;
+}
+
+.navbar-wrapper {
+  flex: 1;
+}
+
+@media only screen and(max-width: vars.$small-screen-size) {
+  .mobile-nav {
+    font-size: 40px;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+  }
+
+  .view-code {
+    margin-right: auto;
+  }
+
+  .navbar-wrapper {
+    position: absolute;
+    right: 0px;
+    height: 100vh;
+    z-index: 1;
+    background-color: var(--main-bg-color);
+    top: var(--header-size);
+    width: 50%;
+    opacity: .9;
+    transition: .5s all ease-in-out;
+    max-width: 0px;
+    overflow: hidden;
+
+    &.show {
+      max-width: 100%;
+    }
+
+    .navigation {
+      flex-direction: column;
+    }
+    
+  }
+}
+
+.code-icon {
+  font-size: 30px;
+  margin-left: 10px;
+}

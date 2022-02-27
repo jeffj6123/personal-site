@@ -1,0 +1,77 @@
+@use 'vars';
+
+.job-timespent {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+.slide-down {
+    &.is-visible {
+        animation: bounce-in;
+        animation-duration: 1s;
+        animation-fill-mode: forwards;
+    }
+}
+
+@keyframes slidedown {
+    from {
+        opacity: 0;
+        transform: translate(0, calc(-100% - 30px));
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(0%);
+    }
+}
+
+.job-description {
+    margin-left: 10px;
+}
+
+.job-tile {
+    display: flex;
+    transform: translateY(50px);
+}
+
+.job-overview {
+    border: 2px solid var(--accent-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: var(--main-text);
+    min-width: 240px
+}
+
+.job-role {
+    background: var(--accent-color);
+    font-weight: bold;
+    text-shadow: 1px 1px black;
+}
+
+
+
+@media only screen and (max-width: vars.$mid-screen-size) {
+    .job-tile {
+        flex-direction: column;
+    }
+
+    .job-overview {
+        width: initial;
+        flex-direction: row;
+    }
+}
+
+@media only screen and (max-width: vars.$small-screen-size) {
+    .job-tile {
+        flex-direction: column;
+    }
+
+    .job-overview {
+        width: initial;
+        flex-direction: column;
+        align-items: center;
+    }
+}
