@@ -114,38 +114,36 @@ export function draw() {
     }
 }
 
-// const startCurrentMake = () => {
-//     const test = document.getElementById("test");
-//     let currentIndex = 1;
-//     const makes = [
-//         "Websites",
-//         "Games",
-//         "prototypes",
-//         "digital experiences",
-//         "useful tools"
-//     ]
-//     //add when interval starts to avoid delay
-//     test.classList.add('making-current')
-//     setInterval(() => {
-//         test.innerHTML = makes[currentIndex];
-//         currentIndex++;
-//         if (currentIndex === makes.length) {
-//             currentIndex = 1;
-//         }
-//     }, 4000)
-// }
+const changeTest = () => {
+    const test = document.getElementById("test");
+    let currentIndex = 1;
+    const makes = [
+        "Websites",
+        "Games",
+        "prototypes",
+        "digital experiences",
+        "useful tools"
+    ]
+    setInterval(() => {
+        test.innerHTML = makes[currentIndex];
+        currentIndex++;
+        if (currentIndex === makes.length) {
+            currentIndex = 1;
+        }
+    }, 4000)
+}
 
-// const setNightMode = () => {
-//     const nightModeToggle = document.getElementById("nightmode") as HTMLInputElement;
+const setNightMode = () => {
+    const test = document.getElementById("nightmode") as HTMLInputElement;
     
-//     nightModeToggle.checked = +getFromLocalStorage(nightModeStorageKey, "1") > 0;
-//     applyCSSVars(nightModeToggle.checked)
+    test.checked = +getFromLocalStorage(nightModeStorageKey, "1") > 0;
+    applyCSSVars(test.checked)
 
-//     nightModeToggle.addEventListener('click', () => {
-//         applyCSSVars(nightModeToggle.checked)
-//         setLocalStorage(nightModeStorageKey, nightModeToggle.checked ? "1" : "0")
-//     })
-// }
+    test.addEventListener('click', () => {
+        applyCSSVars(test.checked)
+        setLocalStorage(nightModeStorageKey, test.checked ? "1" : "0")
+    })
+}
 
 const setMobileNavBar = () => {
     const navbarWrapper = document.getElementsByClassName("navbar-wrapper")[0] as HTMLElement;
@@ -177,7 +175,7 @@ const setObservers = () => {
 window.onload = () => {
     setObservers();
     draw();
-    startCurrentMake();
+    changeTest();
     setNightMode();
     setMobileNavBar();
 };

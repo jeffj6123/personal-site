@@ -19,7 +19,6 @@ export const applyCSSVars = (nightMode: boolean = true) => {
     }
 
     Object.keys(css).forEach(key => {
-        console.log(`--${camelCaseToSnakeCase(key)}`)
         root.style.setProperty(`--${camelCaseToSnakeCase(key)}`, css[key]);
     })
 }

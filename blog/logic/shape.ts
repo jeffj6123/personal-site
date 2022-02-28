@@ -1,4 +1,4 @@
-import { IDrawInfo, IUpdateInfo } from "..";
+import { IDrawInfo, IUpdateInfo } from "../components/graph";
 import { FULL_RADIUS } from "./constants";
 import { getDistanceBetweenPoints } from "./graph";
 import { Edge, INodePathFindingInfo, Node } from "./pathFinding";

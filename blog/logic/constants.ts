@@ -1,11 +1,16 @@
-import { ICSSConfig } from "./interfaces";
-
 export const size = 500;
 export const shapeCount = 150;
 
 export const FULL_RADIUS = Math.PI * 2;
 
 export const nightModeStorageKey = "nightmode";
+
+export interface ICSSConfig extends Record<string, string> {
+    mainBgColor: string;
+    bgColor: string;
+    accentColor: string;
+    mainText: string;
+}
 
 export const darkMode: ICSSConfig = {
     mainBgColor: "rgb(47 46 46)",

@@ -1,6 +1,6 @@
 export function debounced(delay: number, fn: Function) {
     let timerId: NodeJS.Timeout | null;
-    return function (...args) {
+    return function (...args: any[]) {
       if (timerId) {
         clearTimeout(timerId);
       }
