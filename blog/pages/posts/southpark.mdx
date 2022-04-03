@@ -1,0 +1,82 @@
+export const metaData = {
+    title: "Making a South Park site",
+    id: 1,
+    description: "The process of making a site for ranking southpark episodes"
+}
+
+# So what is the goal?
+
+Well recently my girlfriend is watching SouthPark for the first time and she also has an affinity for tier lists. After a fairly quick look for tier list sites, I didn't find any that I liked that much so this felt like a good opportunity for a project. 
+
+Project overview
+The layout should be fairly simple. Provide an easy way to order episodes and move them between tiers
+Be able to save tier lists to a user
+Share tier lists with others
+
+This section will be broken down into multiple parts to look at each problem as it is solved.
+
+## Part 1: Getting the data
+To make the tier list easy to work with, you would expect that all of the data would be available while making it. Before this site was put together, we were maintaining a spreadsheet by episode/season tuples and it was not easy to double check.
+
+This issue was solved pretty fast by googling “south park API” and I came across a wonderful site which had “most” of the information I was looking for. After a couple of github issues, they were more than willing to help add the extra information I was looking for. This was pulled using the adhoc script below.
+
+https://github.com/jeffj6123/South-Park-Tier-List/blob/master/scripts/pull_from_southpark_api.js
+
+
+## Part 2: Scaffolding the frontend
+I decided I wanted to use React for this site as a way to get familiar. I have predominantly been an Angular developer, and this felt like a good opportunity to see a framework that is structured fairly differently.
+
+I only expect to have three real pages for this site; landing page, edit tier list, and view tier list. The first page I wanted to tackle is the edit page because it would dictate what information we need to store and if we are missing anything from the API. 
+
+I am a fan of the drag n drop style tier lists because it feels the most natural for this and at this point it is expected. Using something like a directional pad for moving tier lists while easy to implement would get frustrating over time so it is best to avoid it. Given I intend on using somewhat larger tiles and 300+ items can get very long, we do need an easy way to get tiles roughly where we want. Moving an item from the unranked section to say S tier will become tedious and this is why I decided to add a “quick move” tier button at the bottom.
+
+I have worked with the angular CDK drag n drop library for other projects, and it is pretty smooth but given we are in angular this means searching around. I originally wanted a very specific functionality built in and that was to work with flex wrap. I point this out because it's fairly common for DnD libraries to only support one axis based movement. This was because for testing I just layed out the items using flex/flex-wrap. Integrating the DnD Kit was fairly straightforward using their examples. I did need to put in my own custom component for the episodes and knowing I might add on other tier lists later(I did add characters), to plan for this now I had them passed in as a prop as long as they implemented a specific interface.
+
+https://github.com/jeffj6123/South-Park-Tier-List/blob/master/southpark/src/components/sortable.tsx#L29 
+
+This is where it felt like it was starting to come together.
+
+## Part 3: Performance
+https://github.com/clauderic/dnd-kit/issues/389
+https://docs.dndkit.com/presets/sortable#sortable-context
+What I did not bring up in the last section was that when I first implemented the DnD library, I only put in about 10 episodes… When I loaded in all 300+ episodes the experience got significantly worse, bordering on unusable. Am I allowed to blame the library for struggling here? Not really, so I need to figure out how to reduce the amount of rerenders being called. 
+
+This is where we have some tools, coming from angular I had used trackby functions, pure pipes, virtual lists and changeDetection strategies to name a few. This would be a good time to look at our situation and find which ones can be applied. Now some of those tools have one to one matches in React, but the first one we are looking at will be pure pipes. Pure pipes use the strategy of memoization. Memoization is where you save the previous function call’s return so that the next time you call that function with the same arguments you don't need to perform the same work. So in this scenario, memoization should be helpful because the custom component from above doesn't really change when dragging and react already supports this with React.memo and it has next to no implementation cost.
+
+https://github.com/jeffj6123/South-Park-Tier-List/blob/master/southpark/src/components/row.tsx#L68
+
+Did this help? Not really, it was a bit faster but still not responsive to provide a good experience. This is when I opened up the dev tools and saw that the drag n drop was performing a ton of dom operations and on top of it css animations. I really wanted to keep this functionality, animations included. Now watching the dom it became super clear, why do I need all 300 items loaded at once. This is a perfect situation for virtual lists, which can provide massive speed improvements when configured properly. A virtual list generally works by only putting the items on screen into the dom.
+
+TODO: provide a picture of view ports and virtual scrolling
+
+ So in this scenario we could get the moving parts down from 300 to maybe 15? If on mobile, 6 on a large phone. This is where I first checked for if DnD Kit has a built in virtual list, which sadly they did not but there is a well supported library in general. This actually fixed another issue on accident. Remember before where I was filtering libraries based off of if they supported flex-wrap? Well this new solution also removes that concern because the virtualized list solution handles everything by rows anyway.
+https://github.com/bvaughn/react-virtualized/blob/abe0530a512639c042e74009fbf647abdb52d661/source/Grid/Grid.example.js#L221
+https://github.com/bvaughn/react-virtualized/blob/master/docs/List.md
+https://embed.plnkr.co/zjCwNeRZ7XtmFp1PDBsc/
+
+
+This was a bit more involved and it does make the solution a little less flexible because now we need to know the size of the tiles and we have to handle different scenarios if it is a Tier list title row or a tier list item but who cares, its way way faster and that is what matters here.
+
+This roughly gets us to a workable tier list.
+
+## Part 4: Auth
+This one should be way easier, because we will use an already built log in system. This should basically always be how to do this. Unless you are very well versed in security, you should never roll your own authentication solution which will hold a real person’s data. So with this said, I looked up a 0Auth integration guide for google and integrated that in. 
+https://dev.to/sivaneshs/add-google-login-to-your-react-apps-in-10-mins-4del
+
+
+## Part 5: Storing Data
+Now that we know what data we need to store for ranking episodes, we can build out a backend for this. I chose to go with an express application written with typescript that would save data to google datastore. My reasons were I wanted to be able to comfortably sit in the google app engine free tier. This is a fairly straight forward set up, we have 3 main routes; get my tier list, update my tier lists, list some tier lists. For get my tier list, we will return a default list if we dont have one.
+
+Update my tier list, we check if one exists
+
+## Part 6: Make a notification Bar
+When designing a site, it's necessary to make sure the user knows when something goes wrong. I am new to React and a good way to better understand how it works is by creating commonly used elements. In this scenario I wanted to make a notification system. The notification system has two parts to it.
+A way to enqueue a new message
+A consumer that displays the messages
+I started by making a Context based service which is built on top of the subscriber pattern. I wanted to use Context because it makes it easily accessible from any component and a subscriber so it is easy to have the notification component know when there is another message.
+
+This is mainly going to be used for reporting errors and by creating it like a service, we can easily provide it to the http service and wrap each http request. If this project was structured on a larger scale then I would want to create some type of http interceptor and provide the error handling there.
+
+## Part 7: make cartman crawl
+
+When I first started putting together this site I knew I needed something interactive that rewarded people who stayed on the site long enough and were curious enough to click.
