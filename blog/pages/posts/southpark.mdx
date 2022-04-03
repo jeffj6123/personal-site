@@ -1,3 +1,6 @@
+import { BlogLayout } from '../../components/blog-layout';
+import { GitGist } from '../../components/git-gist';
+
 export const metaData = {
     title: "Making a South Park site",
     id: 1,
@@ -6,12 +9,12 @@ export const metaData = {
 
 # So what is the goal?
 
-Well recently my girlfriend is watching SouthPark for the first time and she also has an affinity for tier lists. After a fairly quick look for tier list sites, I didn't find any that I liked that much so this felt like a good opportunity for a project. 
+Recently my girlfriend is watching SouthPark for the first time and we are both fans of tier lists. After a fairly quick look for tier list sites, I didn't find any that I liked that much. This felt like a good opportunity for a project. 
 
-Project overview
-The layout should be fairly simple. Provide an easy way to order episodes and move them between tiers
-Be able to save tier lists to a user
-Share tier lists with others
+### Project overview
+* The layout should be fairly simple. Provide an easy way to order episodes and move them between tiers
+* Be able to save tier lists to a user
+* Share tier lists with others
 
 This section will be broken down into multiple parts to look at each problem as it is solved.
 
@@ -20,13 +23,21 @@ To make the tier list easy to work with, you would expect that all of the data w
 
 This issue was solved pretty fast by googling “south park API” and I came across a wonderful site which had “most” of the information I was looking for. After a couple of github issues, they were more than willing to help add the extra information I was looking for. This was pulled using the adhoc script below.
 
+<GitGist embedUrl='https%3A%2F%2Fgithub.com%2Fjeffj6123%2FSouth-Park-Tier-List%2Fblob%2Fmaster%2Fscripts%2Fpull_from_southpark_api.js'></GitGist>
+
 https://github.com/jeffj6123/South-Park-Tier-List/blob/master/scripts/pull_from_southpark_api.js
 
 
 ## Part 2: Scaffolding the frontend
 I decided I wanted to use React for this site as a way to get familiar. I have predominantly been an Angular developer, and this felt like a good opportunity to see a framework that is structured fairly differently.
 
-I only expect to have three real pages for this site; landing page, edit tier list, and view tier list. The first page I wanted to tackle is the edit page because it would dictate what information we need to store and if we are missing anything from the API. 
+I only expect to have three real pages for this site; 
+
+* Landing page
+* Edit tier list
+* View tier list
+
+The first page I wanted to tackle is the edit page because it would dictate what information we need to store and if we are missing anything from the API. 
 
 I am a fan of the drag n drop style tier lists because it feels the most natural for this and at this point it is expected. Using something like a directional pad for moving tier lists while easy to implement would get frustrating over time so it is best to avoid it. Given I intend on using somewhat larger tiles and 300+ items can get very long, we do need an easy way to get tiles roughly where we want. Moving an item from the unranked section to say S tier will become tedious and this is why I decided to add a “quick move” tier button at the bottom.
 
@@ -80,3 +91,6 @@ This is mainly going to be used for reporting errors and by creating it like a s
 ## Part 7: make cartman crawl
 
 When I first started putting together this site I knew I needed something interactive that rewarded people who stayed on the site long enough and were curious enough to click.
+
+
+export default ({ children }) => <BlogLayout>{children}</BlogLayout> //<Layout meta={meta}>{children}</Layout>

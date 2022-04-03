@@ -25,9 +25,15 @@ export const applyCSSVars = (nightMode: boolean = true) => {
 
 
 export const getFromLocalStorage = (key: string, defaultValue: string) => {
-    const item = window.localStorage.getItem(key);
+    
+    let item = null;
 
-    if(item?.length > 0) {
+    if(typeof window !== "undefined") {
+        item = window.localStorage.getItem(key);
+    }
+
+    if(item !== null) {
+        console.log(item)
         return item;
     }else{
         return defaultValue;
