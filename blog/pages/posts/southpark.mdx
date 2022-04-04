@@ -1,10 +1,32 @@
 import { BlogLayout } from '../../components/blog-layout';
 import { GitGist } from '../../components/git-gist';
-
+import { Warning } from '../../components/special-tiles';
 export const metaData = {
     title: "Making a South Park site",
     id: 1,
     description: "The process of making a site for ranking southpark episodes"
+}
+
+export const Li = (props) => {
+    const title = props.children.find(node => node.type.name === "LiTop")
+    const body = props.children.find(node => node.type.name === "LiBottom")
+
+return (<div className="technology-section">
+        <h3>
+        {title}
+        </h3>
+        <div className="technology-details">
+            {body}
+        </div>
+    </div>)
+}
+
+export const LiTop = (props) => {
+    return (<div>{props.children}</div>)
+}
+
+export const LiBottom = (props) => {
+    return (<div>{props.children}</div>)
 }
 
 # So what is the goal?
@@ -31,7 +53,7 @@ https://github.com/jeffj6123/South-Park-Tier-List/blob/master/scripts/pull_from_
 ## Part 2: Scaffolding the frontend
 I decided I wanted to use React for this site as a way to get familiar. I have predominantly been an Angular developer, and this felt like a good opportunity to see a framework that is structured fairly differently.
 
-I only expect to have three real pages for this site; 
+I only expect to have three real pages for this site.
 
 * Landing page
 * Edit tier list
@@ -39,41 +61,117 @@ I only expect to have three real pages for this site;
 
 The first page I wanted to tackle is the edit page because it would dictate what information we need to store and if we are missing anything from the API. 
 
-I am a fan of the drag n drop style tier lists because it feels the most natural for this and at this point it is expected. Using something like a directional pad for moving tier lists while easy to implement would get frustrating over time so it is best to avoid it. Given I intend on using somewhat larger tiles and 300+ items can get very long, we do need an easy way to get tiles roughly where we want. Moving an item from the unranked section to say S tier will become tedious and this is why I decided to add a “quick move” tier button at the bottom.
+I am a fan of the drag n drop style tier lists because it feels the most natural and at this point it is expected. Using something like a directional pad for moving tier lists while easy to implement would get frustrating over time so it is best to avoid it. Given I intend on using somewhat larger tiles and 300+ items can get very long, we do need an easy way to get tiles roughly where we want. Moving an item from the unranked section to say S tier will become tedious and this is why I decided to add a “quick move” tier button at the bottom.
 
-I have worked with the angular CDK drag n drop library for other projects, and it is pretty smooth but given we are in angular this means searching around. I originally wanted a very specific functionality built in and that was to work with flex wrap. I point this out because it's fairly common for DnD libraries to only support one axis based movement. This was because for testing I just layed out the items using flex/flex-wrap. Integrating the DnD Kit was fairly straightforward using their examples. I did need to put in my own custom component for the episodes and knowing I might add on other tier lists later(I did add characters), to plan for this now I had them passed in as a prop as long as they implemented a specific interface.
+I have worked with the angular CDK drag n drop library for other projects, and it is pretty smooth but given we are in React, this means searching around for something similar. I originally wanted a very specific functionality built in and that was to work with flex wrap, this was because for testing I just layed out the items using flex/flex-wrap. I point this out because it's fairly common for DnD libraries to only support one axis based movement. 
 
-https://github.com/jeffj6123/South-Park-Tier-List/blob/master/southpark/src/components/sortable.tsx#L29 
+### Choosing a Drag N Drop Library
+When evaluating different libraries, there are a couple things to look at.
+
+#### Github Activity
+* Open issue count
+* How often do the repo owners respond to issues?
+* Most recent commit date
+* Feature roadmap
+#### Interface
+* How easy to integrate the library?
+* Is it opinionated? This isnt bad but can dictate how easily you can modify it
+#### Features
+* Does it handle every ask you have or do you need to extend the library?
+#### Licensing
+* Is it MIT? 
+* If the product is commercial, how pricey could it be?
+
+Of the considerations, only the middle two are the real concerns. This project is noncommercial and it will likely have minimal ongoing development.
+
+### Possible Libraries
+
+* <Li>
+    <LiTop>
+        [React DnD](https://react-dnd.github.io/react-dnd/about)
+    </LiTop>
+    <LiBottom>
+    This was the first search Result I came across and i could not find good support for grid based lay outs
+    </LiBottom>
+  </Li>
+
+* <Li>
+    <LiTop>
+        [React-Grid-DnD](https://github.com/bmcmahen/react-grid-dnd)
+    </LiTop>
+    <LiBottom>
+    This was the first one i came across when searching specifically for a grid drag n drop. Looking back I originally wanted to avoid hard coding height and items per row, but given the current solution has them then this library would've likely worked. 
+    </LiBottom>
+  </Li>
+
+* <Li>
+    <LiTop>
+        [DnD Kit](https://docs.dndkit)
+    </LiTop>
+    <LiBottom>
+    This was the solution I ended up choosing. The main reasons being it had quite a bit of support, grid support, and it would integrate pretty easily.
+    </LiBottom>
+  </Li>
+
+
+Integrating the DnD Kit was fairly straightforward using their examples. I did need to put in my own custom component for the episodes and knowing I might add on other tier lists later(I did add characters). To plan for this now I had them passed in as a prop as long as they implemented a specific interface.
+
+```tsx
+export interface IRenderComponent {
+  id: string;
+  data: any;
+  row?: string;
+  children?: React.ReactNode;
+  dragging?: boolean | undefined;
+  last?: boolean;
+}
+```
 
 This is where it felt like it was starting to come together.
 
 ## Part 3: Performance
 https://github.com/clauderic/dnd-kit/issues/389
 https://docs.dndkit.com/presets/sortable#sortable-context
-What I did not bring up in the last section was that when I first implemented the DnD library, I only put in about 10 episodes… When I loaded in all 300+ episodes the experience got significantly worse, bordering on unusable. Am I allowed to blame the library for struggling here? Not really, so I need to figure out how to reduce the amount of rerenders being called. 
+What I did not bring up in the last section was that when I first implemented the DnD library, I only put in about 10 episodes… When I loaded in all 300+ episodes the experience got significantly worse, bordering on unusable. Am I allowed to blame the library for struggling here? Not really, so I need to figure out how to reduce the amount of items rendered and rerenders being called. 
 
-This is where we have some tools, coming from angular I had used trackby functions, pure pipes, virtual lists and changeDetection strategies to name a few. This would be a good time to look at our situation and find which ones can be applied. Now some of those tools have one to one matches in React, but the first one we are looking at will be pure pipes. Pure pipes use the strategy of memoization. Memoization is where you save the previous function call’s return so that the next time you call that function with the same arguments you don't need to perform the same work. So in this scenario, memoization should be helpful because the custom component from above doesn't really change when dragging and react already supports this with React.memo and it has next to no implementation cost.
+This is where we have some tools, coming from angular I had used the following to improve efficiency:
+* Trackby functions
+* Pure pipes
+* Virtual lists
+* ChangeDetection strategies
 
-https://github.com/jeffj6123/South-Park-Tier-List/blob/master/southpark/src/components/row.tsx#L68
+This would be a good time to look at our situation and find which ones can be applied. Now some of those tools have one to one matches in React, but the first one we are looking at will be pure pipes. Pure pipes use the strategy of memoization. 
 
-Did this help? Not really, it was a bit faster but still not responsive to provide a good experience. This is when I opened up the dev tools and saw that the drag n drop was performing a ton of dom operations and on top of it css animations. I really wanted to keep this functionality, animations included. Now watching the dom it became super clear, why do I need all 300 items loaded at once. This is a perfect situation for virtual lists, which can provide massive speed improvements when configured properly. A virtual list generally works by only putting the items on screen into the dom.
+### Memoization
+Memoization is where you save the previous function call’s return so that the next time you call that function with the same arguments you don't need to perform the same work. So in this scenario, memoization should be helpful because the custom component from above doesn't really change when dragging and react already supports this with React.memo and it has next to no implementation cost.
 
-TODO: provide a picture of view ports and virtual scrolling
+### Virtual scrolling
+Did memoization help? Not really, it was a bit faster but still not responsive to provide a good experience. This is when I opened up the dev tools and saw that the drag n drop was performing a ton of dom operations and on top of it, css animations. I really wanted to keep this functionality, animations included. 
 
- So in this scenario we could get the moving parts down from 300 to maybe 15? If on mobile, 6 on a large phone. This is where I first checked for if DnD Kit has a built in virtual list, which sadly they did not but there is a well supported library in general. This actually fixed another issue on accident. Remember before where I was filtering libraries based off of if they supported flex-wrap? Well this new solution also removes that concern because the virtualized list solution handles everything by rows anyway.
-https://github.com/bvaughn/react-virtualized/blob/abe0530a512639c042e74009fbf647abdb52d661/source/Grid/Grid.example.js#L221
-https://github.com/bvaughn/react-virtualized/blob/master/docs/List.md
-https://embed.plnkr.co/zjCwNeRZ7XtmFp1PDBsc/
+Now watching the dom it became super clear, why do I need all 300 items loaded at once?
+This is a perfect situation for virtual lists, which can provide massive speed improvements when configured properly. A virtual list generally works by only putting the items on screen into the dom.
 
+So in this scenario we could get the moving parts down from 300 to maybe 15? If on mobile, 6 on a large phone. This is where I first checked for if DnD Kit has a built in virtual list, which sadly they did not but there is a well supported library in general. 
+
+This actually fixed another issue on accident. Remember before where I was filtering libraries based off of if they supported flex-wrap? Well this new solution also removes that concern because the virtualized list solution handles everything by rows anyway.
+
+### React Virtualized
+Below are the three examples I used for integrating the library into the project
+* [Grid Example](https://github.com/bvaughn/react-virtualized/blob/abe0530a512639c042e74009fbf647abdb52d661/source/Grid/Grid.example.js#L221)
+* [List docs](https://github.com/bvaughn/react-virtualized/blob/master/docs/List.md)
+* [Dynamic lists](https://embed.plnkr.co/zjCwNeRZ7XtmFp1PDBsc/)
 
 This was a bit more involved and it does make the solution a little less flexible because now we need to know the size of the tiles and we have to handle different scenarios if it is a Tier list title row or a tier list item but who cares, its way way faster and that is what matters here.
 
 This roughly gets us to a workable tier list.
 
 ## Part 4: Auth
-This one should be way easier, because we will use an already built log in system. This should basically always be how to do this. Unless you are very well versed in security, you should never roll your own authentication solution which will hold a real person’s data. So with this said, I looked up a 0Auth integration guide for google and integrated that in. 
-https://dev.to/sivaneshs/add-google-login-to-your-react-apps-in-10-mins-4del
+This one should be way easier, because we will use an existing log in system. So with this said, I looked up a [0Auth integration guide](https://dev.to/sivaneshs/add-google-login-to-your-react-apps-in-10-mins-4del) from googling around and integrated that in. 
 
+<Warning>
+### Dont make your own authentication system
+Use a well tested existing solution. Unless you are very well versed in security, you should never roll your own authentication solution which will hold a real person’s data. 
+</Warning>
 
 ## Part 5: Storing Data
 Now that we know what data we need to store for ranking episodes, we can build out a backend for this. I chose to go with an express application written with typescript that would save data to google datastore. My reasons were I wanted to be able to comfortably sit in the google app engine free tier. This is a fairly straight forward set up, we have 3 main routes; get my tier list, update my tier lists, list some tier lists. For get my tier list, we will return a default list if we dont have one.
