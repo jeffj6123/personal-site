@@ -1,3 +1,9 @@
+---
+title: React Navigation Tutorial
+publishedOn: January, 6th. 2022
+excerpt: React Navigation is a number one tool to learn in React Native. You would always use them; these are some of the best practices in using React Navigation
+---
+
 import { BlogLayout } from '../../components/blog-layout';
 import { GitGist } from '../../components/git-gist';
 import { Warning } from '../../components/special-tiles';
@@ -45,9 +51,61 @@ To make the tier list easy to work with, you would expect that all of the data w
 
 This issue was solved pretty fast by googling “south park API” and I came across a wonderful site which had “most” of the information I was looking for. After a couple of github issues, they were more than willing to help add the extra information I was looking for. This was pulled using the adhoc script below.
 
-<GitGist embedUrl='https%3A%2F%2Fgithub.com%2Fjeffj6123%2FSouth-Park-Tier-List%2Fblob%2Fmaster%2Fscripts%2Fpull_from_southpark_api.js'></GitGist>
-
-https://github.com/jeffj6123/South-Park-Tier-List/blob/master/scripts/pull_from_southpark_api.js
+```ts
+const fs = require('fs');
+const path = require('path');
+const axios = require('axios');
+const fsP = require('fs/promises')
+ 
+const getEpisodes = () => {
+    let episodes = [];
+    const loop = 32;
+ 
+    for (let i = 1; i < loop; i++) {
+        try {
+            setTimeout(() => {
+                axios.get(`https://spapi.dev/api/episodes?page=${i}`).then(body => {
+ 
+                    episodes = episodes.concat(body.data.data);
+ 
+                    if (i === (loop - 1)) {
+                        fsP.writeFile(path.join(__dirname, `episodes2.json`), JSON.stringify(episodes.sort((a,b) => a.id - b.id)))
+                    }
+                })
+            }, 100 * i)
+ 
+        } catch (e) {
+            console.log(" could not load " + i)
+        }
+    }
+}
+ 
+const getCharacters = () => {
+    let episodes = [];
+    const loop = 23;
+ 
+    for (let i = 1; i < loop; i++) {
+        try {
+            setTimeout(() => {
+                axios.get(`https://spapi.dev/api/characters?page=${i}`).then(body => {
+ 
+                    episodes = episodes.concat(body.data.data);
+ 
+                    if (i === (loop - 1)) {
+                        fsP.writeFile(path.join(__dirname, `characters2.json`), JSON.stringify(episodes.sort((a,b) => a.id - b.id)))
+                    }
+                })
+            }, 100 * i)
+ 
+        } catch (e) {
+            console.log(" could not load " + i)
+        }
+    }
+}
+ 
+getCharacters()
+getEpisodes();
+```
 
 
 ## Part 2: Scaffolding the frontend
@@ -114,7 +172,7 @@ Of the considerations, only the middle two are the real concerns. This project i
   </Li>
 
 
-Integrating the DnD Kit was fairly straightforward using their examples. I did need to put in my own custom component for the episodes and knowing I might add on other tier lists later(I did add characters). To plan for this now I had them passed in as a prop as long as they implemented a specific interface.
+Integrating the DnD Kit was fairly straightforward using their examples. I did need to put in my own custom component for the episodes and knowing I might add on other tier lists later(I did add characters). To plan for this now I had them passed in as a prop as long as they implemented a specific interface. This is a useful strategy to make a component more reusable. 
 
 ```tsx
 export interface IRenderComponent {
@@ -174,21 +232,121 @@ Use a well tested existing solution. Unless you are very well versed in security
 </Warning>
 
 ## Part 5: Storing Data
-Now that we know what data we need to store for ranking episodes, we can build out a backend for this. I chose to go with an express application written with typescript that would save data to google datastore. My reasons were I wanted to be able to comfortably sit in the google app engine free tier. This is a fairly straight forward set up, we have 3 main routes; get my tier list, update my tier lists, list some tier lists. For get my tier list, we will return a default list if we dont have one.
+Now that we know what data we need to store for ranking episodes, we can build out a backend for this. I chose to go with an express application written with typescript that would save data to google datastore. My reasons were I wanted to be able to comfortably sit in the google app engine free tier. 
+This is a fairly straight forward set up, we have 3 main routes;
+* Get my tier list
+* Update my tier lists
+* List some tier lists.
 
-Update my tier list, we check if one exists
+For get my tier list, we will return a default list if we dont have one.
+
+Update my tier list, we check if one exists and if it doesnt we will create a new one.
+
 
 ## Part 6: Make a notification Bar
-When designing a site, it's necessary to make sure the user knows when something goes wrong. I am new to React and a good way to better understand how it works is by creating commonly used elements. In this scenario I wanted to make a notification system. The notification system has two parts to it.
-A way to enqueue a new message
-A consumer that displays the messages
-I started by making a Context based service which is built on top of the subscriber pattern. I wanted to use Context because it makes it easily accessible from any component and a subscriber so it is easy to have the notification component know when there is another message.
+When designing a site, it's necessary to make sure the user knows when something goes wrong. I am new to React and a good way to better understand how it works is by creating commonly used elements. In this scenario I wanted to make a notification system. 
+
+### The notification system has two parts to it.
+* A way to enqueue a new message
+* A consumer that displays the messages
+
+I started by making a [Context](https://reactjs.org/docs/context.html) based service which is built on top of the subscriber pattern. I wanted to use a Context because it makes it easily accessible from any component and a subscriber so it is easy to have the notification component know when there is another message.
 
 This is mainly going to be used for reporting errors and by creating it like a service, we can easily provide it to the http service and wrap each http request. If this project was structured on a larger scale then I would want to create some type of http interceptor and provide the error handling there.
+
+Below is a simple implementation for a subscriber pattern, subject and the notification service.
+
+```tsx
+export type SubjectCallBacK = (IEvent) => void
+
+export interface IEvent {
+    data: any;
+}
+
+export class Subject {
+    observers: ((event: IEvent) => void)[] = [];
+    subMap: Record<string, SubjectCallBacK> = {};
+
+    addObserver(obs: SubjectCallBacK): number {
+        this.observers.push(obs);
+        const id = Math.random();
+        this.subMap[id] = obs;
+        return id;
+    }
+
+    notifyObservers(event: IEvent) {
+        this.observers.forEach(o => o(event))
+    }
+
+    removeObserver(id: number) {
+        this.observers = this.observers.filter(obs => obs !== this.subMap[id]);
+    }
+}
+```
+
+Here is the notification service.
+
+```tsx
+import React from "react";
+import { defaultTimeLimitForNotification } from "../constants";
+import { IEvent, Subject } from "../utils/subject";
+
+interface NotificationEventWithId {
+    event: INotificationEvent;
+    id: string;
+}
+
+export interface INotificationListEvent {
+    data: NotificationEventWithId[];
+}
+
+export interface INotificationEvent extends IEvent {    
+    data: {
+        display: React.ReactNode,
+        durationInMs?: number;
+    }
+}
+
+export class NotificationService extends Subject {
+    notifications: NotificationEventWithId[] = [];
+    constructor() {
+        super()
+    }
+
+    addNotification(notification: INotificationEvent) {
+        const id = Math.random().toString();
+        
+        this.notifications.push({
+            event: notification,
+            id
+        })
+
+        setTimeout(() => {
+            this.removeNotification(id);
+        }, notification.data.durationInMs || defaultTimeLimitForNotification)
+
+        this.sendNotifications();
+    }
+
+    removeNotification(id: string){
+        this.notifications = this.notifications.filter(notification => notification.id !== id)
+        this.sendNotifications();
+    }
+
+    private sendNotifications() {
+        this.notifyObservers({
+            data: this.notifications
+        });
+    }
+}
+
+export const NotificationServiceContext = React.createContext<NotificationService>(new NotificationService());
+```
+
 
 ## Part 7: make cartman crawl
 
 When I first started putting together this site I knew I needed something interactive that rewarded people who stayed on the site long enough and were curious enough to click.
 
 
-export default ({ children }) => <BlogLayout>{children}</BlogLayout> //<Layout meta={meta}>{children}</Layout>
+export default ({ children }) => <BlogLayout>{children}</BlogLayout>
