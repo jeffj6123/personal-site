@@ -4,6 +4,10 @@
     gap: 5px;
     margin: 5px;
     margin-top: 10px;
+
+    &.reverse {
+        flex-direction: row-reverse;
+    }
 }
 
 .tag {
@@ -14,6 +18,7 @@
     font-family: var(--header-font);
 
 }
+
 
 .blog-title {
     margin-top: 20px;

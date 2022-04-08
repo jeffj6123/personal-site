@@ -4,7 +4,7 @@ export interface TagProps {
     name: string;
 }
 
-function Tag(props: TagProps){
+export function Tag(props: TagProps){
     return (<span className="tag">{props.name}</span>)
 }
 

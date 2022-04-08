@@ -1,4 +1,5 @@
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
+import Post from '../components/post';
 import getPosts from '../scripts/fileSystem';
 
 export interface IPostListProps {
@@ -6,8 +7,15 @@ export interface IPostListProps {
 }
 
 export default function PostsList(props: IPostListProps) {
-    return (<div>
-        {JSON.stringify(props.posts[0])}
+    return (<div className='layout-container' style={{paddingTop: '15px'}}>
+        <div className=''>
+            <input type='text' className='search-bar' placeholder="Search Posts"></input>
+        </div>
+        <h1 >Most Recent</h1>
+        <div className='underline spacer'></div>
+        <div style={{display: 'flex', flexWrap: 'wrap', flexDirection: 'row'}}>
+            {props.posts.map(post => (<Post key={post.title} post={post.data}></Post>))}
+        </div>
     </div>)
 }
 
