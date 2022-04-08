@@ -1,5 +1,6 @@
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
 import Post from '../components/post';
+import { TagsList } from '../components/tag';
 import getPosts from '../scripts/fileSystem';
 
 export interface IPostListProps {
@@ -13,7 +14,9 @@ export default function PostsList(props: IPostListProps) {
                 <input type='text' className='search-bar' placeholder="Search Posts"></input>
             </div>
         </h1>
-        <div className='underline spacer'></div>
+        <div className='underline'></div>
+        <TagsList tags={['Node JS', 'React', 'Angular']}></TagsList>
+        <div className='spacer'></div>
         <div style={{display: 'flex', flexWrap: 'wrap', flexDirection: 'row'}}>
             {props.posts.map(post => (<Post key={post.title} post={post.data}></Post>))}
         </div>
