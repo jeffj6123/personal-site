@@ -77,3 +77,8 @@ $warning: yellow;
 .post {
     width: 50%;
 }
+
+.posts-container {
+    display: flex;
+    justify-content: space-between;
+}

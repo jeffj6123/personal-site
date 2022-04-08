@@ -8,10 +8,11 @@ export interface IPostListProps {
 
 export default function PostsList(props: IPostListProps) {
     return (<div className='layout-container' style={{paddingTop: '15px'}}>
-        <div className=''>
-            <input type='text' className='search-bar' placeholder="Search Posts"></input>
-        </div>
-        <h1 >Most Recent</h1>
+        <h1 className='post-container' >Most Recent
+            <div className=''>
+                <input type='text' className='search-bar' placeholder="Search Posts"></input>
+            </div>
+        </h1>
         <div className='underline spacer'></div>
         <div style={{display: 'flex', flexWrap: 'wrap', flexDirection: 'row'}}>
             {props.posts.map(post => (<Post key={post.title} post={post.data}></Post>))}
