@@ -7,7 +7,7 @@ export function NightMode() {
     useEffect(() => {
         setToggle(+getFromLocalStorage(nightModeStorageKey, "1") > 0);
         applyCSSVars(toggled);
-    }, [])
+    }, [toggled])
 
     const changeNightMode = () => {
         applyCSSVars(!toggled)
