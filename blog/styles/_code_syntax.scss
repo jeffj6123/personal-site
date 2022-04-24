@@ -66,6 +66,13 @@ http://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascr
   --yellow-40:     #F1FA8C66;
 }
 
+pre {
+  border: 1px solid var(--accent-color);
+  border-radius: 10px !important;
+  box-shadow: var(--box-shadow);
+
+}
+
 pre::-webkit-scrollbar 
 {
   width: 14px;
@@ -73,14 +80,14 @@ pre::-webkit-scrollbar
 
 pre::-webkit-scrollbar-track 
 {
-  background-color: var(--comment);
-  border-radius: 0px;
+  background-color: var(--main-bg-color);
+  border-radius: 10px;
 }
 
 pre::-webkit-scrollbar-thumb 
 {
-  background-color: var(--purple);
-  border-radius: 0px;
+  background-color: var(--accent-color);
+  border-radius: 10px;
 }
 
 /* Selection */
@@ -91,8 +98,7 @@ code[class*="language-"]::-moz-selection,
 code[class*="language-"] ::-moz-selection 
 {
   text-shadow: none;
-  background-color: var(--selection);
-}
+  background-color: var(--main-bg-color);}
 
 pre[class*="language-"]::selection,
 pre[class*="language-"] ::selection,
@@ -100,7 +106,7 @@ code[class*="language-"]::selection,
 code[class*="language-"] ::selection 
 {
   text-shadow: none;
-  background-color: var(--selection);
+  background-color: var(--main-bg-color);
 }
 
 /* Line numbers */
@@ -235,7 +241,7 @@ code[class*="language-"],
 pre[class*="language-"] 
 {
   color: var(--foreground);
-  background: var(--background);
+  // background: var(--main);
   text-shadow: none;
   font-family: PT Mono, Consolas, Monaco, "Andale Mono", "Ubuntu Mono",
     monospace;
@@ -260,7 +266,7 @@ pre[class*="language-"]
 
 pre[class*="language-"] 
 {
-  background: var(--background);
+  // background: var(--background);
   border-radius: 0.5em;
   padding: 1em;
   margin: 0.5em 0;
@@ -271,7 +277,7 @@ pre[class*="language-"]
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] 
 {
-  background: var(--background);
+  background: var(--main-bg-color);
 }
 
 /* Inline code */

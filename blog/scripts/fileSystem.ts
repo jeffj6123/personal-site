@@ -2,33 +2,39 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 
-const getPosts = (limit: number) => {
+export interface IPost {
+  content: string;
+  id: string;
+  title: string;
+  date: string;
+  summary: string;
+  tags: string[];
+}
+
+export const loadBlogProperties = async (fileNamePath: string) => {
+  const file = fileNamePath.split('/').pop();
+
+  const location = path.join(process.cwd(), 'pages', 'posts', file)
+  
+  const fileContent = await fs.promises.readFile(location, 'utf-8');
+  const { data, content } = matter(fileContent);
+
+  const id = file.replace(/.mdx$/, '');
+
+  return { content, id, title: data.title, summary: data.summary, tags: data.tags.split(','), date: data.date };
+} 
+
+const getPosts = async (limit: number): Promise<IPost[]> => {
   const dirFiles = fs.readdirSync(path.join(process.cwd(), 'pages', 'posts'), {
     withFileTypes: true,
-  });
+  }).filter(file => file.name.endsWith('.mdx'));
 
-  const posts = dirFiles
-    .map((file) => {
-      if (!file.name.endsWith('.mdx')) return;
+  const posts = await Promise.all(dirFiles
+    .map(async (file) => {
+      return await loadBlogProperties(file.name);
+    }));
 
-      const fileContent = fs.readFileSync(
-        path.join(process.cwd(), 'pages', 'posts', file.name),
-        'utf-8'
-      );
-      const { data, content } = matter(fileContent);
-
-      const slug = file.name.replace(/.mdx$/, '');
-      return { data, content, slug };
-    })
-    .filter((post) => post);
-
-  if (limit) {
-    return posts.filter((post, index) => {
-      return index + 1 <= limit;
-    });
-  }
-
-  return posts;
+  return posts
 };
 
 export default getPosts;

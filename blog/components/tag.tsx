@@ -1,25 +1,25 @@
 import React from 'react';
 
 export interface TagsListProp {
-    tags: string[];
-    counts?: Record<string, number>;
+    tags: ITag[];
 }
 
 export function TagsList(props: TagsListProp) {
     return (<div className="tag-container">
-        {props.tags.map(tag => <Tag tag={tag} key={tag}></Tag>)}
+        {props.tags.map(tag => <Tag tag={tag} key={tag.id}></Tag>)}
     </div>)
 }
 
+export interface ITag {
+    id: string;
+    display: React.ReactNode;
+    class?: string;
+}
+
 export interface TagProp {
-    tag: string;
-    count?: number;
-    selected?: boolean;
+    tag: ITag;
 }
 
 export function Tag(props: TagProp) {
-    return (<span className="tag">{props.tag} {props.count !== undefined && <span>
-        {props.count}
-    </span>}
-    </span>)
+    return (<span className={`tag ${props.tag.class}`}>{props.tag.display}</span>)
 }

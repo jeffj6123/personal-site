@@ -4,6 +4,7 @@
     gap: 5px;
     margin: 5px;
     margin-top: 10px;
+    align-items: center;
 
     &.reverse {
         flex-direction: row-reverse;
@@ -16,7 +17,25 @@
     border-radius: 24px;
     border: 2px solid var(--accent-color);
     font-family: var(--header-font);
+    max-width: 100%;
+    transition: background-color .2s ease-in-out, max-width .5s, padding .5s, border .5s;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 14px;
 
+    &.selected-tag {
+        background-color: var(--accent-color);
+    }
+
+    &.hidden {
+        max-width: 0%;
+        padding: 0px;
+        border: 0px;
+    }
+
+    &.clickable {
+        cursor: pointer;
+    }
 }
 
 

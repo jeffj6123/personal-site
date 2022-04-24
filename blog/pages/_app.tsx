@@ -14,6 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <a className="link" href="/#projects">Projects</a>
             <a className="link" href="/#About">About</a>
             <a className="link" href="/#history">History</a>
+            <a className="link" href="/blog">Blog</a>
 
             <a href="https://github.com/jeffj6123/personal-site" target="_blank" className="view-code">
               View the <i className="code-icon ri-code-s-slash-line"></i>

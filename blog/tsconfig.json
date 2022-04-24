@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
@@ -13,9 +13,14 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    "strictNullChecks": false,
+    "baseUrl": ".",
     "incremental": true,
-    "strictNullChecks": false
+    "paths": {
+      "contentlayer/generated": ["./.contentlayer/generated"]
+    }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx",     ".contentlayer/generated"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,39 +1,12 @@
 ---
-title: React Navigation Tutorial
+title: Making a South Park Tier List Site
 date: January, 6th. 2022
-summary: React Navigation is a number one tool to learn in React Native. You would always use them; these are some of the best practices in using React Navigation
+summary: The process of making a site for ranking southpark episodes.
+tags: React, Express, Node JS, Typescript, Google Datastore
+publish: false
 ---
 
-import { BlogLayout } from '../../components/blog-layout';
-import { GitGist } from '../../components/git-gist';
-import { Warning } from '../../components/special-tiles';
-export const metaData = {
-    title: "Making a South Park site",
-    id: 1,
-    description: "The process of making a site for ranking southpark episodes"
-}
-
-export const Li = (props) => {
-    const title = props.children.find(node => node.type.name === "LiTop")
-    const body = props.children.find(node => node.type.name === "LiBottom")
-
-return (<div className="technology-section">
-        <h3>
-        {title}
-        </h3>
-        <div className="technology-details">
-            {body}
-        </div>
-    </div>)
-}
-
-export const LiTop = (props) => {
-    return (<div>{props.children}</div>)
-}
-
-export const LiBottom = (props) => {
-    return (<div>{props.children}</div>)
-}
+import { BlogLayout, Warning, Li, LiTop, LiBottom } from 'components/post-components';
 
 # So what is the goal?
 
@@ -347,6 +320,3 @@ export const NotificationServiceContext = React.createContext<NotificationServic
 ## Part 7: make cartman crawl
 
 When I first started putting together this site I knew I needed something interactive that rewarded people who stayed on the site long enough and were curious enough to click.
-
-
-export default ({ children }) => <BlogLayout>{children}</BlogLayout>

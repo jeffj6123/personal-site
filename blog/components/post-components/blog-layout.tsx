@@ -1,3 +1,4 @@
+import { cwd } from "process";
 import React from "react";
 export interface TagProps {
     name: string;
@@ -8,10 +9,11 @@ function Tag(props: TagProps){
 }
 
 export interface BlogLayoutProps {
-    children: React.ReactNode; 
+    children: React.ReactNode;
+    name: string;
 }
 
-export function BlogLayout(props: BlogLayoutProps) {
+export async function BlogLayout(props: BlogLayoutProps) {
     const tags = [{ name: 'React' }, { name: 'Node js' }, { name: 'Datastore' }]
     return (<div className="layout-container">
         <h1 className="blog-title">Building A SouthPark Site</h1>
