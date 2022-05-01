@@ -1,0 +1,16 @@
+.image-gallery {
+    .selected-image {
+        width: 100%;
+        max-width: 500px;
+    }
+    
+    .image-last-container {
+        display: flex;
+        overflow: auto;
+        align-items: center;
+    }
+
+    .image-preview {
+        max-width: 200px;
+    }
+}
