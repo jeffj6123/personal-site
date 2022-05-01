@@ -1,8 +1,36 @@
 ---
-title: Transitioning from Intern to Full Time
+title: Improving Service Fabric supportability
 date: January, 6th. 2022
-summary: The transition from an intern to Full time can feel intimidating but its part of career progression and should be exciting. This can be a fundemental part of growing into a software engineer.
-tags: Career, React
+summary: The process of increasing the experience and usability of Service Fabric through incremental improvements and customer feedback
+tags: Career, Service Fabric
 ---
 
-It is pretty common to see 
+I have been on the service fabric team for a couple years now, with a primary focus on improving supportability. Supportability can mean a lot of things so let's narrow it down to the scope of a platform for developers/administrators. While there are more groups who use this product, the examples ahead will be easier to identify what makes them more effective if using this lens. 
+
+We will talk about the following expectations for a platform to user interaction
+
+* A products ability to inform users when there is an issue 
+* A products ability to differentiate when it's a "platform" issue or a "user*
+* A products ability to thoroughly explain an issue and how to resolve it
+
+Surfacing key events for investigation that will first
+Reduce the amount of time an area expert needs to 
+
+The ideal goal is complete self mitigation where the platforms user can confidently diagnose and resolve their issue but in a platform as complex as service fabric this can be extremely difficult to do, so the next best thing is to get as many low hanging fruit issues as possible. 
+
+# Informing users when there is an issue
+This might sound like an obvious statement but in reality it becomes more of a question of determining how much viability a given issue needs. 
+
+* Is it transient where maybe it's due to a spike in usage?
+* Does this problem if unchecked destroy a cluster? 
+* Could something while not be a problem now, become one if something else happens at the same time?
+
+When the objective gets reframed around identifying the most critical issues at a given time it becomes more interesting. Taking service fabric as an example, let's say out of nowhere we notice our service has had an availability hit.
+
+
+
+#####
+Pulling information forward as a starting point
+Giving additional information on spots which will catch be
+
+consistency is key. One of the more recent goals was to make each page consistent by following the same layout for each one. This avoids searching for key information in each page.

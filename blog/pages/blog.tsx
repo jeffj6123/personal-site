@@ -1,3 +1,4 @@
+import { ImageGallery } from 'components/post-components/image-gallery';
 import { allBlogs, Blog } from 'contentlayer/generated';
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
 import { useEffect, useState } from 'react';
@@ -33,7 +34,6 @@ export default function PostsList(props: IPostListProps) {
         const postCount = filteredPosts.filter(post => post.tagList.includes(tag));
         let backgroundCSS = isSelected ? 'selected-tag': '';
         backgroundCSS += " clickable"
-        console.log(filteredPosts.map(post => post.tagList.includes(tag)));
         backgroundCSS += postCount.length > 0 ? '': ' hidden';
         console.log(backgroundCSS)
         return {
@@ -50,6 +50,8 @@ export default function PostsList(props: IPostListProps) {
     }
 
     return (<div className='layout-container' style={{paddingTop: '15px'}}>
+        <ImageGallery images={['']} ></ImageGallery>
+
         <div className='search-section'>
             <h1 className='post-container'>Most Recent
                 <div className='vertical-flex'>
