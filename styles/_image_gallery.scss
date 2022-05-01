@@ -1,10 +1,29 @@
 .image-gallery {
+    display: block;
+
     .selected-image {
+        position: relative;
+        margin: auto;
         width: 100%;
-        max-width: 500px;
+        display: block;
+
+        .inner-image {
+            // object-fit: scale-down;
+            // width: 100%;
+            // position: relative;
+            // height: unset;
+            // max-width: 500px;
+        }
+
+        // img {
+        //     max-width: 500px;
+        //     object-fit: contain;
+        // }
+        // max-height: 400px;
     }
     
     .image-last-container {
+        position: relative;
         display: flex;
         overflow: auto;
         align-items: center;
@@ -12,5 +31,24 @@
 
     .image-preview {
         max-width: 200px;
+        width: 200px;
     }
 }
+
+
+
+.image-container {
+
+    width: 100%;
+  
+    > div {
+      position: unset !important;
+    }
+  
+    .image {
+      object-fit: contain;
+      width: 100% !important;
+      position: relative !important;
+      height: unset !important;
+    }
+  }

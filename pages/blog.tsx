@@ -50,7 +50,7 @@ export default function PostsList(props: IPostListProps) {
     }
 
     return (<div className='layout-container' style={{paddingTop: '15px'}}>
-        <ImageGallery images={['']} ></ImageGallery>
+        <ImageGallery images={['/sfx/sfx-old-one.png']} ></ImageGallery>
 
         <div className='search-section'>
             <h1 className='post-container'>Most Recent

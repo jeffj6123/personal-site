@@ -5,20 +5,27 @@ summary: The process of increasing the experience and usability of Service Fabri
 tags: Career, Service Fabric
 ---
 
-I have been on the service fabric team for a couple years now, with a primary focus on improving supportability. Supportability can mean a lot of things so let's narrow it down to the scope of a platform for developers/administrators. While there are more groups who use this product, the examples ahead will be easier to identify what makes them more effective if using this lens. 
+I have been on the service fabric team for a couple years now, with a primary focus on improving supportability. Supportability can mean a lot of things so lets narrow it down to the scope of a platform for developers/administrators. While there are more groups who use this product, the examples ahead will be easier to identify what makes them more effective if using this lens. While there are configurations which can be more involved for the purpose of this article, Service Fabric will be referred to as a platform.
 
-We will talk about the following expectations for a platform to user interaction
+## What is the Goal?
 
-* A products ability to inform users when there is an issue 
-* A products ability to differentiate when it's a "platform" issue or a "user*
-* A products ability to thoroughly explain an issue and how to resolve it
+The goal is to reduce the effort required to maintain and increase insights into using a Service Fabric cluster by achieving the following goals, in order of increasing impact. 
+
+### Platform expectations
+We will talk about the following expectations for platform to user interactions.
+
+* A platform ability to inform users when there is an issue 
+* A platform ability to differentiate when it's a "platform" issue or a "user" issue
+* A platform ability to thoroughly explain an issue and how to resolve it
+
+
 
 Surfacing key events for investigation that will first
 Reduce the amount of time an area expert needs to 
 
 The ideal goal is complete self mitigation where the platforms user can confidently diagnose and resolve their issue but in a platform as complex as service fabric this can be extremely difficult to do, so the next best thing is to get as many low hanging fruit issues as possible. 
 
-# Informing users when there is an issue
+## Informing users when there is an issue
 This might sound like an obvious statement but in reality it becomes more of a question of determining how much viability a given issue needs. 
 
 * Is it transient where maybe it's due to a spike in usage?
