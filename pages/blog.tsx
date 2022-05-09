@@ -1,4 +1,3 @@
-import { ImageGallery } from 'components/post-components/image-gallery';
 import { allBlogs, Blog } from 'contentlayer/generated';
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
 import { useEffect, useState } from 'react';
@@ -50,8 +49,6 @@ export default function PostsList(props: IPostListProps) {
     }
 
     return (<div className='layout-container' style={{paddingTop: '15px'}}>
-        <ImageGallery images={['/sfx/sfx-old-one.png']} ></ImageGallery>
-
         <div className='search-section'>
             <h1 className='post-container'>Most Recent
                 <div className='vertical-flex'>

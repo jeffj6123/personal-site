@@ -10,16 +10,17 @@ export interface ImageGalleryProps {
 }
 
 export function ImageGallery(props: ImageGalleryProps) {
-    const [currentImage, setCurrentImage ] = useState(props.images[0]);
+    const [currentImage, setCurrentImage ] = useState(0);
 
     return (<div className="image-gallery">
         <div className="selected-image"> 
-            <Image src={currentImage} className="inner-image"  width="100%" height="100%" layout="responsive" objectFit="contain"></Image>
+            <img src={props.images[currentImage]} className="inner-image"></img>
         </div>
 
         <div className="image-list-container">
-            {props.images.map(url => <div className="image-preview">
-                <Image src={url} width='100%' height='100%'></Image>
+            {props.images.map((url, index) => <div key={index}>
+                <img src={url} className={`image-preview ${index === currentImage ? 'active': ''}`}
+                onClick={() => {setCurrentImage(index); }}></img>
             </div>)}
         </div>
     </div>)

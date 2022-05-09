@@ -5,6 +5,9 @@ summary: The process of increasing the experience and usability of Service Fabri
 tags: Career, Service Fabric
 ---
 
+import { ImageGallery } from 'components/post-components/image-gallery';
+
+
 I have been on the service fabric team for a couple years now, with a primary focus on improving supportability. Supportability can mean a lot of things so lets narrow it down to the scope of a platform for developers/administrators. While there are more groups who use this product, the examples ahead will be easier to identify what makes them more effective if using this lens. While there are configurations which can be more involved for the purpose of this article, Service Fabric will be referred to as a platform.
 
 ## What is the Goal?
@@ -18,26 +21,94 @@ We will talk about the following expectations for platform to user interactions.
 * A platform ability to differentiate when it's a "platform" issue or a "user" issue
 * A platform ability to thoroughly explain an issue and how to resolve it
 
-
-
 Surfacing key events for investigation that will first
 Reduce the amount of time an area expert needs to 
 
-The ideal goal is complete self mitigation where the platforms user can confidently diagnose and resolve their issue but in a platform as complex as service fabric this can be extremely difficult to do, so the next best thing is to get as many low hanging fruit issues as possible. 
+The goal is complete self mitigation where the platforms user can confidently diagnose and resolve their issue but in a platform as complex as service fabric this can be extremely difficult to do, so the next best thing is to get as many low hanging fruit issues as possible. 
+
+
+## Starting Point
+A lot of the information we are going to emphasize, already exists somewhere but its either cumbersome and difficult to find or its missing useful support information. The main reason people use SFX is for when something went wrong, so the goal should always be finding ways to provide more information for investigating.
+
+When I had started improving SFX, it was used for very high level investigations but mainly for the following. While there is other information that was available, a lot of it was "data dumped" into the second page and had no context. This information while incredibly useful, it required you to fully understand its context and be able to parse it easily. Investigations would normally start in SFX but almost always require moving into other tools, in particular one called Traceviewer. The problem with Traceviewer is that it is really only access to SF engineers and this means people using Service Fabric are lacking a lot of insight.
+
+*What is in error
+*Finding IDs for different entities
+*Viewing health events
+
+
+        <ImageGallery images={['/sfx/sfx-old-one.png', '/sfx/eventstore-viewer.png', '/sfx/sfx-old-one.png','/sfx/sfx-old-one.png']} ></ImageGallery>
+
 
 ## Informing users when there is an issue
-This might sound like an obvious statement but in reality it becomes more of a question of determining how much viability a given issue needs. 
+This might sound like an obvious statement but in reality it becomes more of a question of determining how much visibility a given issue needs. 
 
 * Is it transient where maybe it's due to a spike in usage?
 * Does this problem if unchecked destroy a cluster? 
 * Could something while not be a problem now, become one if something else happens at the same time?
 
-When the objective gets reframed around identifying the most critical issues at a given time it becomes more interesting. Taking service fabric as an example, let's say out of nowhere we notice our service has had an availability hit.
+When the objective gets reframed around identifying the most critical issues at a given time it becomes more interesting. For Service Fabric, lets pick a couple of these issues.
 
+* Cluster upgrade status
+* Status of nodes in disabling and pending safety checks
+* Certificates close to expiring
+
+
+### Cluster Upgrade Status
+
+TODO show banner and conditional upgrade view
+
+Given how impactful cluster upgrades can be by causing replica movements and taking down nodes it should be really easy to tell if one starts and if one is in progress. SFX uses two places to try and inform about an upgrade. Cluster upgrades are significant because they can be changing a major version or a cluster wide config and these can cause every node to be restarted and thus causing a lot of service movement.
+
+* Banner - while very simple, it can be extremely effective. SFX has two banners, one at the very top that is persisted between pages and one on the landing page. This one is very eye catching because it takes centerfold on the header section and is left intentionally blank otherwise.
+
+* Conditional tile on the landing page - People tend to scan through this page pretty often to get immediate concerns and by moving this to what would generally be the middle of the screen, it gives a high chance of them expanding it to view the upgrade.
+
+### Disabling Nodes
+When disabling a node to temporarily stop services from being placed there, you should 
+
+This was an item where the information did technically exist but it was relatively hidden and only people who learned where to find it would know and thats assuming they knew how the process worked. The goal here was two parts, make it very obvious that is disabling and make it clear what the state is. 
+
+Step 1 make a dedicated area on the essentials page for the node, this will get people familiar to knowing quickly by seeing if the panel is there. 
+
+Step 2 is making it easier to understand, even if we just pulled the raw information forward its not easy to follow. The fix for this is to visualize it and speed up the investigation process. Instead of just listing the partition, its much easier to show the application and service that it belongs to because in large clusters it becomes almost impossible to quickly find the right partition. I will talk more to visualizations and why I think they're so significant further down. 
+
+### Certificate Expiration
+Similar to the 
+
+## Consistency
+This one was really lacking when I originally took up SFX and its something I am pretty happy to have gotten much more standard.
+I started by trying to pull common elements out and making them predictable for where you'd expect them and improve sizing, starting with health state.
+
+show health icon
+
+I made the health state significantly bigger and always the first item in the list, this is a place where we use the size to indicate importance. Additionally we always show whether it is stateful or stateless on the second tile and moved to using icons to make it easy to find.
+
+
+## Visualizations
+I believe the most significant addition for improving a platform like Service Fabric is well done and appropriate visualizations, with second place being consistency. I am going to cover what I believe are the most impactful visualizations that have been added to SFX.
+
+### Event Store Viewer
+The event store service is great for getting high impact events but it can also be a lot of raw data to parse through and correlate. While these events are useful, they can very quickly become overwhelming and difficult to parse, Think of finding the event where a couple machines went down and back up and you are trying to see if had a pattern. This Visualizations given it is time based, was best suited for a Gantt chart. The way we approached this was by identifying the most useful scenarios and finding which events we need to chart it. For example a cluster upgrade would have a start and finish event, along with events for each domain. This addition made it significantly faster to get a high level idea of what happened for that time range and later on we started combining multiple types of events into one timeline so we could compare. 
+
+### Repair Jobs
+Repair jobs have always played a big role in "Why did this node or nodes go down?" and until they had a proper spot in SFX, it caused a lot of ambiguity. When we decided to start listing them we hit similar issues as the event store viewer; too many repair jobs to easily get a full picture and the solution was to visualize them using the same approach, a Gantt chart. Now this helped get a general idea but a repair job has 3 distinct parts; preparing, executing, and restoring. The investigation can be very different depending on if a job is stuck in preparing or executing. I decided we want this broken down in two ways, first by using the same phase diagram that the disabling node's uses and second by creating a graph to show all of these phases relative to each other.
+
+* Phase diagram - This breaks down the job into each part and makes it easy to check how long each part took
+
+* Duration Graph - This graph is very useful for finding outliers and comparing "stuck" jobs to recently completed jobs.
+
+### Upgrade Progress
+Given how significant upgrades are, they deserve a well layed out and clear representation.
+
+The upgrade domain progress is displayed using a pie chart because the amount of upgrade domains can be fairly variable, so we wanted to use something with a fixed size. This is because generally people are just looking at it for overall progress and a pie chart is size agnostic in that regard; i.e 50% of the way is the same appearance for 4 uds or 20.
+
+The nodes for the current domain being upgraded use the phase diagram because like the repair job and disabling node we are trying to represent a state machine. By reusing this same layout, it makes it very easy for people to become familiar with the layout.
+
+Upgrades can timeout and its really good to know how close you are to it happening, this is why we went with progress bars for the overall upgrade and the current upgrade domain. Progress bars are the fastest way to make it clear how much time is left.
 
 
 #####
-Pulling information forward as a starting point
 Giving additional information on spots which will catch be
 
 consistency is key. One of the more recent goals was to make each page consistent by following the same layout for each one. This avoids searching for key information in each page.
