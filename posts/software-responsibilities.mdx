@@ -30,14 +30,19 @@ The goal is complete self mitigation where the platforms user can confidently di
 ## Starting Point
 A lot of the information we are going to emphasize, already exists somewhere but its either cumbersome and difficult to find or its missing useful support information. The main reason people use SFX is for when something went wrong, so the goal should always be finding ways to provide more information for investigating.
 
-When I had started improving SFX, it was used for very high level investigations but mainly for the following. While there is other information that was available, a lot of it was "data dumped" into the second page and had no context. This information while incredibly useful, it required you to fully understand its context and be able to parse it easily. Investigations would normally start in SFX but almost always require moving into other tools, in particular one called Traceviewer. The problem with Traceviewer is that it is really only access to SF engineers and this means people using Service Fabric are lacking a lot of insight.
+When I had started improving SFX, it was used for very high level investigations but mainly for the following. While there is other information that was available, a lot of it was "data dumped" into the second page and had no context. This information while 
+incredibly useful, it required you to fully understand its context and be able to parse it easily. 
+
+<ImageGallery images={['/sfx/sfx-old-one.png', '/sfx/eventstore-viewer.png', '/sfx/sfx-old-one.png','/sfx/sfx-old-one.png']} ></ImageGallery>
+
+Investigations would normally start in SFX but almost always required moving into other tools, in particular one called Trace Viewer. The problem with Trace Viewer is that it is really only access to SF engineers and this means people using Service Fabric are lacking a lot of insight. This has two impacts, it makes for a more frustrating experience for people using the platform and it increases the workload on Service Fabric engineers by increasing the potential on call work load.
+
+This situation above is what initially drove  the improvements for SFX by realizing how much more efficient our investigations could become if we exposed some the right information.
 
 *What is in error
 *Finding IDs for different entities
 *Viewing health events
 
-
-        <ImageGallery images={['/sfx/sfx-old-one.png', '/sfx/eventstore-viewer.png', '/sfx/sfx-old-one.png','/sfx/sfx-old-one.png']} ></ImageGallery>
 
 
 ## Informing users when there is an issue
