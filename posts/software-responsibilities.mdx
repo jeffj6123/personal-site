@@ -33,16 +33,16 @@ A lot of the information we are going to emphasize, already exists somewhere but
 When I had started improving SFX, it was used for very high level investigations but mainly for the following. While there is other information that was available, a lot of it was "data dumped" into the second page and had no context. This information while 
 incredibly useful, it required you to fully understand its context and be able to parse it easily. 
 
+It was heavily used for the following
+* What is in error?
+* Finding IDs for different entities
+* Viewing health events
+
 <ImageGallery images={['/sfx/sfx-old-one.png', '/sfx/eventstore-viewer.png', '/sfx/sfx-old-one.png','/sfx/sfx-old-one.png']} ></ImageGallery>
 
 Investigations would normally start in SFX but almost always required moving into other tools, in particular one called Trace Viewer. The problem with Trace Viewer is that it is really only access to SF engineers and this means people using Service Fabric are lacking a lot of insight. This has two impacts, it makes for a more frustrating experience for people using the platform and it increases the workload on Service Fabric engineers by increasing the potential on call work load.
 
 This situation above is what initially drove  the improvements for SFX by realizing how much more efficient our investigations could become if we exposed some the right information.
-
-*What is in error
-*Finding IDs for different entities
-*Viewing health events
-
 
 
 ## Informing users when there is an issue
@@ -87,7 +87,15 @@ I started by trying to pull common elements out and making them predictable for 
 
 show health icon
 
-I made the health state significantly bigger and always the first item in the list, this is a place where we use the size to indicate importance. Additionally we always show whether it is stateful or stateless on the second tile and moved to using icons to make it easy to find.
+### Essentials Pages
+I made the health state significantly bigger and always the first item in the list, this is a place where we use the size to indicate importance. Additionally we always show whether it is stateful or stateless on the second tile and moved to using icons to make it easy to find. This is then followed by health overview for children entities.
+
+Information for tiles will now follow predictable ordering for things like name and status. Information that was previously in the large panels is being split into their own tiles to keep related information together.
+
+### Pending Safety checks
+Safety checks are an opportunity to safely move an application instance on node off, these are used when some operation needs to be performed on a node. Pending safety checks are relevant in two main places currently, upgrades and node deactivations. The goal of always showing safety checks using the same information will reinforce that its the same process regardless of what initiated the operation.
+
+
 
 
 ## Visualizations
@@ -112,8 +120,5 @@ The nodes for the current domain being upgraded use the phase diagram because li
 
 Upgrades can timeout and its really good to know how close you are to it happening, this is why we went with progress bars for the overall upgrade and the current upgrade domain. Progress bars are the fastest way to make it clear how much time is left.
 
-
 #####
 Giving additional information on spots which will catch be
-
-consistency is key. One of the more recent goals was to make each page consistent by following the same layout for each one. This avoids searching for key information in each page.
