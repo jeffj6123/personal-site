@@ -21,7 +21,7 @@ export default function Post(props: {content: Blog}) {
         <h1 className="blog-title">{props.content.title}</h1>
         <div className="underline"></div>
         <TagsList tags={tags}></TagsList>
-        <div className="content">
+        <div className="blog-content">
             <Component></Component>
         </div>
 

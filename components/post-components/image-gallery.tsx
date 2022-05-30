@@ -17,11 +17,20 @@ export function ImageGallery(props: ImageGalleryProps) {
             <img src={props.images[currentImage]} className="inner-image"></img>
         </div>
 
-        <div className="image-list-container">
-            {props.images.map((url, index) => <div key={index}>
-                <img src={url} className={`image-preview ${index === currentImage ? 'active': ''}`}
-                onClick={() => {setCurrentImage(index); }}></img>
-            </div>)}
-        </div>
+        {props.images.length > 1 && 
+        <div style={{"display": 'flex', gap: '5px'}}>
+            <div className="arrow-container">
+                ==
+            </div>
+            <div className="image-list-container">
+                {props.images.map((url, index) => <div key={index}>
+                    <img src={url} className={`image-preview ${index === currentImage ? 'active': ''}`}
+                    onClick={() => {setCurrentImage(index); }}></img>
+                </div>)}
+            </div>
+            <div className="arrow-container">
+                ==
+            </div>
+        </div>}
     </div>)
 }
