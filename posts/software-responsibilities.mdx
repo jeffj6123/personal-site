@@ -21,7 +21,7 @@ The second best solution is giving the user everything they need for self mitiga
 
 Now until every problem can be handled in one of those two ways, we want to still make the process of investigating and finding relevant information as easy as possible. This would still mean surfacing key events at the right time and reducing the amount of time and effort it takes during an investigation.
 
-### Platform expectations
+### Platform Expectations
 We will talk about the following expectations for platform to user interactions, which will be the basis for deciding how effective a feature is.
 
 * A platform's ability to inform users when there is an issue 
@@ -48,7 +48,7 @@ This situation above is what initially drove  the improvements for SFX by realiz
 ### SFX Starting Point
 <ImageGallery images={['landing', 'node', 'map', 'metrics', 'application', 'partition', 'replica_details', 'service'].map(image => `/sfx/old_${image}.png`)} ></ImageGallery>
 
-## Informing users when there is an issue
+## Informing Users When There Is An Issue
 This might sound like an obvious statement but in reality it becomes more of a question of determining how much visibility a given issue needs. 
 
 * Is it transient where maybe it's due to a spike in usage?
@@ -113,7 +113,7 @@ Information for tiles will now follow predictable ordering for things like name 
 
 <ImageGallery images={['/sfx/service_tiles.png']}></ImageGallery>
 
-### Pending Safety checks
+### Pending Safety Checks
 Safety checks are an opportunity to move an application instance off a node and ensure that the application stays healthy by making new instances on other nodes first. Safety checks are used when some operation needs to be performed on a node like restarting it. Pending safety checks are relevant in two main places currently, upgrades and node deactivations. By reusing the same layouts in both spots, it becomes more clear that these two operations are using the same process and gives the user more insight in how service fabric handles different operations in the same way.
 
 ## Visualizations
