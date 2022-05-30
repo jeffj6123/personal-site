@@ -14,6 +14,7 @@
 }
 
 $warning: yellow;
+$info: rgb(120, 168, 184);
 
 .blog-banner {
     display: flex;
@@ -21,9 +22,10 @@ $warning: yellow;
     border: 2px solid;
     border-radius: 6px;
     padding: 5px;
+    margin: 10px 0px;
 
     &:hover {
-        .banner-icon {
+        .warning {
             transform: rotate(70deg);
         }
     }
@@ -39,6 +41,14 @@ $warning: yellow;
 
         .banner-icon {
             color: $warning
+        }
+    }
+
+    &.info {
+        border-color: $info;
+
+        .banner-icon {
+            color: $info;
         }
     }
 }

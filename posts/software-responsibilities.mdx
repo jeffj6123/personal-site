@@ -6,7 +6,7 @@ tags: Career, Service Fabric
 ---
 
 import { ImageGallery } from 'components/post-components/image-gallery';
-import { Warning, Li, LiTop, LiBottom } from 'components/post-components';
+import { Warning, Li, LiTop, LiBottom, Info } from 'components/post-components';
 
 
 I have been on the service fabric team for a couple years now, with a primary focus on improving supportability. Supportability can mean a lot of things, so lets narrow it down to the scope of a platform for developers/administrators. While there are more groups who use this product, looking at these users will make it easier to look at why these improvements have been effective. 
@@ -30,7 +30,7 @@ We will talk about the following expectations for platform to user interactions,
 
 
 ## Starting Point
-A lot of the information we are going to emphasize, already exists somewhere but its either cumbersome and difficult to find or its missing useful supporting information. The main reason people use SFX is for when something went wrong, so the goal should always be finding ways to provide more information for investigating.
+A lot of the information we are going to emphasize already exists somewhere but its either cumbersome and difficult to find or its missing useful supporting information. The main reason people used SFX is for when something went wrong, so the goal should always be finding ways to provide more information for investigating.
 
 When I had started improving SFX, it was used for very high level investigations but mainly for the following.
 
@@ -74,48 +74,55 @@ Given how much movement can happen during a cluster, it is important to know whe
 * Conditional tile on the landing page - People tend to scan through this page pretty often to get immediate concerns and by moving this to be generally in the middle of the screen, it gives a high chance of them expanding it to view the upgrade.
 
 ### Disabling Nodes
-When disabling a node to be restarted or "removed", all of the services on it must be safely moved to other nodes in the cluster(this is not exactly how it works but it is close enough for this example).
+When disabling a node to be restarted or removed, all of the services on it must be safely moved to other nodes in the cluster(this is not exactly how it works but it is close enough for this example). We will also cover a very specific health check, which tends to show up very often in incidents.
 
-<Warning>
-### Dont make your own authentication system
-Use a well tested existing solution. Unless you are very well versed in security, you should never roll your own authentication solution which will hold a real person’s data. 
-</Warning>
+<Info>
+When a node is being disabled, depending on the intent can change what the process of moving replicas. The goal of the safety check is just to ensure that quorum is met before the node is allowed to go down. Depending on the current replica layout, this doesnt mean the a new replica needs to be created and some of these safety checks happen instantly. 
+
+The most common reasons for long running safety checks for an application is that its stuck in error or they have too few nodes up to properly handle a partition configuration, i.e only 4 nodes up but a partition needs 5 replicas.
+</Info>
 
 <ImageGallery images={['/sfx/node_deactivation.png']}></ImageGallery>
 
+This information did exist previously but it was not very obvious and unless you had stumbled across it before. This was one of those things which would be "data dumped" onto the second page. Given how impactful a node disabling is, we wanted to pull this information forward.
 
-This was an item where the information did technically exist but it was relatively hidden and only people who learned where to find it would know and thats assuming they knew how the process worked. The goal here was two parts, make it very obvious that is disabling and make it clear what the state is. 
+Step 1 was to make a dedicated area on the essentials page for the node. This tile will only show if there is node is disabled or disabling, this will make sure we are only drawing attention to this when its relevant.
 
-Step 1 make a dedicated area on the essentials page for the node, this will get people familiar to knowing quickly by seeing if the panel is there. 
-
-Step 2 is making it easier to understand, even if we just pulled the raw information forward its not easy to follow. The fix for this is to visualize it and speed up the investigation process. Instead of just listing the partition, its much easier to show the application and service that it belongs to because in large clusters it becomes almost impossible to quickly find the right partition. I will talk more to visualizations and why I think they're so significant further down. 
+Step 2 is making it easier to understand because even if we just pulled the raw information forward its not easy to follow. The fix is to visualize it to speed up the investigation process. Instead of just listing the partition, its much easier to show the application and service that it belongs to because in large clusters it becomes almost impossible to quickly find the right partition.
 
 ### Certificate Expiration
-Similar to the 
+One of the most destructive things that could happen to a cluster is for the cluster certificate to expire. This certficate is used for node to node communication and when that fails, the cluster will collapse. Keeping certificates from expiring is of utmost importance
+
+Similar to the upgrade banner, we went with taking a high visibility spot on the landing page to make it one of the first spots you will see upon visiting. We went with high contrast colors so it stands out.
+
+<Warning>
+Banners can be extremely effective but you need to be careful. If you are using banners but they are up a majority of the time, they very quickly lose their effect. They are meant to be used to pull focus when there are items that need to be addressed or high impacting and they should provide information on how to deal with the issue. The criteria we use for a banner is pretty high to try and keep the potential banners relatively low.
+</Warning>
 
 <ImageGallery images={['/sfx/cert_banner.png']}></ImageGallery>
 
 
 ## Consistency
-This one was really lacking when I originally took up SFX and its something I am pretty happy to have gotten much more standard.
-I started by trying to pull common elements out and making them predictable for where you'd expect them and improve sizing, starting with health state.
+This one was really lacking when I originally took up SFX and its something I am pretty happy to have gotten a lot of attention on it.
+I started by trying to pull common elements out and making them predictable on the page and improve sizing, starting with health state.
 
 ### Essentials Pages
-I made the health state significantly bigger and always the first item in the list, this is a place where we use the size to indicate importance. Additionally we always show whether it is stateful or stateless on the second tile and moved to using icons to make it easy to find. This is then followed by health overview for children entities.
+I started by making the health state significantly bigger and always the first item in the list. This is a place where we use the size to indicate importance, its the largest icon on the page and should be the first thing you check. Additionally we always show whether it is stateful or stateless on the second tile and moved to using icons to make it easy to find. This is then followed by health overview for children entities.
 
 Information for tiles will now follow predictable ordering for things like name and status. Information that was previously in the large panels is being split into their own tiles to keep related information together.
 
 <ImageGallery images={['/sfx/service_tiles.png']}></ImageGallery>
 
 ### Pending Safety checks
-Safety checks are an opportunity to safely move an application instance on node off, these are used when some operation needs to be performed on a node. Pending safety checks are relevant in two main places currently, upgrades and node deactivations. The goal of always showing safety checks using the same information will reinforce that its the same process regardless of what initiated the operation.
-
+Safety checks are an opportunity to move an application instance off a node and ensure that the application stays healthy by making new instances on other nodes first. Safety checks are used when some operation needs to be performed on a node like restarting it. Pending safety checks are relevant in two main places currently, upgrades and node deactivations. By reusing the same layouts in both spots, it becomes more clear that these two operations are using the same process and gives the user more insight in how service fabric handles different operations in the same way.
 
 ## Visualizations
-I believe the most significant addition for improving a platform like Service Fabric is well done and appropriate visualizations, with second place being consistency. I am going to cover what I believe are the most impactful visualizations that have been added to SFX.
+I believe the most significant addition for improving a platform like Service Fabric is effective visualizations with second place being consistency. Below are what I believe are the most impactful visualizations that have been added to SFX and why there were succesful.
 
 ### Event Store Viewer
-The event store service is great for getting high impact events but it can also be a lot of raw data to parse through and correlate. While these events are useful, they can very quickly become overwhelming and difficult to parse, Think of finding the event where a couple machines went down and back up and you are trying to see if had a pattern. This Visualizations given it is time based, was best suited for a Gantt chart. The way we approached this was by identifying the most useful scenarios and finding which events we need to chart it. For example a cluster upgrade would have a start and finish event, along with events for each domain. This addition made it significantly faster to get a high level idea of what happened for that time range and later on we started combining multiple types of events into one timeline so we could compare. 
+The event store service is great for getting high impact events but it can also be a lot of raw data to parse through and correlate. While these events are useful, they can very quickly become overwhelming and difficult to parse, think of finding the event where a couple machines went down and back up and you are trying to see if they had a pattern. 
+
+Given this information is temporal and we are trying to show changes over time, we felt a Gantt chart is most efficient. Next we needed to pick how we wanted to visualize these events, we could directly map and this is half of the solution but we went a step further. We picked a handful of scenarios and picked the event store events that would let us chart them as ranges, i.e for an upgrade we are taking the upgradeStart and upgradeEvents and combining them into a time range. This addition made it significantly faster to get a high level idea of what happened for that time range and. 
 
 <ImageGallery images={['/sfx/eventstore-vIewer.png']}></ImageGallery>
 

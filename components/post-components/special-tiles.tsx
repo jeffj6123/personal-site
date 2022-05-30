@@ -10,3 +10,14 @@ export function Warning(props: any) {
         </div>
     </div>)
 }
+
+export function Info(props: any) {
+    return (<div className='blog-banner info'>
+        <div className='banner-icon'>
+            <i className="ri-information-line"></i>
+        </div>
+        <div>
+            {props.children}
+        </div>
+    </div>)
+}

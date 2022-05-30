@@ -20,7 +20,7 @@ export function ImageGallery(props: ImageGalleryProps) {
         {props.images.length > 1 && 
         <div style={{"display": 'flex', gap: '5px'}}>
             <div className="arrow-container">
-                ==
+                <i className="arrow rotated ri-arrow-right-circle-line"></i>
             </div>
             <div className="image-list-container">
                 {props.images.map((url, index) => <div key={index}>
@@ -28,8 +28,8 @@ export function ImageGallery(props: ImageGalleryProps) {
                     onClick={() => {setCurrentImage(index); }}></img>
                 </div>)}
             </div>
-            <div className="arrow-container">
-                ==
+            <div className="arrow-container ">
+                <i className="arrow ri-arrow-right-circle-line"></i>
             </div>
         </div>}
     </div>)
