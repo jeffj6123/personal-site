@@ -3,6 +3,7 @@ title: Improving Service Fabric supportability
 date: January, 6th. 2022
 summary: The process of increasing the experience and usability of Service Fabric through incremental improvements and customer feedback
 tags: Career, Service Fabric
+published: True
 ---
 
 import { ImageGallery } from 'components/post-components/image-gallery';
@@ -117,19 +118,19 @@ Information for tiles will now follow predictable ordering for things like name 
 Safety checks are an opportunity to move an application instance off a node and ensure that the application stays healthy by making new instances on other nodes first. Safety checks are used when some operation needs to be performed on a node like restarting it. Pending safety checks are relevant in two main places currently, upgrades and node deactivations. By reusing the same layouts in both spots, it becomes more clear that these two operations are using the same process and gives the user more insight in how service fabric handles different operations in the same way.
 
 ## Visualizations
-I believe the most significant addition for improving a platform like Service Fabric is effective visualizations with second place being consistency. Below are what I believe are the most impactful visualizations that have been added to SFX and why there were succesful.
+I believe the most significant addition for improving a platform like Service Fabric is effective visualizations with second place being consistency. Below are what I believe are the most impactful visualizations that have been added to SFX and why there were successful.
 
 ### Event Store Viewer
-The event store service is great for getting high impact events but it can also be a lot of raw data to parse through and correlate. While these events are useful, they can very quickly become overwhelming and difficult to parse, think of finding the event where a couple machines went down and back up and you are trying to see if they had a pattern. 
+The event store service is great for getting high impact events but it can also be a lot of raw data to parse through and correlate. While these events are useful, they can very quickly become overwhelming. Think of finding the events where a couple machines went down and back up and you are trying to see if they had a pattern.
 
-Given this information is temporal and we are trying to show changes over time, we felt a Gantt chart is most efficient. Next we needed to pick how we wanted to visualize these events, we could directly map and this is half of the solution but we went a step further. We picked a handful of scenarios and picked the event store events that would let us chart them as ranges, i.e for an upgrade we are taking the upgradeStart and upgradeEvents and combining them into a time range. This addition made it significantly faster to get a high level idea of what happened for that time range and. 
+Given this information is temporal and we are trying to show changes over time, we felt a Gantt chart is most efficient. Next we needed to pick how we wanted to visualize these events, we could directly map them as points and this is half of the solution but we went a step further. We picked a handful of scenarios and the events that would let us chart them as ranges, i.e for an upgrade we are taking the upgrade start and upgrade end and combining them into a time range. This addition made it significantly faster to get a high level idea of what happened for that time range. We then further extended this by combining multiple event stores together so that we can follow patterns across the whole cluster.
 
 <ImageGallery images={['/sfx/eventstore-vIewer.png']}></ImageGallery>
 
-
 ### Repair Jobs
-Repair jobs have always played a big role in "Why did this node or nodes go down?" and until they had a proper spot in SFX, it was painful to see and parse them. When we decided to start listing them we hit similar issues as the event store viewer; too many repair jobs to easily get a full picture and the solution was to visualize them using the same approach, a Gantt chart. 
-Now this helped get a general idea but a repair job has 3 distinct parts; preparing, executing, and restoring. The investigation can be very different depending on if a job is stuck in preparing or executing. I decided we want this broken down in two ways, first by using the same phase diagram that the disabling node's uses and second by creating a graph to show all of these phases relative to each other.
+Repair jobs have always played a big role in "Why did this node go down?" and until they had a proper spot in SFX, it was painful to see if they were the culprit. When we decided to start listing them we hit similar issues as the event store viewer; too many repair jobs to easily get a full picture and the solution was to visualize them using the same approach, a Gantt chart. 
+
+Now this helped get a general idea but a repair job has 3 distinct parts; preparing, executing, and restoring. The investigation can be very different depending on if a job is stuck in preparing or executing. We decided we want this broken down in two ways, first by using the same phase diagram that the disabling node's uses and second by creating a graph to show all of these phases relative to each other.
 
 * Phase diagram - This breaks down the job into each part and makes it easy to check how long each part took
 <ImageGallery images={['/sfx/expanded_job.png']}></ImageGallery>
@@ -141,16 +142,19 @@ Now this helped get a general idea but a repair job has 3 distinct parts; prepar
 
 
 ### Upgrade Progress
-Given how significant upgrades are, they deserve a well layed out and clear representation.
+Given how significant upgrades are, they deserve a clear and concise layout.
 
 <ImageGallery images={['/sfx/upgrade_safety_checks.png']}></ImageGallery>
 
-The upgrade domain progress is displayed using a pie chart because the amount of upgrade domains can be fairly variable, so we wanted to use something with a fixed size. This is because generally people are just looking at it for overall progress and a pie chart is size agnostic in that regard; i.e 50% of the way is the same appearance for 4 or 20 upgrade domains.
+A cluster upgrade is split into upgrade domains, this is how the upgrade can be safely handled by upgrading a subset of nodes at a time.
 
-The nodes for the current domain being upgraded use the phase diagram because like the repair job and disabling node, we are trying to represent a state machine. By reusing this same layout, it makes it very easy for people to become familiar with the process and it keeps consistency.
+The upgrade domain progress is displayed using a pie chart because the amount of upgrade domains can be fairly variable and we wanted a fix size for consistent layout. This is because generally people are just looking at it for overall progress and a pie chart is size agnostic in that regard; i.e 50% of the way is the same appearance for 4 or 20 upgrade domains.
 
-Upgrades can timeout and its really good to know how close you are to it happening, this is why we went with progress bars for the overall upgrade and the current upgrade domain. Colored progress bars are the fastest way to make it clear how much time is left.
+The nodes for the current domain being upgraded use the phase diagram because like the repair job and disabling node, we are trying to represent a state machine. By reusing this same layout it makes people more familiar with what is a state machine at a glance.
+
+Upgrades can timeout and its useful to know how close you are to a timeout rollback, this is why we went with progress bars for the overall upgrade and the current upgrade domain. Colored progress bars are the fastest way to make it clear how much time is left.
 
 ## Wrapping up
+By using these layout tools and design choices, we have been able to take SFX and make it a much more powerful starting point for investigation. A lot of these improvements have driven reductions in incidents and faster time to mitigate for incidents.
 
 <ImageGallery images={['landing', 'node', 'map', 'metrics', 'application', 'partition', 'service'].map(image => `/sfx/new_${image}.png`)} ></ImageGallery>
