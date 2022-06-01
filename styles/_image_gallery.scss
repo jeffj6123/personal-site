@@ -31,19 +31,30 @@
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 2.3rem;
 
         .arrow {
+            border: 0px;
+            background-color: transparent;
+            color: var(--main-text);
             transition: .25s background-color;
             padding: 5px;
             border-radius: 25px;
-            &:hover {
+            font-size: 2.3rem;
+            cursor: pointer;
+
+            &:hover:not(:disabled) {
                 background-color: var(--main-bg-color);
+                color: var(--accent-color)
             }
 
-        &.rotated {
-            transform: rotate(180deg);
-        }
+            &.rotated {
+                transform: rotate(180deg);
+            }
+
+            &:disabled {
+                color: gray;
+                cursor: default;
+            }
         }
     }
 
