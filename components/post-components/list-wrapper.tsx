@@ -5,7 +5,6 @@ export interface PropsWithChild {
 }
 
 export const Li = (props: PropsWithChild) => {
-    console.log(props)
     const title = props.children[0] //props.children.find(node => node.type.name === "LiTop")
     const body = props.children[1]//props.children.find(node => node.type.name === "LiBottom")
 

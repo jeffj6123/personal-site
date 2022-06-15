@@ -54,6 +54,23 @@ $project-overflow: 10%;
     transition: .5s all;
 }
 
+.small-project-tile {
+    width: 35%;
+    position: relative;
+    padding-bottom: 40px !important;
+    margin: 15px;
+
+    .link-out {
+        font-size: 1.7rem;
+        top: -14px;
+        padding: 5px;
+    }
+    
+    a {
+        color: var(--accent-color);
+    }
+}
+
 @media only screen and (max-width: vars.$mid-screen-size) {
     .project-tile {
         flex-direction: column;

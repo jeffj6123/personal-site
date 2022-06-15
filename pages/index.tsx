@@ -1,3 +1,4 @@
+import { AngularIcon, CSSIcon, HTMLIcon, Icon, PythonIcon, ReactIcon, TypescriptIcon } from 'components/icons';
 import type { NextPage } from 'next';
 import Link from 'next/link';
 import Graph from '../components/graph';
@@ -100,12 +101,11 @@ const Home: NextPage = () => {
                       </ul>
                     </p>
                     <div className="resources shadow">
-                      <i style={{ color: '#f14e00' }} className="ri-html5-line resource"></i>
-                      <i style={{ color: '#f00000' }} className="ri-angularjs-fill resource"></i>
-                      <i style={{ color: 'blue' }} className="ri-css3-line resource"></i>
-                      <img src="python-logo.svg" className=" resource" style={{ height: '30px' }}></img>
-                      <img src="typescript-log.svg" className=" resource"
-                        style={{ height: '30px' }}></img>
+                      <Icon icon={HTMLIcon}></Icon>
+                      <Icon icon={AngularIcon}></Icon>
+                      <Icon icon={CSSIcon}></Icon>
+                      <Icon icon={PythonIcon}></Icon>
+                      <Icon icon={TypescriptIcon}></Icon>
                     </div>
                   </div>
                 </div>
@@ -116,7 +116,7 @@ const Home: NextPage = () => {
                   Service Fabric Explorer
                 </h2>
                 <div className="project-content">
-                  <a href="https://github.com/microsoft/service-fabric-explorer" target="_blank">
+                  <a href="https://github.com/microsoft/service-fabric-explorer" rel="noreferrer" target="_blank">
                     <i className="link-out ri-github-fill shadow"></i>
                   </a>
                   <p>
@@ -127,7 +127,7 @@ const Home: NextPage = () => {
 
                     <ul>
                       <li>
-                        Originally written in AngularJS but has been migrated to Angular.\
+                        Originally written in AngularJS but has been migrated to Angular.
                         Testing is done using Cypress to cover broad End to End scenarios.
                       </li>
 
@@ -142,11 +142,44 @@ const Home: NextPage = () => {
                     </ul>
                   </p>
                   <div className="resources shadow">
-                    <i style={{ color: '#f14e00' }} className="ri-html5-line resource"></i>
-                    <i style={{ color: '#f00000' }} className="ri-angularjs-fill resource"></i>
-                    <i style={{ color: 'blue' }} className="ri-css3-line resource"></i>
-                    <img src="images/typescript-log.svg" className=" resource" style={{ height: '30px' }}></img>
+                    <Icon icon={HTMLIcon}></Icon>
+                    <Icon icon={AngularIcon}></Icon>
+                    <Icon icon={CSSIcon}></Icon>
+                    <Icon icon={TypescriptIcon}></Icon>
                   </div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className='card main-bg shadow small-project-tile'>
+                <h3 style={{'fontSize': '1.4rem'}}>South Park Tier List</h3>
+                <div className="underline spacer"></div>
+                  <a href="https://southpark-tier.ue.r.appspot.com" rel="noreferrer" target="_blank">
+                    <i className="link-out ri-links-line shadow"></i>
+                  </a>
+                <p>
+                  A website for creating South Park tier lists for characters and episodes
+                </p>
+                <ul>
+                  <li>
+                    Created using React and Express and hosted on Google App Engine
+                  </li>
+                  <li>
+                    <div>
+                    <p>
+                    Read more about the process here
+                    </p>
+                    <div className='highlight-text'>
+                      <Link href="/blog/southpark">Creating A South Park Tier List</Link>
+                    </div>
+                    </div>
+                  </li>
+                </ul>
+                <div className="resources shadow">
+                  <Icon icon={HTMLIcon}></Icon>
+                  <Icon icon={ReactIcon}></Icon>
+                  <Icon icon={CSSIcon}></Icon>
+                  <Icon icon={TypescriptIcon}></Icon>
                 </div>
               </div>
             </div>
@@ -164,8 +197,8 @@ const Home: NextPage = () => {
               </p>
 
               <p style={{ marginTop: '10px' }}>
-                I graduated from The <span className="highlight-text">Ohio State University</span> in 2018 with a Bachelors Degree in
-                <span className="highlight-text">Computer Science</span>. The courses I took had an emphasis on data structures and algorithms.
+                I graduated from The <span className="highlight-text">Ohio State University</span> in 2018 with a Bachelors Degree in 
+                <span className="highlight-text"> Computer Science</span>. The courses I took had an emphasis on data structures and algorithms.
                 While I was there I competed in multiple hackathons, and won most innovative idea from OH/IO.
               </p>
 
@@ -272,7 +305,7 @@ const Home: NextPage = () => {
           <div className="card main-bg job-tile margin-bottom shadow show-on-scroll slide-down">
             <div className="card shadow job-overview">
               <div>
-                <h3>Scott's Miracle Gro</h3>
+                <h3>Scott&apos;s Miracle Gro</h3>
                 <div className="job-timespent">
                   May, 2017 <i className="ri-arrow-right-line"></i> Jan, 2018
                 </div>
@@ -304,7 +337,7 @@ const Home: NextPage = () => {
           <div className="card main-bg job-tile margin-bottom shadow show-on-scroll slide-down">
             <div className="card shadow job-overview">
               <div>
-                <h3>Scott's Miracle Gro</h3>
+                <h3>Scott&apos;s Miracle Gro</h3>
                 <div className="job-timespent">
                   May, 2016 <i className="ri-arrow-right-line"></i> Sept, 2017
                 </div>

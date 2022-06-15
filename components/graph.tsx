@@ -24,8 +24,6 @@ function generateInitialState(width: number, height: number) {
     let refRect: ISquarePoint = landingTile.getBoundingClientRect();
     refRect.y - 50;
 
-    console.log(landingTile.getBoundingClientRect())
-
     let shapes: Circle[] = [];
 
     for (let i = 0; i < shapeCount; i++) {
@@ -86,12 +84,10 @@ export default function Graph() {
     }
 
     const onMouseMove = debounced(10, (event: MouseEvent) => {
-        console.log
         const closest = graphState.pathFinding.findClosestNodeToAPoint({
             x: event.pageX,
             y: event.pageY
         })
-        console.log(event)
         graphState.crawler.setNewpath(graphState.pathFinding.generatePath(graphState.crawler.nextNode.asPathFindingNode(), closest))
     })
 

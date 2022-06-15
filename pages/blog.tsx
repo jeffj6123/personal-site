@@ -34,7 +34,6 @@ export default function PostsList(props: IPostListProps) {
         let backgroundCSS = isSelected ? 'selected-tag': '';
         backgroundCSS += " clickable"
         backgroundCSS += postCount.length > 0 ? '': ' hidden';
-        console.log(backgroundCSS)
         return {
             id: tag,
             display: (<span onClick={onClick}>{tag}<span style={{'marginLeft': '5px'}}>{postCount.length}</span></span>),

@@ -90,19 +90,3 @@ export class Heap<T> {
         this.internal[index2] = temp;
     }
 }
-
-// let f = new Heap();
-
-// const items = [];
-
-// for (let i = 0; i < 10; i++) {
-//     const item = Math.random() * 10;
-//     items.push(item);
-//     f.add(item, item);
-// }
-
-// console.log(items)
-// console.log(f.internal)
-// while (f.size() > 0) {
-//     console.log("item" + f.getNext())
-// }

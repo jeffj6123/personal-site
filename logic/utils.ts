@@ -33,7 +33,6 @@ export const getFromLocalStorage = (key: string, defaultValue: string) => {
     }
 
     if(item !== null) {
-        console.log(item)
         return item;
     }else{
         return defaultValue;

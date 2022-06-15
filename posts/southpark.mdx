@@ -3,21 +3,21 @@ title: Making a South Park Tier List Site
 date: January, 6th. 2022
 summary: The process of making a site for ranking South Park episodes.
 tags: React, Express, Node JS, Typescript, Google Datastore
-publish: false
+published: True
 ---
 
 import { BlogLayout, Warning, Li, LiTop, LiBottom } from 'components/post-components';
 
 # So what is the goal?
 
-Recently my girlfriend is watching SouthPark for the first time and we are both fans of tier lists. After a fairly quick look for tier list sites, I didn't find any that I liked that much. This felt like a good opportunity for a project. 
+Recently my girlfriend is watching SouthPark for the first time and we are both fans of tier lists. After a fairly quick look for tier list sites, I didn't find any that I liked that much and this felt like a good opportunity for a project to learn React. 
 
 ### Project overview
 * The layout should be fairly simple. Provide an easy way to order episodes and move them between tiers
 * Be able to save tier lists to a user
 * Share tier lists with others
 
-This section will be broken down into multiple parts to look at each problem as it is solved.
+I broke this down into multiple parts to look at each problem as it is solved.
 
 ## Part 1: Getting the data
 To make the tier list easy to work with, you would expect that all of the data would be available while making it. Before this site was put together, we were maintaining a spreadsheet by episode/season tuples and it was not easy to double check.
@@ -25,64 +25,41 @@ To make the tier list easy to work with, you would expect that all of the data w
 This issue was solved pretty fast by googling “south park API” and I came across a wonderful site which had “most” of the information I was looking for. After a couple of github issues, they were more than willing to help add the extra information I was looking for. This was pulled using the adhoc script below.
 
 ```ts
-const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const fsP = require('fs/promises')
- 
-const getEpisodes = () => {
-    let episodes = [];
-    const loop = 32;
- 
-    for (let i = 1; i < loop; i++) {
-        try {
-            setTimeout(() => {
-                axios.get(`https://spapi.dev/api/episodes?page=${i}`).then(body => {
- 
-                    episodes = episodes.concat(body.data.data);
- 
-                    if (i === (loop - 1)) {
-                        fsP.writeFile(path.join(__dirname, `episodes2.json`), JSON.stringify(episodes.sort((a,b) => a.id - b.id)))
-                    }
-                })
-            }, 100 * i)
- 
-        } catch (e) {
-            console.log(" could not load " + i)
-        }
-    }
+
+const asyncTimeout = async (duration) => {
+    return new Promise(resolve => {
+        setTimeout(() => {
+            resolve(true);
+        }, duration)
+    })
 }
- 
-const getCharacters = () => {
-    let episodes = [];
-    const loop = 23;
- 
-    for (let i = 1; i < loop; i++) {
-        try {
-            setTimeout(() => {
-                axios.get(`https://spapi.dev/api/characters?page=${i}`).then(body => {
- 
-                    episodes = episodes.concat(body.data.data);
- 
-                    if (i === (loop - 1)) {
-                        fsP.writeFile(path.join(__dirname, `characters2.json`), JSON.stringify(episodes.sort((a,b) => a.id - b.id)))
-                    }
-                })
-            }, 100 * i)
- 
-        } catch (e) {
-            console.log(" could not load " + i)
-        }
+
+const loadData = async (url, delay) => {
+    await asyncTimeout(delay);
+    const { data } = await axios.get(url)
+    let list = data.data;
+    if(data.links.next) {
+        list = list.concat(await loadData(data.links.next, delay));
     }
+
+    return list
 }
- 
-getCharacters()
-getEpisodes();
+
+const loadAndSave = async (url, filename, delay) => {
+    const data = await loadData(url, delay);
+    await fsP.writeFile(path.join(__dirname, filename), JSON.stringify(data));
+}
+
+loadAndSave("https://spapi.dev/api/episodes", 'episodes.json', 200)
+loadAndSave("https://spapi.dev/api/characters", 'characters.json', 200)
 ```
 
 
 ## Part 2: Scaffolding the frontend
-I decided I wanted to use React for this site as a way to get familiar. I have predominantly been an Angular developer, and this felt like a good opportunity to see a framework that is structured fairly differently.
+I decided on React so I could branch out from Angular. I have predominantly been an Angular developer, and this felt like a good opportunity to see a framework that is structured differently.
 
 I only expect to have three real pages for this site.
 
@@ -94,7 +71,7 @@ The first page I wanted to tackle is the edit page because it would dictate what
 
 I am a fan of the drag n drop style tier lists because it feels the most natural and at this point it is expected. Using something like a directional pad for moving tier lists while easy to implement would get frustrating over time so it is best to avoid it. Given I intend on using somewhat larger tiles and 300+ items can get very long, we do need an easy way to get tiles roughly where we want. Moving an item from the unranked section to say S tier will become tedious and this is why I decided to add a “quick move” tier button at the bottom.
 
-I have worked with the angular CDK drag n drop library for other projects, and it is pretty smooth but given we are in React, this means searching around for something similar. I originally wanted a very specific functionality built in and that was to work with flex wrap, this was because for testing I just layed out the items using flex/flex-wrap. I point this out because it's fairly common for DnD libraries to only support one axis based movement. 
+I have worked with the angular CDK drag n drop library for other projects, and it is pretty smooth but given we are in React, this means searching around for something similar. I originally wanted a very specific functionality built in and that was to work with flex wrap. This was because for testing I just layed out the items using flex/flex-wrap. I point this out because it's fairly common for DnD libraries to only support one axis based movement. 
 
 ### Choosing a Drag N Drop Library
 When evaluating different libraries, there are a couple things to look at.

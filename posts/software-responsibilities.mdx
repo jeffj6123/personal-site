@@ -10,7 +10,7 @@ import { ImageGallery } from 'components/post-components/image-gallery';
 import { Warning, Li, LiTop, LiBottom, Info } from 'components/post-components';
 
 
-I have been on the service fabric team for a couple years now, with a primary focus on improving supportability. Supportability can mean a lot of things, so lets narrow it down to the scope of a platform for developers/administrators. While there are more groups who use this product, looking at these users will make it easier to look at why these improvements have been effective. 
+I have been on the service fabric team for a couple years now, with a primary focus on improving supportability. Supportability can mean a lot of things, so lets narrow it down to the scope of a platform for developers and administrators. While there are more groups who use this product, looking at these users will make it easier to look at why these improvements have been effective. 
 
 While a platform can change depending on context, for this scenario we will call Service Fabric a platform which takes user applications/services and deals with the orchestration part of managing an application. This would include starting the application, balancing the application load, dealing with tolerance to avoid downtime and alerting the user when there are issues. While there are many other things that Service Fabric handles and can do, we are just covering a subset and the features built to support them.
 
@@ -20,15 +20,14 @@ The goal is to reduce the effort required to maintain and increase insights into
 The best solution would be the platform's ability to fully handle an issue or fully stop a user from hitting that point.
 The second best solution is giving the user everything they need for self mitigation, i.e not needing assistance by using a support case. 
 
-Now until every problem can be handled in one of those two ways, we want to still make the process of investigating and finding relevant information as easy as possible. This would still mean surfacing key events at the right time and reducing the amount of time and effort it takes during an investigation.
+Now until every problem can be handled in one of those two ways, we want to still make the process of investigating and finding relevant information as easy as possible. This would mean surfacing key events at the right time along with reducing the amount of time and effort it takes during an investigation.
 
 ### Platform Expectations
-We will talk about the following expectations for platform to user interactions, which will be the basis for deciding how effective a feature is.
+We will talk about the following expectations for platform to user interactions, which will be how we decide the effectiveness of a feature.
 
 * A platform's ability to inform users when there is an issue 
 * A platform's ability to differentiate when it's a "platform" issue or a "user" issue
 * A platform's ability to thoroughly explain an issue and how to resolve it
-
 
 ## Starting Point
 A lot of the information we are going to emphasize already exists somewhere but its either cumbersome and difficult to find or its missing useful supporting information. The main reason people used SFX is for when something went wrong, so the goal should always be finding ways to provide more information for investigating.
@@ -155,6 +154,7 @@ The nodes for the current domain being upgraded use the phase diagram because li
 Upgrades can timeout and its useful to know how close you are to a timeout rollback, this is why we went with progress bars for the overall upgrade and the current upgrade domain. Colored progress bars are the fastest way to make it clear how much time is left.
 
 ## Wrapping up
-By using these layout tools and design choices, we have been able to take SFX and make it a much more powerful starting point for investigation. A lot of these improvements have driven reductions in incidents and faster time to mitigate for incidents.
-
 <ImageGallery images={['landing', 'node', 'map', 'metrics', 'application', 'partition', 'service'].map(image => `/sfx/new_${image}.png`)} ></ImageGallery>
+
+By using these layout tools and design choices, we have been able to take SFX and make it a much more powerful starting point for investigation. A lot of these improvements have driven reductions in incident volume and faster time to mitigation.
+

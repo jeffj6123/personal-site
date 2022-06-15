@@ -78,7 +78,7 @@ export function generateEdgeIds(handler: AStarFinding, islands: IIsland[]) {
 
 export function generateVertices(shapes: Circle[]): Vertice[] {
     const shapePoints = shapes.map(shapes => shapes.position);
-    let verts = [];
+    let verts: Vertice[] = [];
 
     shapes.forEach(shape => {
         const pairs = shapes.map(s => {
@@ -129,7 +129,7 @@ export const checkOverlap = (shape1: Circle, shape2: Circle) => {
     return midPointDistance < (Circle.radius * 2)
 }
 
-const boundCheck = (shape1: IPoint, shape2: IPoint, conflict: IPoint, radius) => {
+const boundCheck = (shape1: IPoint, shape2: IPoint, conflict: IPoint, radius: number) => {
 
     let copy1 = { ...shape1 };
     let copy2 = { ...shape2 };
