@@ -10,38 +10,37 @@ import { ImageGallery } from 'components/post-components/image-gallery';
 import { Warning, Li, LiTop, LiBottom, Info } from 'components/post-components';
 
 
-I have been on the service fabric team for a couple years now, with a primary focus on improving supportability. Supportability can mean a lot of things, so lets narrow it down to the scope of a platform for developers and administrators. While there are more groups who use this product, looking at these users will make it easier to look at why these improvements have been effective. 
+I have been on the Service Fabric team for 4 years with a primary focus on improving supportability. Supportability can mean a lot of things; we will look at it in the scope of a platform for developers and administrators. While there are more groups who use this product, looking at these users will make it easier to look at why these improvements have been effective. 
 
-While a platform can change depending on context, for this scenario we will call Service Fabric a platform which takes user applications/services and deals with the orchestration part of managing an application. This would include starting the application, balancing the application load, dealing with tolerance to avoid downtime and alerting the user when there are issues. While there are many other things that Service Fabric handles and can do, we are just covering a subset and the features built to support them.
+In this scenario we will call Service Fabric a platform which takes user applications/services and deals with the orchestration part of managing an application. This includes starting the application, balancing the application load, dealing with tolerance to avoid downtime and alerting the user when there are issues. While there are many other things that Service Fabric handles and can do, we are covering a subset and the features built to support them.
 
 ## What is the Goal?
 
 The goal is to reduce the effort required to maintain and increase insights into using a Service Fabric cluster.
-The best solution would be the platform's ability to fully handle an issue or fully stop a user from hitting that point.
-The second best solution is giving the user everything they need for self mitigation, i.e not needing assistance by using a support case. 
+The best solution is the platform's ability to fully handle an issue or stop a user from hitting that point.
+The second best solution is giving the user everything they need for self mitigation (i.e not needing assistance by using a support case). 
 
-Now until every problem can be handled in one of those two ways, we want to still make the process of investigating and finding relevant information as easy as possible. This would mean surfacing key events at the right time along with reducing the amount of time and effort it takes during an investigation.
+Until every problem can be handled in one of those two ways, we want to make the process of investigating and finding relevant information as easy as possible. This would mean surfacing key events at the right time along with reducing the amount of time and effort it takes during an investigation.
 
 ### Platform Expectations
-We will talk about the following expectations for platform to user interactions, which will be how we decide the effectiveness of a feature.
+We will talk about the following expectations for platform-to-user interactions which will be how we decide the effectiveness of a feature.
 
 * A platform's ability to inform users when there is an issue 
 * A platform's ability to differentiate when it's a "platform" issue or a "user" issue
 * A platform's ability to thoroughly explain an issue and how to resolve it
 
 ## Starting Point
-A lot of the information we are going to emphasize already exists somewhere but its either cumbersome and difficult to find or its missing useful supporting information. The main reason people used SFX is for when something went wrong, so the goal should always be finding ways to provide more information for investigating.
+A lot of the information we are going to emphasize already exists somewhere but it's either cumbersome and difficult to find or it's missing useful supporting information. The main reason people used SFX is for when something goes wrong, so the goal should always be finding ways to provide more information for investigating.
 
-When I had started improving SFX, it was used for very high level investigations but mainly for the following.
+When I started, SFX was used for high level investigations and specifically the following.
 
 * Is the cluster healthy?
 * Finding IDs for different entities
 * Viewing health events
 
-While there is other information that was available, a lot of it was "data dumped" into the second page and had no context. This 
-information while incredibly useful, required you to fully understand its context and be able to parse it easily.  
+This was not the only information available though. SFX has a lot of other information but due to an unapproachable layout it was easy to overlook it. Most of this information was "data dumped" onto a second tab. Data dumping is the goal of getting information on the page with no consideration for how difficult it is to read and interpret. This approach made it difficult for people less familiar with the platform to understand what was going on.
 
-Investigations would normally start in SFX but almost always required moving into other tools, in particular one called Trace Viewer. The problem with Trace Viewer is that it is really only accessible to SF engineers and this means people using Service Fabric are lacking a lot of insight. This has two impacts, it makes for a more frustrating experience for people using the platform and it increases the workload on Service Fabric engineers by increasing the potential incident work load.
+Investigations would normally start in SFX but almost always required moving into other tools like one called Trace Viewer. The problem with Trace Viewer is that it is only meant for Service Fabric engineers and so people using this platform are lacking some insight. This has two impacts. It makes a more frustrating experience and increases the workload on Service Fabric engineers by increasing the incident work load for issues that.
 
 This situation above is what initially drove  the improvements for SFX by realizing how much more efficient our investigations could become if we exposed some the right information.
 
